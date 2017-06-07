@@ -1,0 +1,905 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="config_grid.xsl"?>
+
+<config_horiz_grid>
+
+<!--  
+
+===============================================================
+ DESCRIPTION OF config_grid.xml VARIABLES and ATTRIBUTES
+===============================================================
+
+   The following attributes are REQUIRED for horiz_grid element
+   (default settings are not reasonable values)
+
+      GLOBAL_GRID, nx, ny
+      GRID
+      SHORTNAME
+      ATM_GRID LND_GRID OCN_GRID ICE_GRID ROF_GRID
+      ATM_NCPL OCN_NCPL
+      CAM_DYCORE
+      ATM_DOMAIN_FILE LND_DOMAIN_FILE ICE_DOMAIN_FILE OCN_DOMAIN_FILE
+      CCSM_GCOST
+      DESC
+   
+   The following are optional arguments whose default settings are given below
+   The default settings are set in config_definition.xml
+
+      ATM_DOMAIN_PATH="$DIN_LOC_ROOT/share/domains"
+      LND_DOMAIN_PATH="$DIN_LOC_ROOT/share/domains"   
+      ICE_DOMAIN_PATH="$DIN_LOC_ROOT/share/domains"
+      OCN_DOMAIN_PATH="$DIN_LOC_ROOT/share/domains"
+
+   XXX_DOMAIN_FILE and XXX_DOMAIN_PATH
+   - currently only used by clm, dice, docn, dlnd and datm 
+     to determine model domains, fractions and masks
+
+===============================================================
+-->
+
+<horiz_grid GLOB_GRID="0.23x0.31"   nx="1152"   ny="768"  />
+<horiz_grid GLOB_GRID="0.47x0.63"   nx="576"    ny="384"  />
+<horiz_grid GLOB_GRID="0.9x1.25"    nx="288"    ny="192"  />
+<horiz_grid GLOB_GRID="1.9x2.5"     nx="144"    ny="96"   />
+<horiz_grid GLOB_GRID="2x2.5"       nx="144"    ny="91"   />
+<horiz_grid GLOB_GRID="4x5"         nx="72"     ny="46"   />
+<horiz_grid GLOB_GRID="2.5x3.33"    nx="108"    ny="72"   />
+<horiz_grid GLOB_GRID="10x15"       nx="24"     ny="19"   />
+<horiz_grid GLOB_GRID="wr50a"       nx="275"    ny="205"  />
+<horiz_grid GLOB_GRID="wus12"       nx="341"    ny="337"  />
+<horiz_grid GLOB_GRID="us20"        nx="350"    ny="230"  />
+
+<horiz_grid GLOB_GRID="512x1024"    nx="1024"   ny="512"  />
+<horiz_grid GLOB_GRID="360x720cru"  nx="720"    ny="360"  />
+<horiz_grid GLOB_GRID="256x512"     nx="512"    ny="256"  />
+<horiz_grid GLOB_GRID="128x256"     nx="256"    ny="128"  />
+<horiz_grid GLOB_GRID="96x192"      nx="192"    ny="96"   />
+<horiz_grid GLOB_GRID="64x128"      nx="128"    ny="64"   />
+<horiz_grid GLOB_GRID="48x96"       nx="96"     ny="48"   />
+<horiz_grid GLOB_GRID="32x64"       nx="64"     ny="32"   />
+<horiz_grid GLOB_GRID="8x16"        nx="16"     ny="8"    />
+<horiz_grid GLOB_GRID="1x1"         nx="1"      ny="1"    />
+
+<horiz_grid GLOB_GRID="ne16np4"     nx="13826"  ny="1"    />
+<horiz_grid GLOB_GRID="ne30np4"     nx="48602"  ny="1"    />
+<horiz_grid GLOB_GRID="ne60np4"     nx="194402" ny="1"    />
+<horiz_grid GLOB_GRID="ne120np4"    nx="777602" ny="1"    />
+<horiz_grid GLOB_GRID="ne240np4"    nx="3110402" ny="1"   />
+
+<horiz_grid GLOB_GRID="gx1v6"       nx="320"    ny="384"  />
+<horiz_grid GLOB_GRID="gx3v7"       nx="100"    ny="116"  />
+<horiz_grid GLOB_GRID="tx0.1v2"     nx="3600"   ny="2400" />
+<horiz_grid GLOB_GRID="tx1v1"       nx="360"    ny="240"  />
+<horiz_grid GLOB_GRID="mp120v1"     nx="28993"  ny="1"    />
+<horiz_grid GLOB_GRID="mp120r10v1"  nx="139734" ny="1"    />
+<horiz_grid GLOB_GRID="ar9v3"       nx="1280"   ny="720"  />
+<horiz_grid GLOB_GRID="ar9v4"       nx="1560"   ny="1080" />
+
+<horiz_grid GLOB_GRID="r05"         nx="720"    ny="360"  />
+<horiz_grid GLOB_GRID="rx1"         nx="360"    ny="180"  />
+<horiz_grid GLOB_GRID="r01"         nx="3600"   ny="1800" />
+
+<horiz_grid GLOB_GRID="gland20"     nx="0"    ny="0"  />
+<horiz_grid GLOB_GRID="gland10"     nx="0"    ny="0"  />
+<horiz_grid GLOB_GRID="gland5"      nx="0"    ny="0"  />
+<horiz_grid GLOB_GRID="gland5UM"    nx="0"    ny="0"  />
+
+<horiz_grid GRID="CLM_USRDAT" SHORTNAME="CLMUD" VALID_COMPSET_MATCH="I_"
+            ATM_GRID="reg" LND_GRID="reg" OCN_GRID="reg" ICE_GRID="reg"  ROF_GRID="null" GLC_GRID="gland5UM"
+            ATM_NCPL="48" OCN_NCPL="1" 
+            RTM_MODE="NULL"
+            CCSM_GCOST="-3"
+            ATM_DOMAIN_FILE="domain.lnd.${CLM_USRDAT_NAME}_navy.nc"
+	    LND_DOMAIN_FILE="domain.lnd.${CLM_USRDAT_NAME}_navy.nc"
+	    ATM_DOMAIN_PATH="$DIN_LOC_ROOT/share/domains/domain.clm"
+	    LND_DOMAIN_PATH="$DIN_LOC_ROOT/share/domains/domain.clm"
+            DESC="user specified clm domain and data -- only valid for I compset"  
+/>
+
+<horiz_grid GRID="1x1_brazil" SHORTNAME="1brazil" VALID_COMPSET_MATCH="I_"
+            ATM_GRID="reg" LND_GRID="reg" OCN_GRID="reg" ICE_GRID="reg" ROF_GRID="null" GLC_GRID="gland5UM"
+            ATM_NCPL="48" OCN_NCPL="1" 
+            RTM_MODE="NULL"
+            CCSM_GCOST="-3"
+            ATM_DOMAIN_FILE="domain.lnd.1x1pt-brazil_navy.090715.nc"
+	    LND_DOMAIN_FILE="domain.lnd.1x1pt-brazil_navy.090715.nc"
+	    ATM_DOMAIN_PATH="$DIN_LOC_ROOT/share/domains/domain.clm"
+	    LND_DOMAIN_PATH="$DIN_LOC_ROOT/share/domains/domain.clm"
+            DESC="1x1 Brazil (clm) -- only valid for I compset"  
+/>
+
+<horiz_grid GRID="1x1_numaIA" SHORTNAME="1numa" VALID_COMPSET_MATCH="I_"
+            ATM_GRID="reg" LND_GRID="reg" OCN_GRID="reg" ICE_GRID="reg"  ROF_GRID="null" GLC_GRID="gland5UM"
+            ATM_NCPL="48" OCN_NCPL="1" 
+            RTM_MODE="NULL"
+            CCSM_GCOST="-3"
+            ATM_DOMAIN_FILE="domain.lnd.1x1pt-numaIA_navy.110106.nc"
+            LND_DOMAIN_FILE="domain.lnd.1x1pt-numaIA_navy.110106.nc"
+	    ATM_DOMAIN_PATH="$DIN_LOC_ROOT/share/domains/domain.clm"
+	    LND_DOMAIN_PATH="$DIN_LOC_ROOT/share/domains/domain.clm"
+            DESC="1x1 Numa Iowa (clm) -- only valid for I compset"  
+/>
+
+<horiz_grid GRID="1x1_smallvilleIA" SHORTNAME="1sville" VALID_COMPSET_MATCH="I_"
+            ATM_GRID="reg" LND_GRID="reg" OCN_GRID="reg" ICE_GRID="reg"  ROF_GRID="null" GLC_GRID="gland5UM"
+            ATM_NCPL="48" OCN_NCPL="1" 
+            RTM_MODE="NULL"
+            CCSM_GCOST="-3"
+            ATM_DOMAIN_FILE="domain.lnd.1x1pt-smallvilleIA_test.110106.nc"
+            LND_DOMAIN_FILE="domain.lnd.1x1pt-smallvilleIA_test.110106.nc"
+	    ATM_DOMAIN_PATH="$DIN_LOC_ROOT/share/domains/domain.clm"
+	    LND_DOMAIN_PATH="$DIN_LOC_ROOT/share/domains/domain.clm"
+            DESC="1x1 `Smallville` Iowa Crop Test Case (clm) -- only valid for I compset"  
+/>
+
+<horiz_grid GRID="1x1_camdenNJ" SHORTNAME="1camden" VALID_COMPSET_MATCH="I_"
+            ATM_GRID="reg" LND_GRID="reg" OCN_GRID="reg" ICE_GRID="reg"  ROF_GRID="null" GLC_GRID="gland5UM"
+            ATM_NCPL="48" OCN_NCPL="1" 
+            RTM_MODE="NULL"
+            CCSM_GCOST="-3"
+            ATM_DOMAIN_FILE="domain.lnd.1x1pt-camdenNJ_navy.111004.nc"
+            LND_DOMAIN_FILE="domain.lnd.1x1pt-camdenNJ_navy.111004.nc"
+	    ATM_DOMAIN_PATH="$DIN_LOC_ROOT/share/domains/domain.clm"
+	    LND_DOMAIN_PATH="$DIN_LOC_ROOT/share/domains/domain.clm"
+            DESC="1x1 Camden New Jersey (clm) -- only valid for I compset" 
+/>
+
+<horiz_grid GRID="1x1_asphaltjungleNJ" SHORTNAME="1asphalt" VALID_COMPSET_MATCH="I_"
+            ATM_GRID="reg" LND_GRID="reg" OCN_GRID="reg" ICE_GRID="reg" ROF_GRID="null" GLC_GRID="gland5UM"
+            ATM_NCPL="48" OCN_NCPL="1" 
+            RTM_MODE="NULL"
+            CCSM_GCOST="-3"
+            ATM_DOMAIN_FILE="domain.lnd.1x1pt-camdenNJ_navy.111004.nc"
+            LND_DOMAIN_FILE="domain.lnd.1x1pt-camdenNJ_navy.111004.nc"
+	    ATM_DOMAIN_PATH="$DIN_LOC_ROOT/share/domains/domain.clm"
+	    LND_DOMAIN_PATH="$DIN_LOC_ROOT/share/domains/domain.clm"
+            DESC="1x1 `Asphalt Jungle` New Jersey Test Case (clm) -- only valid for I compset" 
+/>
+
+<horiz_grid GRID="1x1_mexicocityMEX" SHORTNAME="1mexico" VALID_COMPSET_MATCH="I_"
+            ATM_GRID="reg" LND_GRID="reg" OCN_GRID="reg" ICE_GRID="reg"  ROF_GRID="null" GLC_GRID="gland5UM"
+            ATM_NCPL="48" OCN_NCPL="1" 
+            RTM_MODE="NULL"
+            CCSM_GCOST="-3"
+            ATM_DOMAIN_FILE="domain.lnd.1x1pt-mexicocityMEX_navy.090715.nc"
+            LND_DOMAIN_FILE="domain.lnd.1x1pt-mexicocityMEX_navy.090715.nc"
+	    ATM_DOMAIN_PATH="$DIN_LOC_ROOT/share/domains/domain.clm"
+	    LND_DOMAIN_PATH="$DIN_LOC_ROOT/share/domains/domain.clm"
+            DESC="1x1 Mexico City Mexico (clm) -- only valid for I compset" 
+/>
+
+<horiz_grid GRID="1x1_vancouverCAN" SHORTNAME="1vancan" VALID_COMPSET_MATCH="I_"
+            ATM_GRID="reg" LND_GRID="reg" OCN_GRID="reg" ICE_GRID="reg" ROF_GRID="null" GLC_GRID="gland5UM"
+            ATM_NCPL="48" OCN_NCPL="1" 
+            RTM_MODE="NULL"
+            CCSM_GCOST="-3"
+            ATM_DOMAIN_FILE="domain.lnd.1x1pt-vancouverCAN_navy.090715.nc"
+            LND_DOMAIN_FILE="domain.lnd.1x1pt-vancouverCAN_navy.090715.nc"
+	    ATM_DOMAIN_PATH="$DIN_LOC_ROOT/share/domains/domain.clm"
+	    LND_DOMAIN_PATH="$DIN_LOC_ROOT/share/domains/domain.clm"
+            DESC="1x1 Vancouver Canada (clm) -- only valid for I compset"  
+/>
+
+<horiz_grid GRID="1x1_tropicAtl" SHORTNAME="1tropatl" VALID_COMPSET_MATCH="I_"
+            ATM_GRID="reg" LND_GRID="reg" OCN_GRID="reg" ICE_GRID="reg"  ROF_GRID="null" GLC_GRID="gland5UM"
+            ATM_NCPL="48" OCN_NCPL="1" 
+            RTM_MODE="NULL"
+            CCSM_GCOST="-3"
+            ATM_DOMAIN_FILE="domain.lnd.1x1pt-tropicAtl_test.111004.nc"
+            LND_DOMAIN_FILE="domain.lnd.1x1pt-tropicAtl_test.111004.nc"
+	    ATM_DOMAIN_PATH="$DIN_LOC_ROOT/share/domains/domain.clm"
+	    LND_DOMAIN_PATH="$DIN_LOC_ROOT/share/domains/domain.clm"
+            DESC="1x1 `Tropical Atlantic` Test Case (clm) -- only valid for I compset"  
+/>
+
+<horiz_grid GRID="1x1_urbanc_alpha" SHORTNAME="1urbanc" VALID_COMPSET_MATCH="I_"
+            ATM_GRID="reg" LND_GRID="reg" OCN_GRID="reg" ICE_GRID="reg"  ROF_GRID="null" GLC_GRID="gland5UM"
+            ATM_NCPL="48" OCN_NCPL="1" 
+            RTM_MODE="NULL"
+            CCSM_GCOST="-3"
+            ATM_DOMAIN_FILE="domain.lnd.1x1pt-urbanc_alpha_test.110201.nc"
+            LND_DOMAIN_FILE="domain.lnd.1x1pt-urbanc_alpha_test.110201.nc"
+	    ATM_DOMAIN_PATH="$DIN_LOC_ROOT/share/domains/domain.clm"
+	    LND_DOMAIN_PATH="$DIN_LOC_ROOT/share/domains/domain.clm"
+            DESC="1x1 `Urban C Alpha` Test Case (clm) -- only valid for I compset"  
+/>
+
+
+<horiz_grid GRID="5x5_amazon" SHORTNAME="5amazon" VALID_COMPSET_MATCH="I_"
+            ATM_GRID="reg" LND_GRID="reg" OCN_GRID="reg" ICE_GRID="reg"  ROF_GRID="null" GLC_GRID="gland5UM"
+            ATM_NCPL="48" OCN_NCPL="1" 
+            RTM_MODE="NULL"
+            CCSM_GCOST="-3"
+            ATM_DOMAIN_FILE="domain.lnd.5x5pt-amazon_navy.090715.nc"
+            LND_DOMAIN_FILE="domain.lnd.5x5pt-amazon_navy.090715.nc"
+	    ATM_DOMAIN_PATH="$DIN_LOC_ROOT/share/domains/domain.clm"
+	    LND_DOMAIN_PATH="$DIN_LOC_ROOT/share/domains/domain.clm"
+            DESC="5x5 amazon regional case (clm) -- only valid for I compset"  
+/>
+
+<horiz_grid GRID="0.23x0.31_0.23x0.31" SHORTNAME="f02_f02"
+            ATM_GRID="0.23x0.31" LND_GRID="0.23x0.31" OCN_GRID="0.23x0.31" ICE_GRID="0.23x0.31" ROF_GRID="r05" GLC_GRID="gland5UM"
+            ATM_NCPL="96" OCN_NCPL="96" 
+            CAM_DYCORE="fv"
+            CCSM_GCOST="6"
+	    ATM_DOMAIN_FILE="domain.lnd.fv0.23x0.31_gx1v6.100517.nc"
+	    LND_DOMAIN_FILE="domain.lnd.fv0.23x0.31_gx1v6.100517.nc"
+	    ICE_DOMAIN_FILE="domain.ocn.0.23x0.31_gx1v6_101108.nc"
+	    OCN_DOMAIN_FILE="domain.ocn.0.23x0.31_gx1v6_101108.nc"
+            DESC="1/4 deg grid for atm/lnd. Normally used for CAM configuration using prescribed lnd, ocn, ice." 
+/>
+
+<horiz_grid GRID="0.23x0.31_gx1v6" SHORTNAME="f02_g16"
+            ATM_GRID="0.23x0.31" LND_GRID="0.23x0.31" OCN_GRID="gx1v6" ICE_GRID="gx1v6"  ROF_GRID="r05" GLC_GRID="gland5UM"
+            ATM_NCPL="96" OCN_NCPL="1" 
+            CAM_DYCORE="fv"
+            CCSM_GCOST="6"
+	    ATM_DOMAIN_FILE="domain.lnd.fv0.23x0.31_gx1v6.100517.nc"
+	    LND_DOMAIN_FILE="domain.lnd.fv0.23x0.31_gx1v6.100517.nc"
+	    ICE_DOMAIN_FILE="domain.ocn.gx1v6.090206.nc"
+	    OCN_DOMAIN_FILE="domain.ocn.gx1v6.090206.nc"
+            DESC="1/4 deg grid for atm/lnd, with the v6 1-deg Greenland pole ocn, ice. Normally used for fully coupled climate model." 
+/>
+
+<horiz_grid GRID="0.23x0.31_tx0.1v2" SHORTNAME="f02_t12"
+            ATM_GRID="0.23x0.31" LND_GRID="0.23x0.31" OCN_GRID="tx0.1v2" ICE_GRID="tx0.1v2" ROF_GRID="r05" GLC_GRID="gland5UM"
+            ATM_NCPL="96" OCN_NCPL="4" 
+            CAM_DYCORE="fv"
+            CCSM_GCOST="8"
+	    ATM_DOMAIN_FILE="domain.lnd.fv0.23x0.31_tx0.1v2_070929.nc"
+	    LND_DOMAIN_FILE="domain.lnd.fv0.23x0.31_tx0.1v2_070929.nc"
+	    ICE_DOMAIN_FILE="domain.ocn.tx0.1v2_090218.nc"
+	    OCN_DOMAIN_FILE="domain.ocn.tx0.1v2_090218.nc"
+            DESC="1/4 deg grid for atm, lnd, with 1-deg tripole grid for ocn/ice. Normally used for fully coupled climate runs." 
+/>
+
+<horiz_grid GRID="0.47x0.63_0.47x0.63" SHORTNAME="f05_f05"
+            ATM_GRID="0.47x0.63" LND_GRID="0.47x0.63" OCN_GRID="0.47x0.63" ICE_GRID="0.47x0.63"  ROF_GRID="r05" GLC_GRID="gland5UM"
+            ATM_NCPL="48" OCN_NCPL="48" 
+            CAM_DYCORE="fv"
+            CCSM_GCOST="4"
+            ATM_DOMAIN_FILE="domain.lnd.fv0.47x0.63_gx1v6.090407.nc"
+            LND_DOMAIN_FILE="domain.lnd.fv0.47x0.63_gx1v6.090407.nc"
+            ICE_DOMAIN_FILE="domain.ocn.0.47x0.63_gx1v6_090408.nc"
+            OCN_DOMAIN_FILE="domain.ocn.0.47x0.63_gx1v6_090408.nc"
+            DESC="1/2 deg grid for atm/lnd, gx1v6 mask. Normally used for CAM configuration using prescribed lnd, ocn, ice." 
+/>
+
+<horiz_grid GRID="0.47x0.63_gx1v6" SHORTNAME="f05_g16"
+            ATM_GRID="0.47x0.63" LND_GRID="0.47x0.63" OCN_GRID="gx1v6" ICE_GRID="gx1v6" ROF_GRID="r05" GLC_GRID="gland5UM"
+            ATM_NCPL="48" OCN_NCPL="1" 
+            CAM_DYCORE="fv"
+            CCSM_GCOST="4"
+            ATM_DOMAIN_FILE="domain.lnd.fv0.47x0.63_gx1v6.090407.nc"
+            LND_DOMAIN_FILE="domain.lnd.fv0.47x0.63_gx1v6.090407.nc"
+	    ICE_DOMAIN_FILE="domain.ocn.gx1v6.090206.nc"
+	    OCN_DOMAIN_FILE="domain.ocn.gx1v6.090206.nc"
+            DESC="1/2 deg grid for atm/lnd with the v6 1-deg Greenland pole grid. Normally used for fully coupled climate runs." 
+/>
+
+<horiz_grid GRID="0.47x0.63_tx0.1v2" SHORTNAME="f05_t12"
+            ATM_GRID="0.47x0.63" LND_GRID="0.47x0.63" OCN_GRID="tx0.1v2" ICE_GRID="tx0.1v2"  ROF_GRID="r05" GLC_GRID="gland5UM"
+            ATM_NCPL="48" OCN_NCPL="4" 
+            CAM_DYCORE="fv"
+            CCSM_GCOST="8"
+            ATM_DOMAIN_FILE="domain.lnd.fv0.47x0.63_tx0.1v2_070929.nc"
+            LND_DOMAIN_FILE="domain.lnd.fv0.47x0.63_tx0.1v2_070929.nc"
+	    ICE_DOMAIN_FILE="domain.ocn.tx0.1v2_090218.nc"
+	    OCN_DOMAIN_FILE="domain.ocn.tx0.1v2_090218.nc"
+            DESC="1/2 deg grid for atm/lnd with the v2 0.1-deg tripole grid for ocn/ice." 
+/>
+
+<horiz_grid GRID="0.9x1.25_0.9x1.25" SHORTNAME="f09_f09"
+            ATM_GRID="0.9x1.25" LND_GRID="0.9x1.25" OCN_GRID="0.9x1.25" ICE_GRID="0.9x1.25" ROF_GRID="r05" GLC_GRID="gland5UM"
+            ATM_NCPL="48" OCN_NCPL="48" 
+            CCSM_GCOST="2"
+            CAM_DYCORE="fv"
+	    ATM_DOMAIN_FILE="domain.lnd.fv0.9x1.25_gx1v6.090309.nc"
+	    LND_DOMAIN_FILE="domain.lnd.fv0.9x1.25_gx1v6.090309.nc"
+	    ICE_DOMAIN_FILE="domain.ocn.0.9x1.25_gx1v6_090403.nc"
+	    OCN_DOMAIN_FILE="domain.ocn.0.9x1.25_gx1v6_090403.nc"
+            DESC="1 deg grid for atm/lnd, gx1v6 mask. Normally used for CAM configuration with prescribed lnd, ocn and ice." 
+/>
+
+<horiz_grid GRID="0.9x1.25_gx1v6" SHORTNAME="f09_g16"
+            ATM_GRID="0.9x1.25" LND_GRID="0.9x1.25" OCN_GRID="gx1v6" ICE_GRID="gx1v6"  ROF_GRID="r05" GLC_GRID="gland5UM"
+            ATM_NCPL="48" OCN_NCPL="1" 
+            CAM_DYCORE="fv"
+            CCSM_GCOST="2"
+	    ATM_DOMAIN_FILE="domain.lnd.fv0.9x1.25_gx1v6.090309.nc"
+	    LND_DOMAIN_FILE="domain.lnd.fv0.9x1.25_gx1v6.090309.nc"
+	    ICE_DOMAIN_FILE="domain.ocn.gx1v6.090206.nc"
+	    OCN_DOMAIN_FILE="domain.ocn.gx1v6.090206.nc"
+            DESC="1 deg grid for atm/lnd, ocn/ice with the v6 1-deg Greenland pole grid for ocn/ice." 
+/>
+
+<horiz_grid GRID="0.9x1.25_gx1v6_r01" SHORTNAME="f09_g16_r01"
+            ATM_GRID="0.9x1.25" LND_GRID="0.9x1.25" OCN_GRID="gx1v6" ICE_GRID="gx1v6"  ROF_GRID="r01" GLC_GRID="gland5UM"
+            ATM_NCPL="48" OCN_NCPL="1" 
+            CAM_DYCORE="fv"
+            CCSM_GCOST="2"
+	    ATM_DOMAIN_FILE="domain.lnd.fv0.9x1.25_gx1v6.090309.nc"
+	    LND_DOMAIN_FILE="domain.lnd.fv0.9x1.25_gx1v6.090309.nc"
+	    ICE_DOMAIN_FILE="domain.ocn.gx1v6.090206.nc"
+	    OCN_DOMAIN_FILE="domain.ocn.gx1v6.090206.nc"
+            DESC="1 deg grid for atm/lnd, ocn/ice with the v6 1-deg Greenland pole grid for ocn/ice." 
+/>
+
+<horiz_grid GRID="0.9x1.25_gx1v6_gland10" SHORTNAME="f09_g16_gl10"
+            ATM_GRID="0.9x1.25" LND_GRID="0.9x1.25" OCN_GRID="gx1v6" ICE_GRID="gx1v6"  ROF_GRID="r05" GLC_GRID="gland10"
+            ATM_NCPL="48" OCN_NCPL="1" 
+            CAM_DYCORE="fv"
+            CCSM_GCOST="2"
+	    ATM_DOMAIN_FILE="domain.lnd.fv0.9x1.25_gx1v6.090309.nc"
+	    LND_DOMAIN_FILE="domain.lnd.fv0.9x1.25_gx1v6.090309.nc"
+	    ICE_DOMAIN_FILE="domain.ocn.gx1v6.090206.nc"
+	    OCN_DOMAIN_FILE="domain.ocn.gx1v6.090206.nc"
+            DESC="1 deg grid for atm/lnd, ocn/ice with the v6 1-deg Greenland pole grid for ocn/ice." 
+/>
+
+<horiz_grid GRID="0.9x1.25_mp120v1" SHORTNAME="f09_mp120v1"
+            ATM_GRID="0.9x1.25" LND_GRID="0.9x1.25" OCN_GRID="mp120v1" ICE_GRID="mp120v1" ROF_GRID="r05" GLC_GRID="gland5UM"
+            ATM_NCPL="48" OCN_NCPL="1" 
+            CAM_DYCORE="fv"
+            CCSM_GCOST="2"
+	    ATM_DOMAIN_FILE="domain.lnd.fv0.9x1.25_mp120v1.111018.nc"
+	    LND_DOMAIN_FILE="domain.lnd.fv0.9x1.25_mp120v1.111018.nc"
+	    ICE_DOMAIN_FILE="domain.ocn.mp120v1.111018.nc"
+	    OCN_DOMAIN_FILE="domain.ocn.mp120v1.111018.nc"
+            DESC="1 deg grid for atm/lnd, ocn/ice with mpas 120km v1 grid" 
+/>
+
+<horiz_grid GRID="0.9x1.25_mp120r10v1" SHORTNAME="f09_mp120r10v1"
+            ATM_GRID="0.9x1.25" LND_GRID="0.9x1.25" OCN_GRID="mp120r10v1" ICE_GRID="mp120r10v1"  ROF_GRID="r05" GLC_GRID="gland5UM"
+            ATM_NCPL="48" OCN_NCPL="1" 
+            CAM_DYCORE="fv"
+            CCSM_GCOST="2"
+	    ATM_DOMAIN_FILE="domain.lnd.fv0.9x1.25_mp120r10v1.110123.nc"
+	    LND_DOMAIN_FILE="domain.lnd.fv0.9x1.25_mp120r10v1.110123.nc"
+	    ICE_DOMAIN_FILE="domain.ocn.mp120r10v1.111023.nc"
+	    OCN_DOMAIN_FILE="domain.ocn.mp120r10v1.111023.nc"
+            DESC="One deg grid for atm/lnd, ocn/ice with mpas 120kmr10 v1 grid"
+/>
+
+<horiz_grid GRID="1.9x2.5_1.9x2.5" SHORTNAME="f19_f19"
+            ATM_GRID="1.9x2.5" LND_GRID="1.9x2.5" OCN_GRID="1.9x2.5" ICE_GRID="1.9x2.5" ROF_GRID="r05" GLC_GRID="gland5UM"
+            ATM_NCPL="48" OCN_NCPL="48" 
+            CAM_DYCORE="fv"
+            CCSM_GCOST="0"
+	    ATM_DOMAIN_FILE="domain.lnd.fv1.9x2.5_gx1v6.090206.nc"
+	    LND_DOMAIN_FILE="domain.lnd.fv1.9x2.5_gx1v6.090206.nc"
+	    ICE_DOMAIN_FILE="domain.ocn.1.9x2.5_gx1v6_090403.nc"
+	    OCN_DOMAIN_FILE="domain.ocn.1.9x2.5_gx1v6_090403.nc"
+            DESC="2 deg grid for atm/lnd, gx1v6 mask. Normally used for CAM configuration using prescribed lnd, ocn and ice." 
+/>
+
+<horiz_grid GRID="1.9x2.5_gx1v6" SHORTNAME="f19_g16"
+            ATM_GRID="1.9x2.5" LND_GRID="1.9x2.5" OCN_GRID="gx1v6" ICE_GRID="gx1v6"  ROF_GRID="r05" GLC_GRID="gland5UM"
+            ATM_NCPL="48" OCN_NCPL="1" 
+            CAM_DYCORE="fv"
+            CCSM_GCOST="1"
+	    ATM_DOMAIN_FILE="domain.lnd.fv1.9x2.5_gx1v6.090206.nc"
+	    LND_DOMAIN_FILE="domain.lnd.fv1.9x2.5_gx1v6.090206.nc"
+	    ICE_DOMAIN_FILE="domain.ocn.gx1v6.090206.nc"
+	    OCN_DOMAIN_FILE="domain.ocn.gx1v6.090206.nc"
+            DESC="2 deg grid for atm/lnd with the v6 1-deg Greenland pole ocn/ice grid. Normally used for fully coupled climate runs." 
+/>
+
+<horiz_grid GRID="1.9x2.5_tx1v1" SHORTNAME="f19_s11"
+            ATM_GRID="1.9x2.5" LND_GRID="1.9x2.5" OCN_GRID="tx1v1" ICE_GRID="tx1v1"  ROF_GRID="r05" GLC_GRID="gland5UM"
+            ATM_NCPL="48" OCN_NCPL="1" 
+            CAM_DYCORE="fv"
+            CCSM_GCOST="0"
+	    ATM_DOMAIN_FILE="domain.lnd.fv1.9x2.5_tx1v1_090713.nc"
+	    LND_DOMAIN_FILE="domain.lnd.fv1.9x2.5_tx1v1_090713.nc"
+	    ICE_DOMAIN_FILE="domain.ocn.tx1v1.090122.nc"
+	    OCN_DOMAIN_FILE="domain.ocn.tx1v1.090122.nc"
+            DESC="2 deg grid for atm/lnd with the v1 1-deg tripole grid for ocn/ice. Note that the tx1v1 grid was developed as a testing proxy for high-resolution tripole ocean grids, but should not be used for scientific experiments; use the f19_g16 resolution instead."
+/>
+
+<horiz_grid GRID="2.5x3.33_2.5x3.33" SHORTNAME="f25_f25"
+            ATM_GRID="2.5x3.33" LND_GRID="2.5x3.33" OCN_GRID="2.5x3.3" ICE_GRID="2.5x3.33"  ROF_GRID="r05" GLC_GRID="gland5UM"
+            ATM_NCPL="48" OCN_NCPL="48" 
+            CAM_DYCORE="fv"
+            CCSM_GCOST="-2"
+	    ATM_DOMAIN_FILE="domain.lnd.fv2.5x3.33_gx3v7.110223.nc"
+	    LND_DOMAIN_FILE="domain.lnd.fv2.5x3.33_gx3v7.110223.nc"
+	    ICE_DOMAIN_FILE="domain.ocn.fv2.5x3.33_gx3v7_110223.nc"
+	    OCN_DOMAIN_FILE="domain.ocn.fv2.5x3.33_gx3v7_110223.nc"
+            DESC="3 deg grid for atm/lnd with the v7 3-deg tripole grid for ocn/ice." 
+/>
+
+<horiz_grid GRID="4x5_4x5" SHORTNAME="f45_f45"
+            ATM_GRID="4x5" LND_GRID="4x5" OCN_GRID="4x5" ICE_GRID="4x5" ROF_GRID="r05" GLC_GRID="gland5UM"
+            ATM_NCPL="48" OCN_NCPL="48"
+            CAM_DYCORE="fv"
+            CCSM_GCOST="-2"
+	    ATM_DOMAIN_FILE="domain.lnd.fv4x5_gx3v7.091218.nc"
+	    LND_DOMAIN_FILE="domain.lnd.fv4x5_gx3v7.091218.nc"
+	    ICE_DOMAIN_FILE="domain.ocn.4x5_gx3v7_100120.nc"
+	    OCN_DOMAIN_FILE="domain.ocn.4x5_gx3v7_100120.nc"
+            DESC="4 deg grid for atm/lnd. Normally used for CAM configuration using prescribed lnd, ocn and ice." 
+/>
+
+<horiz_grid GRID="4x5_gx3v7" SHORTNAME="f45_g37"
+            ATM_GRID="4x5" LND_GRID="4x5" OCN_GRID="gx3v7" ICE_GRID="gx3v7"  ROF_GRID="r05" GLC_GRID="gland5UM"
+            ATM_NCPL="48" OCN_NCPL="1"
+            CAM_DYCORE="fv"
+            CCSM_GCOST="-1"
+	    ATM_DOMAIN_FILE="domain.lnd.fv4x5_gx3v7.091218.nc"
+	    LND_DOMAIN_FILE="domain.lnd.fv4x5_gx3v7.091218.nc"
+	    ICE_DOMAIN_FILE="domain.ocn.gx3v7.120323.nc"
+	    OCN_DOMAIN_FILE="domain.ocn.gx3v7.120323.nc"
+            DESC="4 deg grid for atm/lnd with the v7 3-deg Greenland pole grid for ocn/ice." 
+/>
+
+<horiz_grid GRID="T62_gx3v7" SHORTNAME="T62_g37"
+            ATM_GRID="96x192" LND_GRID="96x192" OCN_GRID="gx3v7" ICE_GRID="gx3v7" ROF_GRID="rx1" GLC_GRID="gland5UM"
+            ATM_NCPL="48" OCN_NCPL="1"
+            CAM_DYCORE="eul"
+            CCSM_GCOST="-2"
+	    ATM_DOMAIN_FILE="domain.lnd.T62_gx3v7.090911.nc"
+	    LND_DOMAIN_FILE="domain.lnd.T62_gx3v7.090911.nc"
+	    ICE_DOMAIN_FILE="domain.ocn.gx3v7.120323.nc"
+	    OCN_DOMAIN_FILE="domain.ocn.gx3v7.120323.nc"
+            DESC="T62 gaussian grid with (94x192) grid for atm/lnd, with the v7 3-deg Greenland pole grid for ocn/ice models." 
+/>
+
+<horiz_grid GRID="T62_tx1v1" SHORTNAME="T62_s11"
+            ATM_GRID="96x192" LND_GRID="96x192" OCN_GRID="tx1v1" ICE_GRID="tx1v1"  ROF_GRID="rx1" GLC_GRID="gland5UM"
+            ATM_NCPL="48" OCN_NCPL="1"
+            CAM_DYCORE="eul"
+            CCSM_GCOST="0"
+            ATM_DOMAIN_FILE="domain.lnd.T62_tx1v1.090122.nc"
+            LND_DOMAIN_FILE="domain.lnd.T62_tx1v1.090122.nc"
+	    ICE_DOMAIN_FILE="domain.ocn.tx1v1.090122.nc"
+	    OCN_DOMAIN_FILE="domain.ocn.tx1v1.090122.nc"
+            DESC="T62 gaussian grid with (94x192) grid for active atm/lnd, with the v1 1-deg tripole grid for ocn/ice. Note that the tx1v1 grid was developed as a testing proxy for high-resolution tripole ocean grids, but should not be used for scientific experiments; use the T62_g16 resolution instead." 
+/>
+
+<horiz_grid GRID="T62_tx0.1v2" SHORTNAME="T62_t12"
+            ATM_GRID="96x192" LND_GRID="96x192" OCN_GRID="tx0.1v2" ICE_GRID="tx0.1v2" ROF_GRID="rx1" GLC_GRID="gland5UM"
+            ATM_NCPL="48" OCN_NCPL="4"
+            CAM_DYCORE="eul"
+            CCSM_GCOST="8"
+            ATM_DOMAIN_FILE="domain.lnd.T62_tx0.1v2_090623.nc"
+            LND_DOMAIN_FILE="domain.lnd.T62_tx0.1v2_090623.nc"
+	    ICE_DOMAIN_FILE="domain.ocn.tx0.1v2_090218.nc"
+	    OCN_DOMAIN_FILE="domain.ocn.tx0.1v2_090218.nc"
+            DESC="T62 gaussian grid with (94x192) grid for active atm/lnd, with the v2 1-deg tripole grid for ocn/ice." 
+/>
+
+<horiz_grid GRID="T62_gx1v6" SHORTNAME="T62_g16"
+            ATM_GRID="96x192" LND_GRID="96x192" OCN_GRID="gx1v6" ICE_GRID="gx1v6"  ROF_GRID="rx1" GLC_GRID="gland5UM"
+            ATM_NCPL="48" OCN_NCPL="1"
+            CAM_DYCORE="eul"
+            CCSM_GCOST="0"
+            ATM_DOMAIN_FILE="domain.lnd.T62_gx1v6.090320.nc"
+            LND_DOMAIN_FILE="domain.lnd.T62_gx1v6.090320.nc"
+	    ICE_DOMAIN_FILE="domain.ocn.gx1v6.090206.nc"
+	    OCN_DOMAIN_FILE="domain.ocn.gx1v6.090206.nc"
+            DESC="T62 gaussian (94x192) grid for active atm/lnd, with the v6 Greenland pole 1-deg (320x384) pop grid for ocn/ice models." 
+/>
+
+<horiz_grid GRID="T31_T31" SHORTNAME="T31_T31"
+            ATM_GRID="48x96" LND_GRID="48x96" OCN_GRID="48x96" ICE_GRID="48x96" ROF_GRID="r05" GLC_GRID="gland5UM"
+            ATM_NCPL="48" OCN_NCPL="48"
+            CAM_DYCORE="eul"
+            CCSM_GCOST="-3"
+            ATM_DOMAIN_FILE="domain.lnd.T31_gx3v7.090928.nc"
+            LND_DOMAIN_FILE="domain.lnd.T31_gx3v7.090928.nc"
+	    ICE_DOMAIN_FILE="domain.ocn.48x96_gx3v7_100114.nc"
+	    OCN_DOMAIN_FILE="domain.ocn.48x96_gx3v7_100114.nc"
+            DESC="T31 gaussian (48x96) grid for atm/lnd, gx3v7 mask. Normally used for CAM configuration using prescribed lnd, ocn and ice models." 
+/>
+
+<horiz_grid GRID="T31_gx3v7" SHORTNAME="T31_g37"
+            ATM_GRID="48x96" LND_GRID="48x96" OCN_GRID="gx3v7" ICE_GRID="gx3v7"  ROF_GRID="r05" GLC_GRID="gland5UM"
+            ATM_NCPL="48" OCN_NCPL="1"
+            CAM_DYCORE="eul"
+            CCSM_GCOST="-2"
+            ATM_DOMAIN_FILE="domain.lnd.T31_gx3v7.090928.nc"
+            LND_DOMAIN_FILE="domain.lnd.T31_gx3v7.090928.nc"
+	    ICE_DOMAIN_FILE="domain.ocn.gx3v7.120323.nc"
+	    OCN_DOMAIN_FILE="domain.ocn.gx3v7.120323.nc"
+            DESC="T31 gaussian (48x96) grid for atm/lnd with the v7 3-deg Greenland pole grid for ocn/ice models." />
+
+<horiz_grid GRID="T42_T42" SHORTNAME="T42_T42"
+            ATM_GRID="64x128" LND_GRID="64x128" OCN_GRID="64x128" ICE_GRID="64x128" ROF_GRID="r05" GLC_GRID="gland5UM"
+            ATM_NCPL="72" OCN_NCPL="72"
+            CAM_DYCORE="eul"
+            CCSM_GCOST="-1"
+	    ATM_DOMAIN_PATH="$DIN_LOC_ROOT/share/domains/domain.clm"
+	    LND_DOMAIN_PATH="$DIN_LOC_ROOT/share/domains/domain.clm"
+	    ICE_DOMAIN_PATH="$DIN_LOC_ROOT/atm/cam/ocnfrac"
+	    OCN_DOMAIN_PATH="$DIN_LOC_ROOT/atm/cam/ocnfrac"
+	    ATM_DOMAIN_FILE="domain.lnd.T42_USGS.111004.nc"
+	    LND_DOMAIN_FILE="domain.lnd.T42_USGS.111004.nc"
+	    ICE_DOMAIN_FILE="domain.camocn.64x128_USGS_070807.nc"
+	    OCN_DOMAIN_FILE="domain.camocn.64x128_USGS_070807.nc"
+            DESC="T42 gaussian (64x128) grid for atm/lnd, USGS mask. Normally used for CAM configuration using prescribed lnd, ocn and ice models. NOTE: This should be updated to use the gx1v6 land-mask rather than the USGS land-mask." 
+/>
+
+<!-- NOTE: I think this is screwed up. The land domain should be at T42 not 4x5 -->
+<horiz_grid GRID="4x5_T42_gx3v7" SHORTNAME="f45_T42_g37"
+            ATM_GRID="4x5" LND_GRID="64x128" OCN_GRID="gx3v7" ICE_GRID="gx3v7"  ROF_GRID="r05" GLC_GRID="gland5UM"
+            ATM_NCPL="48" OCN_NCPL="1"
+            CAM_DYCORE="fv"
+            CCSM_GCOST="-1"
+	    ATM_DOMAIN_FILE="domain.lnd.fv4x5_gx3v7.091218.nc"
+	    LND_DOMAIN_FILE="domain.lnd.fv4x5_gx3v7.091218.nc"
+	    ICE_DOMAIN_FILE="domain.ocn.gx3v7.120323.nc"
+	    OCN_DOMAIN_FILE="domain.ocn.gx3v7.120323.nc"
+            DESC="4 deg grid for atm, T42 gaussian (64x128) grid for lnd, and the v7 3-deg Greenland pole grid for ocn/ice models." 
+/>
+
+<horiz_grid GRID="10x15_10x15" SHORTNAME="f10_f10"
+            ATM_GRID="10x15" LND_GRID="10x15" OCN_GRID="10x15" ICE_GRID="10x15" ROF_GRID="r05" GLC_GRID="gland5UM"
+            ATM_NCPL="48" OCN_NCPL="48"
+            CAM_DYCORE="fv"
+            CCSM_GCOST="-2"
+	    ATM_DOMAIN_PATH="$DIN_LOC_ROOT/share/domains/domain.clm"
+	    LND_DOMAIN_PATH="$DIN_LOC_ROOT/share/domains/domain.clm"
+	    ICE_DOMAIN_PATH="$DIN_LOC_ROOT/atm/cam/ocnfrac"
+	    OCN_DOMAIN_PATH="$DIN_LOC_ROOT/atm/cam/ocnfrac"
+	    ATM_DOMAIN_FILE="domain.lnd.fv10x15_USGS.110713.nc"
+	    LND_DOMAIN_FILE="domain.lnd.fv10x15_USGS.110713.nc"
+	    ICE_DOMAIN_FILE="domain.camocn.10x15_USGS_070807.nc"
+	    OCN_DOMAIN_FILE="domain.camocn.10x15_USGS_070807.nc"
+            DESC="10 deg grid for atm/lnd with same for ocn/ice. Normally used for CAM configuration using prescribed lnd, ocn, ice." 
+/>
+
+<horiz_grid GRID="ne16np4_ne16np4" SHORTNAME="ne16_ne16"
+            ATM_GRID="ne16np4" LND_GRID="ne16np4" OCN_GRID="ne16np4" ICE_GRID="ne16np4"  ROF_GRID="r05" GLC_GRID="gland5UM"
+            ATM_NCPL="48" OCN_NCPL="48"
+            CAM_DYCORE="homme"
+            CCSM_GCOST="1"
+	    ATM_DOMAIN_FILE="domain.lnd.ne16np4_gx3v7.120406.nc"
+	    LND_DOMAIN_FILE="domain.lnd.ne16np4_gx3v7.120406.nc"
+	    ICE_DOMAIN_FILE="domain.ocn.ne16np4_gx3v7.121113.nc"
+	    OCN_DOMAIN_FILE="domain.ocn.ne16np4_gx3v7.121113.nc"
+            DESC="2 deg configuration with homme atm/lnd, gx3v7 mask. Normally used for a CAM configuration using prescribed lnd, ocn and ice models." 
+/>
+
+<horiz_grid GRID="ne16np4_gx3v7" SHORTNAME="ne16_g37"
+            ATM_GRID="ne16np4" LND_GRID="ne16np4" OCN_GRID="gx3v7" ICE_GRID="gx3v7" ROF_GRID="r05" GLC_GRID="gland5UM"
+            ATM_NCPL="48" OCN_NCPL="1"
+            CAM_DYCORE="homme"
+            CCSM_GCOST="1"
+	    ATM_DOMAIN_FILE="domain.lnd.ne16np4_gx3v7.120406.nc"
+	    LND_DOMAIN_FILE="domain.lnd.ne16np4_gx3v7.120406.nc"
+	    ICE_DOMAIN_FILE="domain.ocn.gx3v7.120406.nc"
+	    OCN_DOMAIN_FILE="domain.ocn.gx3v7.120406.nc"
+            DESC="2 deg configuration with homme atm/land grid, 3 deg ocn/ice Greenland pole grid." 
+/>
+
+<horiz_grid GRID="ne30np4_ne30np4" SHORTNAME="ne30_ne30"
+            ATM_GRID="ne30np4" LND_GRID="ne30np4" OCN_GRID="ne30np4" ICE_GRID="ne30np4"  ROF_GRID="r05" GLC_GRID="gland5UM"
+            ATM_NCPL="48" OCN_NCPL="48"
+            CAM_DYCORE="homme"
+            CCSM_GCOST="1"
+	    ATM_DOMAIN_FILE="domain.lnd.ne30np4_gx1v6.110905.nc"
+	    LND_DOMAIN_FILE="domain.lnd.ne30np4_gx1v6.110905.nc"
+	    ICE_DOMAIN_FILE="domain.ocn.ne30np4_gx1v6_110217.nc"
+	    OCN_DOMAIN_FILE="domain.ocn.ne30np4_gx1v6_110217.nc"
+            DESC="1 deg configuration with homme atm/lnd, gx1v6 mask. Normally used for a CAM configuration using prescribed lnd, ocn and ice models." 
+/>
+
+<horiz_grid GRID="ne30np4_gx1v6" SHORTNAME="ne30_g16"
+            ATM_GRID="ne30np4" LND_GRID="ne30np4" OCN_GRID="gx1v6" ICE_GRID="gx1v6" ROF_GRID="r05" GLC_GRID="gland5UM"
+            ATM_NCPL="48" OCN_NCPL="1"
+            CAM_DYCORE="homme"
+            CCSM_GCOST="1"
+	    ATM_DOMAIN_FILE="domain.lnd.ne30np4_gx1v6.110905.nc"
+	    LND_DOMAIN_FILE="domain.lnd.ne30np4_gx1v6.110905.nc"
+	    ICE_DOMAIN_FILE="domain.ocn.gx1v6.090206.nc"
+	    OCN_DOMAIN_FILE="domain.ocn.gx1v6.090206.nc"
+            DESC="1 deg configuration with homme atm/land grid, 1 deg ocn/ice Greenland pole grid." 
+/>
+
+<horiz_grid GRID="ne30np4_0.9x1.25_gx1v6" SHORTNAME="ne30_f09_g16"
+            ATM_GRID="ne30np4" LND_GRID="0.9x1.25" OCN_GRID="gx1v6" ICE_GRID="gx1v6" ROF_GRID="r05" GLC_GRID="gland5UM"
+            ATM_NCPL="48" OCN_NCPL="1"
+            CAM_DYCORE="homme"
+            CCSM_GCOST="1"
+	    ATM_DOMAIN_FILE="domain.lnd.ne30np4_gx1v6.110905.nc"
+	    LND_DOMAIN_FILE="domain.lnd.fv0.9x1.25_gx1v6.090309.nc"
+	    ICE_DOMAIN_FILE="domain.ocn.gx1v6.090206.nc"
+	    OCN_DOMAIN_FILE="domain.ocn.gx1v6.090206.nc"
+            DESC="1 deg trigrid configuration with homme atm grid, 1 deg land, ocn/ice Greenland pole grid." 
+/>
+
+<horiz_grid GRID="ne30np4_1.9x2.5_gx1v6" SHORTNAME="ne30_f19_g16"
+            ATM_GRID="ne30np4" LND_GRID="1.9x2.5" OCN_GRID="gx1v6" ICE_GRID="gx1v6" ROF_GRID="r05" GLC_GRID="gland5UM"
+            ATM_NCPL="48" OCN_NCPL="1"
+            CAM_DYCORE="homme"
+            CCSM_GCOST="1"
+	    ATM_DOMAIN_FILE="domain.lnd.ne30np4_gx1v6.110905.nc"
+	    LND_DOMAIN_FILE="domain.lnd.fv1.9x2.5_gx1v6.090206.nc"
+	    ICE_DOMAIN_FILE="domain.ocn.gx1v6.090206.nc"
+	    OCN_DOMAIN_FILE="domain.ocn.gx1v6.090206.nc"
+            DESC="1 deg trigrid configuration with homme atm grid, 2 deg land grid, and 1 deg ocn/ice Greenland pole grid." />
+
+<horiz_grid GRID="ne60np4_ne60np4" SHORTNAME="ne60_ne60"
+            ATM_GRID="ne60np4" LND_GRID="ne60np4" OCN_GRID="ne60np4" ICE_GRID="ne60np4" ROF_GRID="r05" GLC_GRID="gland5UM"
+            ATM_NCPL="48" OCN_NCPL="48"
+            CAM_DYCORE="homme"
+            CCSM_GCOST="10"
+	    ATM_DOMAIN_FILE="domain.lnd.ne60np4_gx1v6.120406.nc"
+	    LND_DOMAIN_FILE="domain.lnd.ne60np4_gx1v6.120406.nc"
+	    ICE_DOMAIN_FILE="domain.ocn.ne60np4_gx1v6.121113.nc"
+	    OCN_DOMAIN_FILE="domain.ocn.ne60np4_gx1v6.121113.nc"
+            DESC="1/2 deg HOMME atm/lnd/ice/ocn grid."
+/>
+
+<horiz_grid GRID="ne60np4_gx1v6" SHORTNAME="ne60_g16"
+            ATM_GRID="ne60np4" LND_GRID="ne60np4" OCN_GRID="gx1v6" ICE_GRID="gx1v6" ROF_GRID="r05" GLC_GRID="gland5UM"
+            ATM_NCPL="96" OCN_NCPL="1"
+            CAM_DYCORE="homme"
+            CCSM_GCOST="10"
+	    ATM_DOMAIN_FILE="domain.lnd.ne60np4_gx1v6.120406.nc"
+	    LND_DOMAIN_FILE="domain.lnd.ne60np4_gx1v6.120406.nc"
+	    ICE_DOMAIN_FILE="domain.ocn.gx1v6.090206.nc"
+	    OCN_DOMAIN_FILE="domain.ocn.gx1v6.090206.nc"
+            DESC="1/2 deg HOMME atm/lnd grid and 1 deg ocn/ice grid." 
+/>
+
+<horiz_grid GRID="ne240np4_gx1v6" SHORTNAME="ne240_g16"
+            ATM_GRID="ne240np4" LND_GRID="ne240np4" OCN_GRID="gx1v6" ICE_GRID="gx1v6" ROF_GRID="r01" GLC_GRID="gland5UM"
+            ATM_NCPL="96" OCN_NCPL="1"
+            CAM_DYCORE="homme"
+            CCSM_GCOST="10"
+	    ATM_DOMAIN_FILE="domain.lnd.ne240np4_gx1v6.111226.nc"
+	    LND_DOMAIN_FILE="domain.lnd.ne240np4_gx1v6.111226.nc"
+	    ICE_DOMAIN_FILE="domain.ocn.gx1v6.090206.nc"
+	    OCN_DOMAIN_FILE="domain.ocn.gx1v6.090206.nc"
+            DESC="High resolution homme trigrid, 1/8 deg homme atm/lnd grid 1 deg ocn/ice Greenland pole grid." />
+
+<horiz_grid GRID="ne240np4_ne240np4" SHORTNAME="ne240_ne240"
+            ATM_GRID="ne240np4" LND_GRID="ne240np4" OCN_GRID="ne240np4" ICE_GRID="ne240np4" ROF_GRID="r01" GLC_GRID="gland5UM"
+            ATM_NCPL="96" OCN_NCPL="1"
+            CAM_DYCORE="homme"
+            CCSM_GCOST="10"
+	    ATM_DOMAIN_FILE="domain.lnd.ne240np4_gx1v6.111226.nc"
+	    LND_DOMAIN_FILE="domain.lnd.ne240np4_gx1v6.111226.nc"
+	    ICE_DOMAIN_FILE="domain.ocn.ne240np4_gx1v6.121113.nc"
+	    OCN_DOMAIN_FILE="domain.ocn.ne240np4_gx1v6.121113.nc"
+            DESC="1/8 deg HOMME atm/lnd/ice/ocn grid."
+/>
+<horiz_grid GRID="ne240np4_0.23x0.31_gx1v6" SHORTNAME="ne240_f02_g16"
+            ATM_GRID="ne240np4" LND_GRID="0.23x0.31" OCN_GRID="gx1v6" ICE_GRID="gx1v6" ROF_GRID="r01" GLC_GRID="gland5UM"
+            ATM_NCPL="96" OCN_NCPL="1"
+            CAM_DYCORE="homme"
+            CCSM_GCOST="10"
+	    ATM_DOMAIN_FILE="domain.lnd.ne240np4_gx1v6.111122.nc"
+	    LND_DOMAIN_FILE="domain.lnd.fv0.23x0.31_gx1v6.100517.nc"
+	    ICE_DOMAIN_FILE="domain.ocn.gx1v6.090206.nc"
+	    OCN_DOMAIN_FILE="domain.ocn.gx1v6.090206.nc"
+            DESC="High resolution homme trigrid, 1/8 deg homme atm grid, one-1/4 deg land grid, and 1 deg ocn/ice Greenland pole grid." />
+
+<horiz_grid GRID="ne240np4_0.23x0.31_tx0.1v2" SHORTNAME="ne240_f02_t12"
+            ATM_GRID="ne240np4" LND_GRID="0.23x0.31" OCN_GRID="tx0.1v2" ICE_GRID="tx0.1v2" ROF_GRID="r01" GLC_GRID="gland5UM"
+            ATM_NCPL="96" OCN_NCPL="4"
+            CAM_DYCORE="homme"
+            CCSM_GCOST="10"
+	    ATM_DOMAIN_FILE="domain.lnd.ne240np4_gx1v6.111120.nc"
+	    LND_DOMAIN_FILE="domain.lnd.fv0.23x0.31_tx0.1v2_070929.nc"
+	    ICE_DOMAIN_FILE="domain.ocn.tx0.1v2_090218.nc"
+	    OCN_DOMAIN_FILE="domain.ocn.tx0.1v2_090218.nc"
+            DESC="High resolution homme trigrid, 1/8 deg homme atm grid, one-1/4 deg land grid, and 1/10 deg ocn/ice Greenland pole grid." />
+
+<horiz_grid GRID="ne240np4_tx0.1v2" SHORTNAME="ne240_t12"
+            ATM_GRID="ne240np4" LND_GRID="ne240np4" OCN_GRID="tx0.1v2" ICE_GRID="tx0.1v2" ROF_GRID="r01" GLC_GRID="gland5UM"
+            ATM_NCPL="96" OCN_NCPL="4"
+            CAM_DYCORE="homme"
+            CCSM_GCOST="10"
+	    ATM_DOMAIN_FILE="domain.lnd.ne240np4_gx1v6.111120.nc"
+	    LND_DOMAIN_FILE="domain.lnd.ne240np4_gx1v6.111120.nc"
+	    ICE_DOMAIN_FILE="domain.ocn.tx0.1v2_090218.nc"
+	    OCN_DOMAIN_FILE="domain.ocn.tx0.1v2_090218.nc"
+            DESC="High resolution homme trigrid, and 1/10 deg ocn/ice Greenland pole grid." />
+
+<horiz_grid GRID="T85_0.9x1.25_gx1v6" SHORTNAME="T85_f09_g16"
+            ATM_GRID="128x256" LND_GRID="0.9x1.25" OCN_GRID="gx1v6" ICE_GRID="gx1v6"    ROF_GRID="r05" GLC_GRID="gland5UM"
+            ATM_NCPL="144" OCN_NCPL="1"
+            CAM_DYCORE="eul"
+	    ATM_DOMAIN_FILE="domain.lnd.T85_gx1v4.060403.nc"
+	    LND_DOMAIN_FILE="domain.lnd.fv0.9x1.25_gx1v6.090309.nc"
+	    ICE_DOMAIN_FILE="domain.ocn.gx1v6.090206.nc"
+	    OCN_DOMAIN_FILE="domain.ocn.gx1v6.090206.nc"
+            DESC="Trigrid configuration with T85 atm grid, 1 deg land grid, and 1 deg ocn/ice grid." />
+ 
+<horiz_grid GRID="T85_0.9x1.25_tx0.1v2" SHORTNAME="T85_f09_t12"
+            ATM_GRID="128x256" LND_GRID="0.9x1.25" OCN_GRID="tx0.1v2" ICE_GRID="tx0.1v2" ROF_GRID="r05" GLC_GRID="gland5UM"
+            ATM_NCPL="144" OCN_NCPL="4"
+            CAM_DYCORE="eul"
+	    ATM_DOMAIN_FILE="domain.lnd.T85_gx1v4.060403.nc"
+	    LND_DOMAIN_FILE="domain.lnd.fv0.9x1.25_tx0.1v2_070928.nc"
+	    ICE_DOMAIN_FILE="domain.ocn.tx0.1v2_090218.nc"
+	    OCN_DOMAIN_FILE="domain.ocn.tx0.1v2_090218.nc"
+            DESC="Trigrid configuration with T85 atm grid, 1 deg land grid, and 0.1 deg ocn/ice tripole grid." />
+
+<horiz_grid GRID="T85_T85" SHORTNAME="T85_T85"
+            ATM_GRID="128x256" LND_GRID="128x256" OCN_GRID="128x256" ICE_GRID="128x256" ROF_GRID="r05" GLC_GRID="gland5UM"
+            ATM_NCPL="144" OCN_NCPL="4"
+            CAM_DYCORE="eul"
+            CCSM_GCOST="-2"
+	    ATM_DOMAIN_PATH="$DIN_LOC_ROOT/share/domains/domain.clm"
+	    LND_DOMAIN_PATH="$DIN_LOC_ROOT/share/domains/domain.clm"
+	    ICE_DOMAIN_PATH="$DIN_LOC_ROOT/atm/cam/ocnfrac"
+	    OCN_DOMAIN_PATH="$DIN_LOC_ROOT/atm/cam/ocnfrac"
+	    ATM_DOMAIN_FILE="domain.lnd.T85_USGS.111004.nc"
+            LND_DOMAIN_FILE="domain.lnd.T85_USGS.111004.nc"
+	    ICE_DOMAIN_FILE="domain.camocn.128x256_USGS_070807.nc"
+            OCN_DOMAIN_FILE="domain.camocn.128x256_USGS_070807.nc"
+            DESC="T85 gaussian (128x256) grid for atm/lnd/ice/ocn, USGS mask. Normally used for CAM configuration using prescribed lnd, ocn and ice models. NOTE: This should be updated to use the gx1v6 land-mask rather than the USGS land-mask." 
+/>
+
+<horiz_grid GRID="T341_T341" SHORTNAME="T341_T341"
+            ATM_GRID="512x1024" LND_GRID="512x1024" OCN_GRID="512x1024" ICE_GRID="512x1024" ROF_GRID="r05" GLC_GRID="gland5UM"
+            ATM_NCPL="288" OCN_NCPL="48"
+            CAM_DYCORE="eul"
+	    ATM_DOMAIN_FILE="domain.lnd.T341_gx1v6.111226.nc"
+	    LND_DOMAIN_FILE="domain.lnd.T341_gx1v6.111226.nc"
+	    ICE_DOMAIN_FILE="domain.ocn.T341_gx1v6.111226.nc"
+	    OCN_DOMAIN_FILE="domain.ocn.T341_gx1v6.111226.nc"
+            DESC="T341 gaussian (512x1024) grid for atm/lnd/ice/ocn. Not configured yet - this is a place holder."
+/>
+
+<horiz_grid GRID="360x720cruncep_360x720cruncep" SHORTNAME="hcru_hcru" VALID_COMPSET_MATCH="I_"
+            ATM_GRID="360x720cru" LND_GRID="360x720cru" OCN_GRID="reg" ICE_GRID="reg" ROF_GRID="r05"
+            ATM_NCPL="48" OCN_NCPL="1"
+	    ATM_DOMAIN_FILE="domain.lnd.360x720_cruncep.100429.nc"
+	    LND_DOMAIN_FILE="domain.lnd.360x720_cruncep.100429.nc"
+	    ATM_DOMAIN_PATH="$DIN_LOC_ROOT/share/domains/domain.clm"
+	    LND_DOMAIN_PATH="$DIN_LOC_ROOT/share/domains/domain.clm"
+            DESC="Exact half-degree on the CRUNCEP datm forcing grid with the CRUNCEP land-mask. Only for I compsets with CLM/datm only "
+/>
+
+<horiz_grid GRID="T341_0.23x0.31_tx0.1v2" SHORTNAME="T341_f02_t12"
+            ATM_GRID="512x1024" LND_GRID="0.23x0.31" OCN_GRID="tx0.1v2" ICE_GRID="tx0.1v2" ROF_GRID="r05" GLC_GRID="gland5UM"
+            ATM_NCPL="288" OCN_NCPL="4"
+            CAM_DYCORE="eul"
+	    ATM_DOMAIN_FILE="domain.ocn.tx0.1v2_090218.nc"
+	    LND_DOMAIN_FILE="domain.lnd.fv0.23x0.31_tx0.1v2_070929.nc"
+	    ICE_DOMAIN_FILE="domain.ocn.tx0.1v2_090218.nc"
+	    OCN_DOMAIN_FILE="domain.ocn.tx0.1v2_090218.nc"
+            DESC="Trigrid configuration with T341 atm grid, 1/4 deg land grid, and 0.1 deg ocn/ice tripole grid. Not yet configured - this is a place holder." 
+/>
+
+<horiz_grid GRID="ne120np4_gx1v6" SHORTNAME="ne120_g16"
+            ATM_GRID="ne120np4" LND_GRID="ne120np4" OCN_GRID="gx1v6" ICE_GRID="gx1v6" ROF_GRID="r05" GLC_GRID="gland5UM"
+            ATM_NCPL="96" OCN_NCPL="1"
+            CAM_DYCORE="homme"
+            CCSM_GCOST="10"
+	    ATM_DOMAIN_FILE="domain.lnd.ne120np4_gx1v6.110502.nc"
+	    LND_DOMAIN_FILE="domain.lnd.ne120np4_gx1v6.110502.nc"
+	    ICE_DOMAIN_FILE="domain.ocn.gx1v6.090206.nc"
+	    OCN_DOMAIN_FILE="domain.ocn.gx1v6.090206.nc"
+            DESC="1/4 deg HOMME atm/lnd grid and 1 deg ocn/ice grid." 
+/>
+
+<horiz_grid GRID="ne120np4_tx0.1v2" SHORTNAME="ne120_t12"
+            ATM_GRID="ne120np4" LND_GRID="ne120np4" OCN_GRID="tx0.1v2" ICE_GRID="tx0.1v2" ROF_GRID="r05" GLC_GRID="gland5UM"
+            ATM_NCPL="96" OCN_NCPL="4"
+            CAM_DYCORE="homme"
+            CCSM_GCOST="10"
+	    ATM_DOMAIN_FILE="domain.lnd.ne120np4_tx01v2.120412.nc"
+	    LND_DOMAIN_FILE="domain.lnd.ne120np4_tx01v2.120412.nc"
+	    ICE_DOMAIN_FILE="domain.ocn.tx0.1v2_090218.nc"
+	    OCN_DOMAIN_FILE="domain.ocn.tx0.1v2_090218.nc"
+            DESC="1/4 deg HOMME atm/lnd grid and 0.1 deg ocn/ice grid." 
+/>
+
+<horiz_grid GRID="ne120np4_ne120np4" SHORTNAME="ne120_ne120"
+            ATM_GRID="ne120np4" LND_GRID="ne120np4" OCN_GRID="ne120np4" ICE_GRID="ne120np4" ROF_GRID="r05" GLC_GRID="gland5UM"
+            ATM_NCPL="96" OCN_NCPL="1"
+            CAM_DYCORE="homme"
+            CCSM_GCOST="10"
+	    ATM_DOMAIN_FILE="domain.lnd.ne120np4_gx1v6.111226.nc"
+	    LND_DOMAIN_FILE="domain.lnd.ne120np4_gx1v6.111226.nc"
+	    ICE_DOMAIN_FILE="domain.ocn.ne120np4_gx1v6.121113.nc"
+	    OCN_DOMAIN_FILE="domain.ocn.ne120np4_gx1v6.121113.nc"
+            DESC="1/4 deg HOMME atm/lnd/ice/ocn grid."
+/>
+
+<horiz_grid GRID="ne120np4_0.9x1.25_gx1v6" SHORTNAME="ne120_f09_g16"
+            ATM_GRID="ne120np4" LND_GRID="0.9x1.25" OCN_GRID="gx1v6" ICE_GRID="gx1v6" ROF_GRID="r05" GLC_GRID="gland5UM"
+            ATM_NCPL="96" OCN_NCPL="1"
+            CAM_DYCORE="homme"
+            CCSM_GCOST="10"
+	    ATM_DOMAIN_FILE="domain.lnd.ne120np4_gx1v6.110502.nc"
+	    LND_DOMAIN_FILE="domain.lnd.fv0.9x1.25_gx1v6.090309.nc"
+	    ICE_DOMAIN_FILE="domain.ocn.gx1v6.090206.nc"
+	    OCN_DOMAIN_FILE="domain.ocn.gx1v6.090206.nc"
+            DESC="Trigrid configuration with 1/4 deg HOMME atm grid, 1 deg land, and 1 deg ocn/ice grid." 
+/>
+
+<horiz_grid GRID="ne120np4_0.23x0.31_tx0.1v2" SHORTNAME="ne120_f02_t12"
+            ATM_GRID="ne120np4" LND_GRID="0.23x0.31" OCN_GRID="tx0.1v2" ICE_GRID="tx0.1v2" ROF_GRID="r05" GLC_GRID="gland5UM"
+            ATM_NCPL="96" OCN_NCPL="4"
+            CAM_DYCORE="homme"
+            CCSM_GCOST="10"
+	    ATM_DOMAIN_FILE="domain.lnd.ne120np4_tx01v2.120412.nc"
+	    LND_DOMAIN_FILE="domain.lnd.fv0.23x0.31_tx0.1v2_070929.nc"
+	    ICE_DOMAIN_FILE="domain.ocn.tx0.1v2_090218.nc"
+	    OCN_DOMAIN_FILE="domain.ocn.tx0.1v2_090218.nc"
+            DESC="Trigrid configuration with 1/4 deg HOMME atm grid, 1/4 deg land grid, and 0.1 deg ocn/ice tripole grid." 
+/>
+
+<horiz_grid GRID="wr50a_wr50a" SHORTNAME="w5a_w5a"
+            ATM_GRID="wr50a" LND_GRID="wr50a" OCN_GRID="wr50a" ICE_GRID="wr50a"  ROF_GRID="null" GLC_GRID="gland5UM"
+            ATM_NCPL="24" OCN_NCPL="1"
+            RTM_MODE="NULL"
+            CCSM_GCOST="0"
+            CALENDAR="NO_LEAP"
+            ATM_DOMAIN_FILE="domain.lnd.wr50a_wr50a.090310.nc"
+            LND_DOMAIN_FILE="domain.lnd.wr50a_wr50a.090310.nc"
+	    ICE_DOMAIN_FILE="domain.ocn.wr50a.090309.nc"
+	    OCN_DOMAIN_FILE="domain.ocn.wr50a.090309.nc"
+            DESC="wrf 50 km arctic samegrid configuration." />
+
+<horiz_grid GRID="wus12_wus12" SHORTNAME="wus12_wus12"
+            ATM_GRID="wus12" LND_GRID="wus12" OCN_GRID="wus12" ICE_GRID="wus12" ROF_GRID="null" GLC_GRID="gland5UM"
+            ATM_NCPL="48" OCN_NCPL="1"
+            RTM_MODE="NULL"
+            CCSM_GCOST="1"
+            ATM_DOMAIN_FILE="domain.lnd.wus12_wus12.20101108.nc"
+            LND_DOMAIN_FILE="domain.lnd.wus12_wus12.20101108.nc"
+	    ICE_DOMAIN_FILE="domain.ocn.wus12.20100518.nc"
+	    OCN_DOMAIN_FILE="domain.ocn.wus12.20100518.nc"
+            DESC="WRF 12-km Western US samegrid configuration." />
+
+<horiz_grid GRID="us20_us20" SHORTNAME="us20_us20"
+            ATM_GRID="us20" LND_GRID="us20" OCN_GRID="us20" ICE_GRID="us20"  ROF_GRID="null" GLC_GRID="gland5UM"
+            ATM_NCPL="48" OCN_NCPL="1"
+            RTM_MODE="NULL"
+            CCSM_GCOST="1"
+            ATM_DOMAIN_PATH="$DIN_LOC_ROOT/lnd/dlnd7"
+            ATM_DOMAIN_FILE="domain.lnd.us20_us20.20110426.nc"
+            LND_DOMAIN_PATH="$DIN_LOC_ROOT/lnd/dlnd7"
+            LND_DOMAIN_FILE="domain.lnd.us20_us20.20110426.nc"
+            ICE_DOMAIN_PATH="$DIN_LOC_ROOT/ocn/docn7"
+	    ICE_DOMAIN_FILE="domain.ocn.us20.20110426.nc"
+            OCN_DOMAIN_PATH="$DIN_LOC_ROOT/ocn/docn7"
+	    OCN_DOMAIN_FILE="domain.ocn.us20.20110426.nc"
+            DESC="WRF 20-km US samegrid configuration." />
+
+<horiz_grid GRID="ar9v3_ar9v3" SHORTNAME="a93_a93"
+            ATM_GRID="ar9v3" LND_GRID="ar9v3" OCN_GRID="ar9v3" ICE_GRID="ar9v3" ROF_GRID="null" GLC_GRID="gland5UM"
+            ATM_NCPL="24" OCN_NCPL="24"
+            RTM_MODE="NULL"
+            CCSM_GCOST="2"
+            CALENDAR="NO_LEAP"
+            ATM_DOMAIN_FILE="domain.lnd.ar9v3_ar9v3.100622.nc"
+            LND_DOMAIN_FILE="domain.lnd.ar9v3_ar9v3.100622.nc"
+	    ICE_DOMAIN_FILE="domain.ocn.ar9v4.100920.nc"
+	    OCN_DOMAIN_FILE="domain.ocn.ar9v4.100920.nc"
+            DESC="pop 9 km arctic samegrid configuration version 3." />
+
+<horiz_grid GRID="ar9v4_ar9v4" SHORTNAME="a94_a94"
+            ATM_GRID="ar9v4" LND_GRID="ar9v4" OCN_GRID="ar9v4" ICE_GRID="ar9v4"  ROF_GRID="null" GLC_GRID="gland5UM"
+            ATM_NCPL="24" OCN_NCPL="24"
+            RTM_MODE="NULL"
+            CCSM_GCOST="2"
+            CALENDAR="NO_LEAP"
+            ATM_DOMAIN_FILE="domain.lnd.ar9v4_ar9v4.100623.nc"
+            LND_DOMAIN_FILE="domain.lnd.ar9v4_ar9v4.100623.nc"
+	    ICE_DOMAIN_FILE="domain.ocn.ar9v4.100920.nc"
+	    OCN_DOMAIN_FILE="domain.ocn.ar9v4.100920.nc"
+            DESC="pop 9 km extended grid arctic samegrid configuration of ar9v1." />
+
+<horiz_grid GRID="wr50a_ar9v4" SHORTNAME="w5a_a94"
+            ATM_GRID="wr50a" LND_GRID="wr50a" OCN_GRID="ar9v4" ICE_GRID="ar9v4"  ROF_GRID="null" GLC_GRID="gland5UM"
+            ATM_NCPL="24" OCN_NCPL="24"
+            RTM_MODE="NULL"
+            CCSM_GCOST="2"
+            CALENDAR="NO_LEAP"
+            ATM_DOMAIN_FILE="domain.lnd.wr50a_ar9v4.100920.nc"
+            LND_DOMAIN_FILE="domain.lnd.wr50a_ar9v4.100920.nc"
+	    ICE_DOMAIN_FILE="domain.ocn.ar9v4.100920.nc"
+	    OCN_DOMAIN_FILE="domain.ocn.ar9v4.100920.nc"
+            DESC="wrf 50 km arctic grid coupled to the extended 9 km pop arctic extended grid." />
+
+</config_horiz_grid>
+

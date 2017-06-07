@@ -1,0 +1,25 @@
+================================================================================
+ SVN $Id: ChangeLog 41525 2012-11-03 00:19:43Z tcraig $
+ SVN $URL: https://svn-ccsm-models.cgd.ucar.edu/drv/seq_mct/branch_tags/iesm11_tags/iesm11_04_cesm1_1_x_n01_drvseq4_2_08/ChangeLog $
+================================================================================
+Information on changes to cpl7
+
+================================================================================
+Originator: tcraig
+Date: 02 Nov 2012
+Model: cpl7
+Version: cesm1_1_0_n01_drvseq4_2_08
+One-line summary: fix scm namelist
+
+  svn merge $SVNREPO/drv/seq_mct/trunk_tags/drvseq4_2_09 $SVNREPO/drv/seq_mct/trunk_tags/drvseq4_2_10
+
+M       bld/namelist_files/namelist_definition_drv.xml
+
+================================================================================
+Originator: tcraig
+Date: 02 Nov 2012
+Model: cpl7
+Version: cesm1_1_0_n00_drvseq4_2_08
+One-line summary: create branch
+
+================================================================================

@@ -1,0 +1,14 @@
+#
+# Interactive tests for lynx
+# (you can run these interactively with -nobatch on)
+#
+# PTS_MODE tests
+SMS_RLA_D.f45_f45.I.lynx_pgi -nobatch on # run these tests interactively with the -nobatch on option
+SMS_RLB.f45_f45.I.lynx_cray
+SMS_ROA.f45_f45.I.lynx_gnu
+# Single-point/regional
+ERI.1x1_camdenNJ.I.lynx_pathscale
+ERI_D.1x1_smallvilleIA.ICN.lynx_pgi
+ERI.1x1_vancouverCAN.I1PT.lynx_intel
+# global cases with just threads
+ERI_P1x12.T31_g37.I20TRCN.lynx_pgi

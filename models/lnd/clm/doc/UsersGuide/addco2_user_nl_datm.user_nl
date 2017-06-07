@@ -1,0 +1,10 @@
+ dtlimit = 1.5,1.5,1.5,1.5,1.5
+ fillalgo = 'nn','nn','nn','nn','nn'
+ fillmask = 'nomask','nomask','nomask','nomask','nomask'
+ mapalgo = 'bilinear','bilinear','bilinear','bilinear','nn'
+ mapmask = 'nomask','nomask','nomask','nomask',nomask'
+ streams = "datm.streams.txt.CLM_QIAN.Solar 1895 1948 1972  ", "datm.streams.txt.CLM_QIAN.Precip 1895 1948 1972  ",
+         "datm.streams.txt.CLM_QIAN.TPQW 1895 1948 1972  ", "datm.streams.txt.presaero.trans_1850-2000 1849 1849 2006",
+         "datm.streams.txt.co2tseries 1766 1766 2005 "
+ taxmode = 'cycle','cycle','cycle','cycle','extend'
+ tintalgo = 'coszen','nearest','linear','linear','linear'

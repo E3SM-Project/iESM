@@ -1,0 +1,72 @@
+================================================================================
+ SVN $Id: ChangeLog 41898 2012-11-13 19:41:34Z mvertens $
+ SVN $URL: https://svn-ccsm-models.cgd.ucar.edu/datm7/branch_tags/iesm11_tags/iesm11_01_cesm1_1_0_n06_datm8_121008/ChangeLog $
+================================================================================
+This file describes what tags were created and why
+================================================================================
+	
+================================================================================
+Date: Nov 13 2012
+Model: datm7
+Version: cesm1_1_n06_datm8_121008
+One-line summary: Fix for IAF path to arctic correction factor (bfb)
+
+M       bld/namelist_files/namelist_defaults_datm.xml
+
+================================================================================
+Date: Oct 31 2012
+Model: datm7
+Version: cesm1_1_n05_datm8_121008
+One-line summary: Use perl5lib version of expandXML everywhere as it's recursive
+
+M       bld/build-namelist
+
+================================================================================
+Date: Oct 31 2012
+Model: datm7
+Version: cesm1_1_n04_datm8_121008
+One-line summary: Remove hardwiring of DATM_PRESAERO to pt1_pt1 for CLM_USRDAT res
+
+M       bld/build-namelist
+
+================================================================================
+Date: Oct 23 2012
+Model: datm7
+Version: cesm1_1_n03_datm8_121008
+One-line summary: Add CLM1PT.CLM_USRDAT capability back in
+
+M       bld/unit_testers/build-namelist_test.pl
+M       bld/namelist_files/namelist_defaults_datm.xml
+
+================================================================================
+Date: Oct 15 2012
+Model: datm7
+Version: cesm1_1_n02_datm8_121008
+One-line summary: Correct paths for iaf inputdata
+
+M    bld/namelist_files/namelist_defaults_datm.xml
+
+================================================================================
+Date: Oct 08 2012
+Model: datm7
+Version: cesm1_1_n01_datm8_121008
+One-line summary: 
+  Changes since cesm1_0_4 release:
+   Expand XML vars for ATM_DOMAIN_FILE/ATM_DOMAIN_PATH
+   FFix CLM1PT
+   Put in new IAF datasets from Susan Bates
+   Removed copy of datm.buildnml.csh and datm.buildexe.csh from datm.cpl7.template
+   New build-namelist functionlality
+	- no environment variables in build-namelist (replaced by %xmlvars)
+	- to introduce a new stream just change namelist_defaults_datm.xml and
+	  namelist_definition_datm.xml
+	- generic stream template no longer written from build-namelist
+        - -debug option
+   update esmf interfaces to 520r, add multi-instance support 
+	for esmf interfaces
+  Remove use of DIN_LOC_ROOT_CLMQIAN
+  bug fix wrt dtlimit = 1.e30 for CORE2.t_10.ArcFactor.T62.stream
+  DATM_MODE = CORE2 becomes 'CORE2_NYF', new 'CORE2_IAF' mode
+  Add ensemble capability
+
+================================================================================

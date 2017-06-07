@@ -1,0 +1,18 @@
+# Interactive tests for bluefire 
+# (you can run these interactively with -nobatch on)
+#
+# PTS_MODE tests
+SMS_RLA.f45_f45.I.bluefire_ibm -nobatch on # run these tests interactively with the -nobatch on option
+SMS_RLB_D.f45_f45.I.bluefire_ibm
+SMS_ROA.f45_f45.I.bluefire_ibm
+# Single-point/regional
+ERI_D.1x1_brazil.I.bluefire_ibm
+ERB.5x5_amazon.I.bluefire_ibm
+ERI_D.1x1_camdenNJ.I.bluefire_ibm
+SMS_CG.1x1_mexicocityMEX.I1PT.bluefire_ibm
+ERS_Lm3.1x1_numaIA.ICN.bluefire_ibm
+SMS_D.1x1_vancouverCAN.I1PT.bluefire_ibm
+# global cases with just threads
+ERS_P1x64.f10_f10.I1850SPINUPCN.bluefire_ibm
+ERI_D_P1x64.T31_g37.I20TRCN.bluefire_ibm
+ERS_P1x64.T31_g37.IG1850.bluefire_ibm

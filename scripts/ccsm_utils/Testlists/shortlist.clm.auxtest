@@ -1,0 +1,14 @@
+#
+# General short test list for CLM any machine.
+# (thus machine/compiler is left off)
+#
+# PTS_MODE tests
+SMS_RLA.f45_f45.I
+# 2000, 1850, 1948-2004, and spinup cases
+ERS_D.f45_g37.I
+ERI.T31_g37.IG1850
+SMS.ne30_g16.I_1948-2004
+# Single-point with crop
+SMS.1x1_numaIA.ICN
+# Transient cases
+PET_PT.f10_f10.I20TRCN

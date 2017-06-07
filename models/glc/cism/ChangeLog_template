@@ -1,0 +1,29 @@
+================================================================================
+Originator:
+Date:
+Model:
+Version:
+One-line summary:
+
+Purpose of changes:
+
+Changes answers relative to previous tag:
+
+Bugs fixed (include bugzilla ID) (http://bugs.cgd.ucar.edu/):
+
+List all modified files, and describe the changes:
+
+Summary of testing:
+
+- bluefire.glc.auxtest: main test results:
+  
+- bluefire.glc.auxtest: results of component_gen_comp -model cism:
+
+- Other tests:
+
+Externals used for testing:
+
+cism tag used for baseline comparisons:
+
+Any other externals that differed in baseline:
+

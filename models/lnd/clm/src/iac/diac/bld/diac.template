@@ -1,0 +1,145 @@
+#! /bin/csh -f
+
+if !(-d $CASEBUILD) mkdir $CASEBUILD
+
+# ---------------------------------------------------------------------------
+#  Create resolved namelist 
+# ---------------------------------------------------------------------------
+
+if ($LND_GRID =~ 1.9x2.5* ) then
+  set map_landuse  = "lnd/clm2/mappingdata/maps/1.9x2.5/map_0.5x0.5_landuse_to_1.9x2.5_aave_da_110307.nc"
+  set map_fmax     = "lnd/clm2/mappingdata/maps/1.9x2.5/map_0.5x0.5_landuse_to_1.9x2.5_aave_da_110307.nc"
+  set map_flanwat  = "lnd/clm2/mappingdata/maps/1.9x2.5/map_0.5x0.5_lanwat_to_1.9x2.5_aave_da_110307.nc"
+  set map_fvocef   = "lnd/clm2/mappingdata/maps/1.9x2.5/map_0.5x0.5_vocef_to_1.9x2.5_aave_da_110307.nc"
+  set map_fsoitex  = "lnd/clm2/mappingdata/maps/1.9x2.5/map_5minx5min_soitex_to_1.9x2.5_aave_da_110307.nc"
+  set map_firrig   = "lnd/clm2/mappingdata/maps/1.9x2.5/map_5minx5min_irrig_simyr2000_to_1.9x2.5_aave_da_110307.nc"
+  set map_fglctopo = "lnd/clm2/mappingdata/maps/1.9x2.5/map_10minx10min_topo_to_1.9x2.5_aave_da_110307.nc"
+  set map_flndtopo = "lnd/clm2/mappingdata/maps/1.9x2.5/map_10minx10min_topo_to_1.9x2.5_aave_da_110307.nc"
+  set glm2iac_glmofile = "iac/diac/glm2iac/glmo_1700-2005.nc"
+  set mksurfout_init = "unknown"
+endif
+
+if ($LND_GRID =~ 0.9x1.25* ) then
+  set map_landuse  = "lnd/clm2/mappingdata/maps/0.9x1.25/map_0.5x0.5_landuse_to_0.9x1.25_aave_da_110307.nc"
+  set map_fmax     = "lnd/clm2/mappingdata/maps/0.9x1.25/map_0.5x0.5_landuse_to_0.9x1.25_aave_da_110307.nc"
+  set map_flanwat  = "lnd/clm2/mappingdata/maps/0.9x1.25/map_0.5x0.5_lanwat_to_0.9x1.25_aave_da_110307.nc"
+  set map_fvocef   = "lnd/clm2/mappingdata/maps/0.9x1.25/map_0.5x0.5_vocef_to_0.9x1.25_aave_da_110307.nc"
+  set map_fsoitex  = "lnd/clm2/mappingdata/maps/0.9x1.25/map_5minx5min_soitex_to_0.9x1.25_aave_da_110307.nc"
+  set map_firrig   = "lnd/clm2/mappingdata/maps/0.9x1.25/map_5minx5min_irrig_simyr2000_to_0.9x1.25_aave_da_110307.nc"
+  set map_fglctopo = "lnd/clm2/mappingdata/maps/0.9x1.25/map_10minx10min_topo_to_0.9x1.25_aave_da_110307.nc"
+  set map_flndtopo = "lnd/clm2/mappingdata/maps/0.9x1.25/map_10minx10min_topo_to_0.9x1.25_aave_da_110307.nc"
+  set glm2iac_glmofile = "iac/diac/glm2iac/glmo_1700-2005.nc"
+  set mksurfout_init = "surfdata.pftdyn_0.9x1.25_simyr2005_Expt1.2_c130808.nc"
+endif
+
+if ($LND_GRID =~ halfdeg* ) then
+  set map_landuse  = "lnd/clm2/mappingdata/maps/halfdeg/map_0.5x0.5_MODIS_to_0360x0720_nomask_aave_da_c120329.nc"
+  set map_fmax     = "lnd/clm2/mappingdata/maps/halfdeg/map_0.5x0.5_USGS_to_0360x0720_nomask_aave_da_c120329.nc"
+  set map_flanwat  = "lnd/clm2/mappingdata/maps/halfdeg/map_0.5x0.5_AVHRR_to_0360x0720_nomask_aave_da_c120329.nc"
+  set map_fvocef   = "lnd/clm2/mappingdata/maps/halfdeg/map_0.5x0.5_AVHRR_to_0360x0720_nomask_aave_da_c120329.nc"
+  set map_fsoitex  = "lnd/clm2/mappingdata/maps/halfdeg/map_5x5min_IGBP-GSDP_to_0360x0720_nomask_aave_da_c120329.nc"
+  set map_firrig   = " "
+  set map_fglctopo = "lnd/clm2/mappingdata/maps/halfdeg/map_10x10min_nomask_to_0360x0720_nomask_aave_da_c120329.nc"
+  set map_flndtopo = "lnd/clm2/mappingdata/maps/halfdeg/map_10x10min_nomask_to_0360x0720_nomask_aave_da_c120329.nc"
+  set glm2iac_glmofile = "iac/diac/glm2iac/glmo_1700-2005.nc"
+  set mksurfout_init = "surfdata_iESM_ZGICN24a_2006to2005a.nc"
+endif
+
+cat >! $CASEBUILD/diac.buildnml.csh << EOF1
+#! /bin/csh -f 
+
+set exedir = \$RUNDIR; cd \$exedir
+
+# for glm2iac
+set giactop = \$DIN_LOC_ROOT/iac/giac
+set mksurfin = mksurf_landuse_iESM_720x360.nc
+set mksurfout = surfdata_iESM
+cp -f \$giactop/glm2iac/pftregridparams.txt .
+cp -f \$giactop/glm2iac/surfdata_360x720_mcrop2000.nc .
+cp -f \$giactop/glm2iac/surfdata_360x720_potveg.nc .
+cp -f \$giactop/glm2iac/mksrf_landuse_ingrid.nc ./\$mksurfin
+cp -f \$giactop/glm2iac/iESM_Expt1_C_S2_CropPast_Ref.nc ./iESM_Ref_CropPast.nc
+chmod 666 ./iESM_Ref_CropPast.nc   
+if (\${CONTINUE_RUN} == FALSE) then
+  cp -f \$giactop/glm2iac/${mksurfout_init} \${mksurfout}_dyn.nc
+endif
+
+# mksrf_fdynuse      = './mksrf_landuse.nc'
+
+set initrun = '.true.'
+if (\$CONTINUE_RUN == 'TRUE') set initrun = '.false.'
+
+cat >! iac_in <<EOF
+&iacnml
+ glm2iac_glmofile = '\$DIN_LOC_ROOT/${glm2iac_glmofile}'
+/
+
+&mksurfnml
+ mksrf_fgrid    = '\$DIN_LOC_ROOT/${map_landuse}'
+ mksrf_fsoitex  = '\$DIN_LOC_ROOT/lnd/clm2/rawdata/mksrf_soitex.10level.c010119.nc'
+ mksrf_forganic = '\$DIN_LOC_ROOT/lnd/clm2/rawdata/mksrf_organic.10level.0.5deg.081112.nc'
+ mksrf_flanwat  = '\$DIN_LOC_ROOT/lnd/clm2/rawdata/mksrf_lanwat.050425.nc'
+ mksrf_fmax     = '\$DIN_LOC_ROOT/lnd/clm2/rawdata/mksrf_fmax.070406.nc'
+ mksrf_fglacier = '\$DIN_LOC_ROOT/lnd/clm2/rawdata/mksrf_glacier.060929.nc'
+ mksrf_furban   = '\$DIN_LOC_ROOT/lnd/clm2/rawdata/mksrf_urban_3den_0.5x0.5_simyr2000.c090223_v1.nc'
+ mksrf_fvegtyp  = '\$DIN_LOC_ROOT/lnd/clm2/rawdata/pftlandusedyn.0.5x0.5.simyr1850-2005.c090630/mksrf_landuse_rc2000_c090630.nc'
+ mksrf_fsoicol  = '\$DIN_LOC_ROOT/lnd/clm2/rawdata/pftlandusedyn.0.5x0.5.simyr1850-2005.c090630/mksrf_soilcol_global_c090324.nc'
+ mksrf_flai     = '\$DIN_LOC_ROOT/lnd/clm2/rawdata/pftlandusedyn.0.5x0.5.simyr1850-2005.c090630/mksrf_lai_global_c090506.nc'
+ mksrf_fglctopo = '\$DIN_LOC_ROOT/lnd/clm2/rawdata/mksrf_topo.10min.c080912.nc'
+ mksrf_flndtopo = '\$DIN_LOC_ROOT/lnd/clm2/rawdata/topodata_10min_USGS_071205.nc'
+ mksrf_fvocef   = '\$DIN_LOC_ROOT/lnd/clm2/rawdata/mksrf_vocef.c060502.nc'
+ mksrf_firrig   = ' '
+ mksrf_fdynuse  = '\$mksurfin'
+ map_fpft       = '\$DIN_LOC_ROOT/${map_landuse}'
+ map_fglacier   = '\$DIN_LOC_ROOT/${map_landuse}'
+ map_fsoicol    = '\$DIN_LOC_ROOT/${map_landuse}'
+ map_furban     = '\$DIN_LOC_ROOT/${map_landuse}'
+ map_fmax       = '\$DIN_LOC_ROOT/${map_fmax}'
+ map_forganic   = '\$DIN_LOC_ROOT/${map_landuse}'
+ map_fglcmec_g2g= '\$DIN_LOC_ROOT/${map_landuse}'
+ map_flai       = '\$DIN_LOC_ROOT/${map_landuse}'
+ map_fharvest   = '\$DIN_LOC_ROOT/${map_landuse}'
+ map_flanwat    = '\$DIN_LOC_ROOT/${map_flanwat}'
+ map_fvocef     = '\$DIN_LOC_ROOT/${map_fvocef}'
+ map_fsoitex    = '\$DIN_LOC_ROOT/${map_fsoitex}'
+ map_firrig     = '\$DIN_LOC_ROOT/${map_firrig}'
+ map_fglctopo   = '\$DIN_LOC_ROOT/${map_fglctopo}'
+ map_flndtopo   = '\$DIN_LOC_ROOT/${map_flndtopo}'
+ map_fglcmec_t2g= '\$DIN_LOC_ROOT/lnd/clm2/mappingdata/maps/topo/map_10minx10min_topo_to_0.5x0.5_landuse_aave_da_110228.nc'
+ outnc_double   = .true.
+ outnc_dims     = 2
+ fsurdat        = '\${mksurfout}.nc'
+ fsurlog        = '\${mksurfout}.log'
+ fdyndat        = '\${mksurfout}_dyn.nc '
+
+/
+EOF
+
+EOF1
+
+# ---------------------------------------------------------------------------
+#  Create script to build dead model
+# ---------------------------------------------------------------------------
+
+cat >! $CASEBUILD/diac.buildexe.csh << EOF2
+#! /bin/csh -f 
+
+set objdir = \$OBJROOT/iac/obj; cd \$objdir
+set comp = 'unknown'
+if (\$COMP_INTERFACE == 'MCT' ) set comp = mct
+if (\$COMP_INTERFACE == 'ESMF') set comp = esmf
+
+#------------------------------------------------------------------------------
+# Build the library
+#------------------------------------------------------------------------------
+cat >! Filepath << EOF
+\$CASEROOT/SourceMods/src.diac
+\$CODEROOT/iac/diac
+\$CODEROOT/iac/diac/cpl_\$comp
+\$CODEROOT/csm_share/shr
+EOF
+
+gmake complib -j \$GMAKE_J MODEL=diac COMPLIB=\$LIBROOT/libiac.a -f \$CASETOOLS/Makefile MACFILE=\$CASEROOT/Macros.\$MACH || exit 2
+
+EOF2
+

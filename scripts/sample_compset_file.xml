@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+
+<config_compset>
+
+<compset NAME="EXAMPLE" SHORTNAME="EXMP"
+         DESC="my sample compset"
+         COMP_ATM="cam" COMP_LND="dlnd" COMP_ICE="dice" COMP_OCN="docn" COMP_GLC="sglc" COMP_ROF="srof" />
+
+</config_compset>

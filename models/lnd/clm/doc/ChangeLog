@@ -1,0 +1,2229 @@
+===============================================================
+Tag name:  clm4_0_54 in cesm1_1_2
+Originator(s):  erik (erik)
+Date: Jul 10 2013
+One-line Summary:  Update mkmapdata.sh to work on yellowstone, update pftdyn files for rcp 6/8.5 for f09 and f19
+
+Purpose of changes: 
+   Update README files for yellowstone
+   Update paths for yellowstone
+   Use the cesm1_2_0 version of Makefile.common for tools
+   Update documentation
+   Update mkscripgrid.ncl for new version that uses curvinlinear_to_SCRIP with the bug fix for 1757
+   Update pftdyn files for rcp 6.0/8.5 for f09 and f19 so have good wood harvest values
+
+Bugs fixed: 1630 (changes to get mkmapdata.sh to work on yellowstone)
+
+===============================================================
+Tag name:  clm4_0_54 in cesm1_1_1
+Originator(s):  Jim Edwards (jedwards)
+Date: Jan 03 2013
+One-line Summary:  Fix transient CO2 namelist issue
+
+Purpose of changes: 
+
+  * Simple fix for transient CO2 namelists
+
+Bugs fixed: 1604 (-co2_type flag in CLM namelist not set correctly results in an invalid value of co2_ppmv)
+
+===============================================================
+Tag name:  clm4_0_54 in cesm1_1_0
+Originator(s):  erik (erik)
+Date: Fri Oct 12 18:58:28 MDT 2012
+One-line Summary:  Hi res mksurfdata datasets, glc bug-fix, new datasets, multi-instance, unstructured grid support
+                   MEGAN model updated, RTM seperated and 10th degree grid option
+
+Purpose of changes: 
+
+   Changes to answers for science:
+
+   * New "ngwh" harvest for surface datasets to fix issues in rcp6 and rcp8.5 land-use change datasets
+   * Snow history output a bit differently so that you can do a full budget (only changes history fields)
+   * Bug fix for GLC-MEC virtual columns, ice-albedo change for GLC-MEC
+   * New surface datasets, initial-conditions and grid (gland5UM) for GLC-MEC
+   * New datasets for f05, T31 and rcp6/rcp8.5 land-use change
+     (fmax and organic soil high resolution datasets for mksurdata_map)
+
+   New Capabilities for Science (functionality):
+
+   * Multiple instance capability
+   * Support to run CLM on non lat/lon and cubed sphere and unstructured grids
+   * New high resolution datasets available for creating surface datasets
+     (most datasets at 10X the previous half-degree datasets [which are also available])
+   * MEGAN model updated to general format to model 120 species
+   * Option for tenth degree RTM
+   * New hi-res pct_glacer and topo files for creating mksurfdata
+
+   Refactoring or changes to software Infrastructure:
+
+   * New support for user-specification of model grids
+   * CLM tool input dataset tool chain changed extensively
+   * Remove CASA
+   * Use RTM mapping files
+   * RTM removed from CLM as a separate -- River Runoff Model Component
+   * Add soilwater field to coupler for CARMA
+   * CLM testing framework now uses the CESM test framework, rather than CLM stand-alone testing
+
+Bugs fixed:
+Known bugs (include bugzilla ID):
+                                  701 (svn keyword)
+                                  722 (threading slow)
+                                  789 (1pt sims 2.5X slow)
+                                  794 (hist avg strange)
+                                  896 (T62 mode does not work)
+                                  935 (RTM warning NOT an error)
+                                 1063 (Problem in restarts for CCSM spinup data)
+                                 1124 (Reported energy for pftdyn grid-cell not right)
+                                 1139 (LAND and PFTS 1D vector averaging doesn't work)
+                                 1158 (I_1850-2000_CN (I4804CN) inconsistent with
+I_1850-2000 (I4804) compset)
+                                 1163 (finidat file has a bunch of NaN's in it)
+                                 1164 (Restart trouble for CN13 on mirage...)
+                                 1251 (PTCLM testcases aborts in I_QIAN case)
+                                 1282 (Trouble running to last CLM1PT atm time-step)
+                                 1283 (CLM with glacier-MEC fails running on intel)
+                                 1325 (GDDHARV on hist causes model to die in debug)
+                                 1410 (Problem running PST.f09_g16.I.jaguarpf)
+                                 1435 (Carbon balance error for crop with CNDV case at f19)
+    http://bugs.cgd.ucar.edu/
+
+Known Limitations:
+                                 1147 (mkgriddata can't straddle over Greenwich)
+                                 1025 (SCM mode can NOT use a global finidat file)
+                                 1017 (SCM mode can NOT restart)
+                                  452 (Problem with support of soil-colors != 8 or 20)
+
+Describe any changes made to build system:
+
+Describe any changes made to the namelist:
+
+List any changes to the defaults for the boundary datasets:
+
+Code reviewed by: erik
+
+Summary of testing:
+
+===============================================================
+Tag name:  clm4_0_32 in cesm1_0_4
+Originator(s):  erik (erik)
+Date: Fri Dec  9 11:23:54 MST 2011
+One-line Summary:  Fix bugs in cesm1_0_3
+
+Purpose of changes: Fix several of the bugs from cesm1_0_3.
+
+Bugs fixed:
+                                 1358 (incorrect units for a few history fields)
+                                 1367 (final_spinup stop time isn't right for PTCLM)
+                                 1370 (Build bug with CNDV)
+                                 1381 (Can't change monthly average to NOT be one per month)
+                                 1423 (Problem building clmtype with C13 on bluefire)
+                                 1425 (Double quotes in user_nl_clm causes configure to hang)
+                                 1424 (variables written out as gdir)
+                                 1434 (Problem with CNDV on jaguar for many processors)
+Known bugs (include bugzilla ID):
+                                  701 (svn keyword)
+                                  722 (threading slow)
+                                  789 (1pt sims 2.5X slow)
+                                  794 (hist avg strange)
+                                  896 (T62 mode does not work)
+                                  935 (RTM warning NOT an error)
+                                 1063 (Problem in restarts for CCSM spinup data)
+                                 1124 (Reported energy for pftdyn grid-cell not right)
+                                 1139 (LAND and PFTS 1D vector averaging doesn't work)
+                                 1158 (I_1850-2000_CN (I4804CN) inconsistent with
+I_1850-2000 (I4804) compset)
+                                 1163 (finidat file has a bunch of NaN's in it)
+                                 1164 (Restart trouble for CN13 on mirage...)
+                                 1251 (PTCLM testcases aborts in I_QIAN case)
+                                 1282 (Trouble running to last CLM1PT atm time-step)
+                                 1283 (CLM with glacier-MEC fails running on intel)
+                                 1325 (GDDHARV on hist causes model to die in debug)
+                                 1410 (Problem running PST.f09_g16.I.jaguarpf)
+                                 1435 (Carbon balance error for crop with CNDV case at f19)
+    http://bugs.cgd.ucar.edu/
+
+Known Limitations:
+                                 1147 (mkgriddata can't straddle over Greenwich)
+                                 1025 (SCM mode can NOT use a global finidat file)
+                                 1017 (SCM mode can NOT restart)
+                                  452 (Problem with support of soil-colors != 8 or 20)
+
+Describe any changes made to build system: None
+
+Describe any changes made to the namelist: None
+
+List any changes to the defaults for the boundary datasets:  None
+
+Code reviewed by: erik
+
+Summary of testing:
+
+  bluefire/CESM testing: All PASS except compare tests that all fail
+  bluefire interactive testing: All PASS
+  jaguarpg/CESM testing: All PASS except...
+FAIL  PST.f09_g16.I.jaguarpf
+  jaguarpf interactive testing: ALL PASS except TBL tests and...
+015 smG43 TSM.sh 17p_scnv_do clm_pftdyn 10001230:1800 10x15 USGS@1000-1002 144 arb_ic ...........FAIL! rc= 10
+016 erG43 TER.sh 17p_scnv_do clm_pftdyn 10001230:1800 10x15 USGS@1000-1002 -2+-2 arb_ic .........FAIL! rc= 5
+017 brG43 TBR.sh 17p_scnv_do clm_pftdyn 10001230:1800 10x15 USGS@1000-1002 -2+-2 arb_ic .........FAIL! rc= 5
+018 blG43 TBL.sh 17p_scnv_do clm_pftdyn 10001230:1800 10x15 USGS@1000-1002 144 arb_ic ...........FAIL! rc= 4
+025 brSn3 TBR.sh _mec10sc_do clm_transient_glcMEC_rcp8.5^nl_urb_br 20331231:1800 1.9x2.5 gx1v6@1850-FAIL! rc= 13
+037 brS63 TBR.sh _mec10sc_do clm_glcmec^nl_urb_br 19980115:1800 1.9x2.5 gx1v6 -2+-2 arb_ic ......FAIL! rc= 13
+  jaguarpf testing: ALL PASS except...
+002 erB92 TER.sh _scsnf_dm clm_std^nl_urb 20021230:1800 4x5 gx3v7 -2+-2 arb_ic ..................FAIL! rc= 12
+003 brB92 TBR.sh _scsnf_dm clm_std^nl_urb 20021230:1800 4x5 gx3v7 -2+-2 arb_ic ..................FAIL! rc= 13
+007 brE92 TBR.sh 4p_vorsc_dm clm_std^nl_urb_br 20021230:1800 4x5 gx3v7 -2+-2 arb_ic .............FAIL! rc= 13
+019 brH92 TBR.sh 17p_cnsc_dm clm_ndepdyn^nl_cn_conly 20020101:1800 4x5 gx3v7@1850-2000 -2+-2 cold FAIL! rc= 13
+027 brJ62 TBR.sh 4p_casasc_dm clm_std^nl_urb_br 20021230:1800 1.9x2.5 gx1v6 -2+-2 cold ..........FAIL! rc= 13
+030 smU61 TSM.sh 21p_cndvcrpsc_dh clm_stdIgnYr^nl_crop 20000101:1800 1.9x2.5 gx1v6 -6 startup ...FAIL! rc= 10
+031 erU61 TER.sh 21p_cndvcrpsc_dh clm_stdIgnYr^nl_crop 20000101:1800 1.9x2.5 gx1v6 10+38 startup FAIL! rc= 5
+032 brU61 TBR.sh 21p_cndvcrpsc_dh clm_stdIgnYr^nl_crop 20000101:1800 1.9x2.5 gx1v6 -3+-3 startup FAIL! rc= 5
+033 blU61 TBL.sh 21p_cndvcrpsc_dh clm_stdIgnYr^nl_crop 20000101:1800 1.9x2.5 gx1v6 48 startup ...FAIL! rc= 4
+  jaguarpf PTCLM testing: ALL PASS up to ...
+14 PTCLM.22571_US-UMB_ICN_exit_spinup.PTCLM                     PASS
+  lynx/pgi interactive testing: All PASS
+  mirage/intel interactive testing: ALL PASS except...
+008 smGp3 TSM.sh _scnv_do clm_irrig 20000101:1800 1.9x2.5 gx1v6 -6 startup ......................FAIL! rc= 10
+009 erGp3 TER.sh _scnv_do clm_irrig 20000101:1800 1.9x2.5 gx1v6 10+38 startup ...................FAIL! rc= 5
+010 brGp3 TBR.sh _scnv_do clm_irrig 20000101:1800 1.9x2.5 gx1v6 -3+-3 startup ...................FAIL! rc= 5
+011 blGp3 TBL.sh _scnv_do clm_irrig 20000101:1800 1.9x2.5 gx1v6 48 startup ......................FAIL! rc= 4
+019 blL54 TBL.sh _sc_ds clm_std^nl_urb 20020115:1800 10x15 USGS 48 arb_ic .......................FAIL! rc= 7 DSTDEP off by roundoff
+023 blR53 TBL.sh 17p_cnc13sc_do clm_std^nl_urb 20020115:1800 10x15 USGS@1850 48 cold ............FAIL! rc= 7 DSTDEP off by roundoff
+024 smG53 TSM.sh 17p_scnv_do clm_pftdyn 10001230:1800 10x15 USGS@1000-1002 144 arb_ic ...........FAIL! rc= 10
+025 erG53 TER.sh 17p_scnv_do clm_pftdyn 10001230:1800 10x15 USGS@1000-1002 10+38 arb_ic .........FAIL! rc= 5
+026 brG53 TBR.sh 17p_scnv_do clm_pftdyn 10001230:1800 10x15 USGS@1000-1002 72+72 arb_ic .........FAIL! rc= 5
+027 blG53 TBL.sh 17p_scnv_do clm_pftdyn 10001230:1800 10x15 USGS@1000-1002 144 arb_ic ...........FAIL! rc= 4
+  edinburgh/lahey PTCLM testing: All PASS up to..
+14 PTCLM.4159_US-UMB_ICN_exit_spinup.PTCLM                      PASS
+  edinburgh/lahey interactive testing: All PASS except...
+006 blAL4 TBL.sh _nrsc_ds clm_std^nl_ptsmode 20030101:1800 10x15 USGS -10 cold ..................FAIL! rc= 7 DSTDEP off by roundoff
+014 blOC4 TBL.sh _nrvansc_ds clm_urb1pt^nl_urb 19920812:3600 1x1_vancouverCAN navy 331 arb_ic ...FAIL! rc= 7 DSTDEP off by roundoff
+
+CLM tag used for the baseline comparison tests if applicable: clm4_0_32
+
+Changes answers relative to baseline: no (except dust bin #4 field switched) (sometimes this makes DSTDEP different to roundoff)
+
+===============================================================
+Tag name:  clm4_0_32 in cesm1_0_3
+Originator(s):  erik (erik)
+Date: Thu May 19 15:13:57 MDT 2011
+One-line Summary:  New T31 datasets, add crop/irrigation in, remove unused CPP tokens, 
+     fix urbanc_alpha and 2.5x3.33 datasets, Changes from Keith O on SNOWLIQ/SNOWICE
+     Move cpl fld indicies to clm, move cpl_* dir up a level, add cpl_share dir
+     Update for ESMF metadata, bug fixes, use drv pio namelist, add in T341 datasets
+     Use pio for all IO, make restart history files NetCDF.
+
+Purpose of changes:
+
+  Science changes:
+
+    Add prognostic crop model (based on Agro-IBIS) as an option (from work by
+    Sam Levis). When prognostic crop is active four new Plant Function Types (PFT's)
+    become active for: corn, spring-temperate cereal, winter-temperate cereal, and
+    soybean. We don't currently activate winter cereal's in our datasets, and our
+    datasets only have prognostic crops over temperate latitudes (NOT near the
+    equator). The model tracks planting and harvesting of the prognostic crops.
+    Data for crop is only available for present-day conditions and NOT for transient
+    simulations.
+
+    Add irrigation model as an option (from work by Bill Sacks and Sam Levis). 
+    When irrigation is active a dataset turns generic crop (not managed) into
+    irrigated generic crop, the model takes runoff from RTM when crops need
+    water.
+
+  Software engineering changes:
+
+   Use PIO (Parallel Input/Output package) for all Input/Output, make restart history 
+   files NetCDF. Input and output files can be read/written in parallel using PIO.
+   Remove a list of old CPP defines, remove misc/preproc.h files.
+
+Known bugs (include bugzilla ID):
+                                  701 (svn keyword)
+                                  722 (threading slow)
+                                  789 (1pt sims 2.5X slow)
+                                  794 (hist avg strange)
+                                  896 (T62 mode does not work)
+                                  935 (RTM warning NOT an error)
+                                 1063 (Problem in restarts for CCSM spinup data)
+                                 1124 (Reported energy for pftdyn grid-cell not right)
+                                 1139 (LAND and PFTS 1D vector averaging doesn't work)
+                                 1158 (I_1850-2000_CN (I4804CN) inconsistent with
+I_1850-2000 (I4804) compset)
+                                 1163 (finidat file has a bunch of NaN's in it)
+                                 1164 (Restart trouble for CN13 on mirage...)
+                                 1251 (PTCLM testcases aborts in I_QIAN case)
+                                 1282 (Trouble running to last CLM1PT atm time-step)
+                                 1283 (CLM with glacier-MEC fails running on intel)
+                                 1325 (GDDHARV on hist causes model to die in debug)
+                                 1358 (incorrect units for a few history fields)
+                                 1367 (final_spinup stop time isn't right for PTCLM)
+                                 1370 (Build bug with CNDV)
+                                 1381 (Can't change monthly average to NOT be one per month)
+                                 1423 (Problem building clmtype with C13 on bluefire)
+                                 1424 (variables written out as gdir)
+                                 1425 (Problem in user_nl_clm causes configure to hang)
+    http://bugs.cgd.ucar.edu/
+
+Known Limitations:
+                                 1147 (mkgriddata can't straddle over Greenwich)
+                                 1025 (SCM mode can NOT use a global finidat file)
+                                 1017 (SCM mode can NOT restart)
+                                  452 (Problem with support of soil-colors != 8 or 20)
+
+Describe any changes made to build system:
+
+   Add -crop and -noio options to configure, remove -dust and -progsslt options
+   Remove "numpft+1" option to -maxpft. maxpft can go up to 17 without crop and
+   needs to be 21 for crop.
+
+  -crop adds the CROP #ifdef. Removes the DUST, PROGSSLT, CLAMP CPP tokens.
+  Also remove: DISTURB, COUP_WRF, NO_DAYLEN_VCMAX, TCX_REMOVE_SEE_NOTES_ABOVE, and
+  L2R_Decomp, and some testing/debug CPP defines
+
+  Removed generation of files misc.h and preproc.h
+
+  Add darwin_intel build
+
+Describe any changes made to the namelist:
+
+   Remove Carbon_only and scaled_harvest options
+   Add suplnitro option which can be set to: NONE, PROG_CROP_ONLY, or ALL
+
+   Add new history output variables:
+
+        A5TMIN   5-day running mean of min 2-m temperature                         (K)
+        A10TMIN  10-day running mean of min 2-m temperature                        (K)
+        GDD0     Growing degree days base  0C from planting                        (ddays)
+        GDD8     Growing degree days base  8C from planting                        (ddays)
+        GDD10    Growing degree days base 10C from planting                        (ddays)
+        GDD020   Twenty year average of growing degree days base  0C from planting (ddays)
+        GDD820   Twenty year average of growing degree days base  8C from planting (ddays)
+        GDD1020  Twenty year average of growing degree days base 10C from planting (ddays)
+        GDDPLANT Accumulated growing degree days past planting date for crop       (ddays)
+        GDDHARV  Growing degree days (gdd) needed to harvest                       (ddays)
+        GDDTSOI  Growing degree-days from planting (top two soil layers)           (ddays)
+        QIRRIG    water added through irrigation                                   (mm/s)
+
+     Change order of precedence so that
+     use_case is AFTER -namelist -infile and clm_usr_name options.
+     Thus values in your user_nl_clm file will be used instead of what's in
+     the use_case.
+
+     New precedence is...
+       1. values set on the command-line using the -namelist option,
+       2. values read from the file specified by -infile,
+       3. datasets from the -clm_usr_name option,
+       4. values set from a use-case scenario, e.g., -use_case
+       5. values from the namelist defaults file.
+
+     Add -co2_ppmv, -irrig, -rtm_res, and -rtm_tstep options to build-namelist
+
++     -co2_ppmv "value"        Set CO2 concentration to use when co2_type is constant (ppmv).
++     -irrig                   Seek surface datasets with irrigation turned on.
++     -rtm_res "resolution"    Specify river transport model resolution.
++     -rtm_tstep "seconds"     Specify river transport model time step size (seconds) (used if RTM on)
+
+   Now co2_ppmv only shows up in namelist -- if co2_type is constant.
+   And rtm_nsteps only shows up in namelist if RTM is on. build-namelist -list options
+   no longer require a config_cache file to work.
+
+   Remove old PIO namelist items, new drv namelist to control PIO for all components.
+
+   I1850SPINUPCN compset uses MOAR data.
+
+List any changes to the defaults for the boundary datasets: 
+   pft-physiology and RTM flow files in NetCDF
+   finidat/fsurdat files for irrigation (for f09 and f10)
+   New finidat/fsurdat/fpftdyn files for T31.
+   Update frac and domain file for urbanc_alpha site
+   New surface dataset for urbanc_alpha
+   New grid/topo/frac/domain files for 2.5x3.33
+   New point mode for crop: 1x1_numaIA and 1x1_smallvilleIA
+   surface datasets for crop mode for: f19, f10, 1x1_numaIA, and 1x1_smallvilleIA
+   (also crop datasets with crop AND irrigation on)
+   finidat file for crop for f19
+   Raw veg and lai datasets for mksurfdata for crop
+   New datasets for glc_nec="10"
+   Add in T341 datasets
+
+Describe timing and memory performance:
+    Crop adds some additional variables and if checks that may make small 
+    differences in run-time and/or memory. Small section of clm_driver was 
+    moved to a OMP loop. This should improve threading performance slightly.
+
+Code reviewed by: erik, mvertens, swensosc, dlawren, oleson, slevis, fvitt, lamar
+
+Summary of testing:
+
+  bluefire: All PASS except...
+024 smG41 TSM.sh 17p_sc_dh clm_pftdyn 10001230:1800 10x15 USGS@1000-1002 144 arb_ic .............FAIL! rc= 10
+025 erG41 TER.sh 17p_sc_dh clm_pftdyn 10001230:1800 10x15 USGS@1000-1002 72+72 arb_ic ...........FAIL! rc= 5
+026 brG41 TBR.sh 17p_sc_dh clm_pftdyn 10001230:1800 10x15 USGS@1000-1002 72+72 arb_ic ...........FAIL! rc= 5
+027 blG41 TBL.sh 17p_sc_dh clm_pftdyn 10001230:1800 10x15 USGS@1000-1002 144 arb_ic .............FAIL! rc= 4
+049 smLI1 TSM.sh _sc_dh clm_std 20020101:1800 94x192 T62 -10 arb_ic .............................FAIL! rc= 10
+050 erLI1 TER.sh _sc_dh clm_std 20020101:1800 94x192 T62 -5+-5 arb_ic ...........................FAIL! rc= 5
+051 brLI1 TBR.sh _sc_dh clm_std 20020101:1800 94x192 T62 -10+-10 arb_ic .........................FAIL! rc= 5
+052 blLI1 TBL.sh _sc_dh clm_std 20020101:1800 94x192 T62 -10 arb_ic .............................FAIL! rc= 4
+054 erJ61 TER.sh 4p_casasc_dh clm_std^nl_urb 20021230:1800 1.9x2.5 gx1v6 10+38 cold .............FAIL! rc= 5
+055 brJ61 TBR.sh 4p_casasc_dh clm_std^nl_urb_br 20021230:1800 1.9x2.5 gx1v6 72+72 cold ..........FAIL! rc= 5
+056 blJ61 TBL.sh 4p_casasc_dh clm_std^nl_urb 20021230:1800 1.9x2.5 gx1v6 48 cold ................FAIL! rc= 4
+  bluefire interactive testing: All PASS except...
+019 brB93 TBR.sh _scsnf_do clm_std^nl_urb 20021230:1800 4x5 gx3v7 72+72 arb_ic ..................FAIL! rc= 13
+046 smJ05 TSM.sh 4p_casasc_h clm_std^nl_lfiles 19800101:1800 0.47x0.63 gx1v6 48 arb_ic ..........FAIL! rc= 10
+065 erAL4 TER.sh _nrsc_ds clm_std^nl_ptsmode 20030101:1800 10x15 USGS -5+-5 cold ................FAIL! rc= 7
+066 brAL4 TBR.sh _nrsc_ds clm_std^nl_ptsmode 20030101:1800 10x15 USGS -5+-5 cold ................FAIL! rc= 6
+  bluefire extra interactive testing:
+  bluefire/CESM testing: All PASS
+  bluefire/CESM rcps extra testing: All PASS...
+PASS  SMS.f09_g16.IRCP26CN.bluefire 
+PASS  SMS.f09_g16.IRCP45CN.bluefire 
+PASS  SMS.f09_g16.IRCP60CN.bluefire 
+PASS  SMS.f09_g16.IRCP85CN.bluefire 
+PASS  SMS.f09_g16.IGRCP26CN.bluefire 
+PASS  SMS.f09_g16.IGRCP45CN.bluefire 
+PASS  SMS.f09_g16.IGRCP60CN.bluefire 
+PASS  SMS.f09_g16.IGRCP85CN.bluefire 
+PASS  SMS.f19_g16.IRCP26CN.bluefire 
+PASS  SMS.f19_g16.IRCP45CN.bluefire 
+PASS  SMS.f19_g16.IRCP60CN.bluefire 
+PASS  SMS.f19_g16.IGRCP45CN.bluefire 
+PASS  SMS.f19_g16.IGRCP85CN.bluefire 
+
+  bluefire/PTCLM testing: All PASS
+  edinburgh/lf95 interactive testing: All PASS except...
+006 erTZ4 TER.sh 21p_cncrpsc_ds clm_stdIgnYr^nl_crop 20020401:3600 10x15 USGS -3+-7 cold ........FAIL! rc= 13
+009 smVT4 TSM.sh 21p_nrcncrpsc_ds clm_stdIgnYr^nl_crop 20020101:3600 1x1_numaIA navy -735 cold ..FAIL! rc= 8
+010 erVT4 TER.sh 21p_nrcncrpsc_ds clm_stdIgnYr^nl_crop 20020101:3600 1x1_numaIA navy -405+-330 cold FAIL! rc= 5
+011 brVT4 TBR.sh 21p_nrcncrpsc_ds clm_stdIgnYr^nl_crop 20020101:3600 1x1_numaIA navy -365+-365 cold FAIL! rc= 5
+013 smVU4 TSM.sh 21p_nrcncrpsc_ds clm_stdIgnYr^nl_crop 20020101:3600 1x1_smallvilleIA test -1100 colFAIL! rc= 8
+014 erVU4 TER.sh 21p_nrcncrpsc_ds clm_stdIgnYr^nl_crop 20020101:3600 1x1_smallvilleIA test -735+-365FAIL! rc= 5
+015 brVU4 TBR.sh 21p_nrcncrpsc_ds clm_stdIgnYr^nl_crop 20020101:3600 1x1_smallvilleIA test -730+-365FAIL! rc= 5
+019 brB93 TBR.sh _scsnf_do clm_std^nl_urb 20021230:1800 4x5 gx3v7 72+72 arb_ic ..................FAIL! rc= 13
+023 brP53 TBR.sh 17p_cnsc_do clm_std^nl_urb_br 20020115:1800 10x15 USGS@2000 72+72 cold .........FAIL! rc= 6
+030 smG74 TSM.sh 17p_nrscnv_ds clm_pftdyn 10001230:3600 1x1_tropicAtl test@1000-1004 -1100 arb_ic FAIL! rc= 8
+032 smQ74 TSM.sh _nrcnsc_ds clm_pftdyn^nl_cn_conly 10001230:3600 1x1_tropicAtl test@1000-1004 -1100 FAIL! rc= 8
+042 smJ74 TSM.sh 4p_nrcasasc_ds clm_std^nl_urb 10001230:3600 1x1_tropicAtl test -1100 arb_ic ....FAIL! rc= 8
+043 erJ74 TER.sh 4p_nrcasasc_ds clm_std^nl_urb 10001230:3600 1x1_tropicAtl test -10+-10 arb_ic ..FAIL! rc= 5
+044 brJ74 TBR.sh 4p_nrcasasc_ds clm_std^nl_urb_br 10001230:3600 1x1_tropicAtl test -3+-3 arb_ic .FAIL! rc= 5
+046 smJ05 TSM.sh 4p_casasc_h clm_std^nl_lfiles 19800101:1800 0.47x0.63 gx1v6 48 arb_ic ..........FAIL! rc= 8
+065 erAL4 TER.sh _nrsc_ds clm_std^nl_ptsmode 20030101:1800 10x15 USGS -5+-5 cold ................FAIL! rc= 7
+066 brAL4 TBR.sh _nrsc_ds clm_std^nl_ptsmode 20030101:1800 10x15 USGS -5+-5 cold ................FAIL! rc= 6
+  mirage,storm/ifort interactive testing: All PASS except...
+017 smB93 TSM.sh _scsnf_do clm_std^nl_urb 20021230:1800 4x5 gx3v7 144 arb_ic ....................FAIL! rc= 10
+018 erB93 TER.sh _scsnf_do clm_std^nl_urb 20021230:1800 4x5 gx3v7 72+72 arb_ic ..................FAIL! rc= 5
+019 brB93 TBR.sh _scsnf_do clm_std^nl_urb 20021230:1800 4x5 gx3v7 72+72 arb_ic ..................FAIL! rc= 5
+025 smE93 TSM.sh 4p_vorsc_do clm_std^nl_urb 20021230:1800 4x5 gx3v7 96 arb_ic ...................FAIL! rc= 10
+026 erE93 TER.sh 4p_vorsc_do clm_std^nl_urb 20021230:1800 4x5 gx3v7 10+38 arb_ic ................FAIL! rc= 5
+027 brE93 TBR.sh 4p_vorsc_do clm_std^nl_urb_br 20021230:1800 4x5 gx3v7 72+72 arb_ic .............FAIL! rc= 5
+029 smE97 TSM.sh 4p_vorsc_o clm_std^nl_urb 20021231:1800 4x5 gx3v7 48 arb_ic ....................FAIL! rc= 10
+046 smJ05 TSM.sh 4p_casasc_h clm_std^nl_lfiles 19800101:1800 0.47x0.63 gx1v6 48 arb_ic ..........FAIL! rc= 10
+060 smH43 TSM.sh 17p_cnsc_do clm_transient_20thC 19790101:1800 1.9x2.5 gx1v6@1850-2000 -10 startup FAIL! rc= 10
+061 erH43 TER.sh 17p_cnsc_do clm_transient_20thC 19790101:1800 1.9x2.5 gx1v6@1850-2000 -3+-7 startupFAIL! rc= 5
+062 brH43 TBR.sh 17p_cnsc_do clm_transient_20thC 19790101:1800 1.9x2.5 gx1v6@1850-2000 -5+-5 startupFAIL! rc= 5
+065 erAL4 TER.sh _nrsc_ds clm_std^nl_ptsmode 20030101:1800 10x15 USGS -5+-5 cold ................FAIL! rc= 7
+066 brAL4 TBR.sh _nrsc_ds clm_std^nl_ptsmode 20030101:1800 10x15 USGS -5+-5 cold ................FAIL! rc= 6
+068 smS63 TSM.sh _mec10sc_do clm_glcmec 19980115:1800 1.9x2.5 gx1v6 96 arb_ic ...................FAIL! rc= 10
+069 erS63 TER.sh _mec10sc_do clm_glcmec 19980115:1800 1.9x2.5 gx1v6 10+38 arb_ic ................FAIL! rc= 5
+070 brS63 TBR.sh _mec10sc_do clm_glcmec^nl_urb_br 19980115:1800 1.9x2.5 gx1v6 72+72 arb_ic ......FAIL! rc= 5
+072 smSn3 TSM.sh _mec10sc_do clm_transient_glcMEC_rcp8.5 20331231:1800 1.9x2.5 gx1v6@1850-2100 96 arFAIL! rc= 10
+073 erSn3 TER.sh _mec10sc_do clm_transient_glcMEC_rcp8.5 20331231:1800 1.9x2.5 gx1v6@1850-2100 10+38FAIL! rc= 5
+074 brSn3 TBR.sh _mec10sc_do clm_transient_glcMEC_rcp8.5^nl_urb_br 20331231:1800 1.9x2.5 gx1v6@1850-FAIL! rc= 5
+
+CLM tag used for the baseline comparison tests if applicable: clm4_0_14
+
+Changes answers relative to baseline: YES
+
+IF tag changes answers relative to baseline comparison the
+following should be filled in:
+
+  Summarize any changes to answers:
+    - what code configurations: all
+    - what platforms/compilers: ALL
+    - nature of change: same climate
+
+   driver mapping changes, datm changes, drydep code has changes, ndep_interp 
+   is always called which changes answers on some platforms/compilers 
+   (such as intel compiler).  Density from datm changes. SNOWLIQ/SNOWICE on 
+   history files change. New surface and initial condition files for T31.
+
+===============================================================
+Tag name:  clm4_0_14 in cesm1_0_2
+Originator(s):  erik (erik)
+Date: Tue Oct 19 13:12:36 MDT 2010
+One-line Summary: Add in ice_runoff namelist, add in T31 initial conditions and
+                  setup. Fix issues for single-point, mksurfdata/getregional 
+                  scripts, add U10, T31 datafiles.
+
+Purpose of changes:
+
+  Science changes:
+
+   Since, clm4.0.10 in the CESM1.0.1 release there have been several developments made
+   to clm4 (bringing us up to CLM4.0.14).  A minor change
+   was also made in how the normalization was done for the cosine of solar zenith
+   angle scaling for Solar fields in the data atmosphere model.
+   The 10-m wind field was added to the history files.
+
+   New initial conditions files were added in for T31 For T31 ice_runoff is also
+   turned off.
+
+  Software engineering changes:
+
+   Several new namelist items were added and few new history fields.
+   There was also some fixes to test cases in the CLM test suite, and the test suite was
+   changed to use aerosols from datm rather than CLM. mksurfdata.pl was changed
+   so that pftdyn datasets are created on the fly, rather than having fixed text files.
+
+   Add: usrname, nomv and pftdata options to mksurfdata.pl. Get RCP's working in 
+   getregional script. Update getregional to handle ndep and aerdep streams, also get 
+   it to run in a different directory.
+
+Known bugs (include bugzilla ID):
+                                  722 (threading slow)
+                                  789 (1pt sims 2.5X slow)
+                                  794 (hist avg strange)
+                                  896 (T62 mode does not work)
+                                  920 (glacier_mec problems in mksurfdata)
+                                  935 (RTM warning NOT an error)
+                                  990 (CN transient blowup)
+                                  994 (finidat files on jaguar for pftdyn fail)
+                                 1063 (Problem in restarts for CCSM spinup data)
+                                 1124 (Reported energy for pftdyn grid-cell not right)
+                                 1139 (LAND and PFTS 1D vector averaging doesn't work)
+                                 1163 (finidat file has a bunch of NaN's in it)
+                                 1164 (Restart trouble for CN13 on gust...)
+                                 1165 (Restart trouble for scaled harvest test on gust)
+                                 1168 (Transient use-cases with branch have both finidat/nrevsn)
+
+Known Limitations:
+                                 1147 (mkgriddata can't straddle over Greenwich)
+                                 1025 (SCM mode can NOT use a global finidat file)
+                                 1017 (SCM mode can NOT restart
+                                  452 (Problem with support of soil-colors != 8 or 20)
+
+Describe any changes made to build system:
+
+  New options to CLM configure:
+
+  -sitespf_pt <name>  Setup for the given site specific single-point resolution.
+
+  CLM configure options renamed:
+
+  -prog_seasalt -> progsslt
+
+Describe any changes made to the namelist:
+
+  Options removed from CLM build-namelist:
+
+  -ndepsrc "value"
+
+  Namelist options removed from clm_inparm namelist:
+
+  faerdep, fndepdat, fndepdyn, use_ndepstream
+
+  Changes made to defaults for CLM namelist:
+
+  ice_runoff is .false. for T31
+  New initial condition files
+  New half-degree surface dataset, and pftdyn file
+  Set ndepmapalgo to "nn" (nearest-neighbor) for single-point resolutions
+
+  New history variables:
+
+    U10       10-m wind                                       (m/s)
+    U10_DUST  10-m wind for dust model                        (m/s)
+    VA        atmospheric wind speed plus convective velocity (m/s)
+
+Describe timing and memory performance:
+
+Summary of testing:
+  bluefire testing: All PASS except...
+029 smG41 TSM.sh 17p_sc_dh clm_pftdyn 10001230:NONE:1800 10x15 USGS@1000-1002 144 arb_ic ........FAIL! rc= 10
+030 erG41 TER.sh 17p_sc_dh clm_pftdyn 10001230:NONE:1800 10x15 USGS@1000-1002 72+72 arb_ic ......FAIL! rc= 5
+031 brG41 TBR.sh 17p_sc_dh clm_pftdyn 10001230:NONE:1800 10x15 USGS@1000-1002 72+72 arb_ic ......FAIL! rc= 5
+033 smG55 TSM.sh 17p_sc_h clm_pftdyn 10001230:NONE:1800 10x15 USGS@1000-1002 144 arb_ic .........FAIL! rc= 10
+055 smLI1 TSM.sh _sc_dh clm_std 20020101:NONE:1800 94x192 T62 -10 arb_ic ........................FAIL! rc= 10
+056 erLI1 TER.sh _sc_dh clm_std 20020101:NONE:1800 94x192 T62 -5+-5 arb_ic ......................FAIL! rc= 5
+057 brLI1 TBR.sh _sc_dh clm_std 20020101:NONE:1800 94x192 T62 -10+-10 arb_ic ....................FAIL! rc= 5
+  bluefire interactive testing: All PASS up to...
+062 sm974 TSMscript_tools.sh mksurfdata mksurfdata.pl mksrfdt_1x1_brazil_1850-2000^tools__ds ....FAIL! rc= 6
+  bluefire/CESM testing: All PASS
+  edinburgh testing: All FAIL
+  jaguar testing: All FAIL
+
+CLM tag used for the baseline comparison tests if applicable: clm4_0_10
+
+Changes answers relative to baseline: YES
+
+IF tag changes answers relative to baseline comparison the
+following should be filled in:
+
+  Summarize any changes to answers:
+    - what code configurations: cases with datm and/or at T31
+    - what platforms/compilers: ALL
+    - nature of change: roundoff (T31 has new initial conditions and changes physics)
+
+===============================================================
+Tag name:  clm4_0_10 in cesm1_0_1
+Originator(s):  erik (erik)
+Date: Tue Aug 24 13:46:26 MDT 2010
+One-line Summary: Add glc multi-elev classes, snow-hydrology bug-fix, new finidat files,
+                  new namelist items and history fields, read aerosol and nitrogen
+                  deposition in res-independent stream files fix issues for single-point,
+                  mksurfdata/getregional scripts.
+
+Purpose of changes:
+
+  Science changes:
+
+   Since, clm4.0.00 in the CCSM4.0 release there have been several developments made
+   to clm4 (bringing us up to CLM4.0.10). A glacier multiple elevation class option 
+   was added that allows the use of CLM4 with a glacier land ice model the Community 
+   Ice Sheet Model (CISM).  A bug-fix for the snow hydrology was added. A minor change
+   was also made in how the normalization was done for the cosine of solar zenith
+   angle scaling for Solar fields in the data atmosphere model. A scaling was done
+   in the first two Volatile Organic Coumpound (VOC) fields, and the ability to
+   run dry-deposition in CLMCN was added.
+
+   New initial conditions files were added in, some with small changes to fix
+   a snow problem for the standard 1-degree and 2-degree cases, but also finidat files
+   for 2-degree for CNDV were added.
+
+  Software engineering changes:
+
+   Several new namelist items were added a few new history fields. Also the capability 
+   of reading aerosol and nitrogen deposition from stream files at one resolution and 
+   regridded on the fly rather than with datasets at the model resolution was added in. 
+   This was important for higher resolutions so that large datasets do not have to be 
+   created before running the model, nor are datasets for every resolution required. 
+   There was also some fixes to test cases in the CLM test suite, and the test suite was
+   changed to use aerosols from datm rather than CLM. mksurfdata.pl was changed
+   so that pftdyn datasets are created on the fly, rather than having fixed text files.
+   A new env_conf item was added CLM_BLDNML_OPTS to feed options to the clm build-namelist
+   utility. 
+
+Known bugs (include bugzilla ID):
+                                  722 (threading slow)
+                                  789 (1pt sims 2.5X slow)
+                                  794 (hist avg strange)
+                                  896 (T62 mode does not work)
+                                  920 (glacier_mec problems in mksurfdata)
+                                  935 (RTM warning NOT an error)
+                                  990 (CN transient blowup)
+                                  994 (finidat files on jaguar for pftdyn fail)
+                                 1063 (Problem in restarts for CCSM spinup data)
+                                 1124 (Reported energy for pftdyn grid-cell not right)
+                                 1139 (LAND and PFTS 1D vector averaging doesn't work)
+                                 1163 (finidat file has a bunch of NaN's in it)
+                                 1164 (Restart trouble for CN13 on gust...)
+                                 1165 (Restart trouble for scaled harvest test on gust)
+                                 1168 (Transient use-cases with branch have both finidat/nrevsn)
+
+Known Limitations:
+                                 1147 (mkgriddata can't straddle over Greenwich)
+                                 1025 (SCM mode can NOT use a global finidat file)
+                                 1017 (SCM mode can NOT restart
+                                  452 (Problem with support of soil-colors != 8 or 20)
+
+Describe any changes made to build system:
+
+  New option to CLM configure: glc_nec
+
+  glc_nec can be 0,1,3,5, or 10 and MUST match the number on the input surface dataset
+  the elevation classes themselves are read from the surface dataset. Surface datasets
+  are normally created with glc_nec=10 and can be run with either glc_nec=0 (default)
+  or glc_nec=10 (for multiple glacier elevation classes and running with ice sheet model).
+
+Describe any changes made to the namelist:
+
+   New namelist items:
+
+  carbon_only    = If true, and CLMCN carbon-nitrogen model is on, Nitrogen will be
+                   prescribed rather than prognosed
+                   (default false)
+  create_glacier_mec_landunit = If true and glc_nec>0, glc multi-elevation landunits 
+                   are created.
+                   (default false)
+  glc_smb        = If true, and glc_nec>0, then pass surface mass balance to CISM; else 
+                   pass Growing Degree Day info.
+                   (default true)
+  ice_runoff     = If true, and rtm, river runoff will be split up into liquid and ice 
+                   streams, otherwise ice runoff will be zero and all runoff directed 
+                   to liquid stream.
+                   (default true)
+  ndepmapalgo    = Mapping method from Nitrogen deposition input file to the model
+                   resolution (can be bilinear,nn,nnoni,nnonj,spval,copy).
+                   (default bilinear)
+  scaled_harvest = If true, and CLMCN, harvesting will be scaled according to coefficients
+                   determined by Johann Feddema, 2009.
+                   (default false)
+
+  New history variables:
+
+    aais_area Antarctic ice area           (km^2)
+    aais_mask Antarctic mask               (unitless)
+    gris_area Greenland ice area           (km^2)
+    gris_mask Greenland mask               (unitless)
+    QICE      ice growth/melt              (mm/s)
+    QICEYR    ice growth/melt              (mm/s)
+    QTOPSOIL  water input to surface       (mm/s)
+    VOLR      RTM storage: LIQ             (m3)
+    VOLR_ICE  RTM storage: ICE             (m3)
+
+Describe timing and memory performance:
+
+Summary of testing:
+  bluefire testing: All PASS except...
+029 smG41 TSM.sh 17p_sc_dh clm_pftdyn 10001230:NONE:1800 10x15 USGS@1000-1002 144 arb_ic
+........FAIL! rc= 10
+030 erG41 TER.sh 17p_sc_dh clm_pftdyn 10001230:NONE:1800 10x15 USGS@1000-1002 72+72
+arb_ic ......FAIL! rc= 5
+031 brG41 TBR.sh 17p_sc_dh clm_pftdyn 10001230:NONE:1800 10x15 USGS@1000-1002 72+72
+arb_ic ......FAIL! rc= 5
+033 smG55 TSM.sh 17p_sc_h clm_pftdyn 10001230:NONE:1800 10x15 USGS@1000-1002 144 arb_ic
+.........FAIL! rc= 10
+055 smLI1 TSM.sh _sc_dh clm_std 20020101:NONE:1800 94x192 T62 -10 arb_ic
+........................FAIL! rc= 10
+056 erLI1 TER.sh _sc_dh clm_std 20020101:NONE:1800 94x192 T62 -5+-5 arb_ic
+......................FAIL! rc= 5
+057 brLI1 TBR.sh _sc_dh clm_std 20020101:NONE:1800 94x192 T62 -10+-10 arb_ic
+....................FAIL! rc= 5
+  bluefire interactive testing: All PASS except...
+025 erAK4 TER.sh _sc_ds clm_std^nl_ptsmode 20030101:NONE:1800 1.9x2.5 gx1v6 -5+-5 cold
+..........FAIL! rc= 7
+026 brAK4 TBR.sh _sc_ds clm_std^nl_ptsmode 20030101:NONE:1800 1.9x2.5 gx1v6 -5+-5 cold
+..........FAIL! rc= 6
+030 brAK8 TBR.sh _sc_ds clm_std^nl_ptsmode_ocn 20030101:NONE:1800 1.9x2.5 gx1v6 -5+-5
+cold ......FAIL! rc= 6
+  bluefire/CESM testing: All PASS except...
+FAIL  ERB.f09_g16.I1850SPINUPCN.bluefire
+BFAIL ERB.f09_g16.I1850SPINUPCN.bluefire.generate.clm4_0_10
+BFAIL ERB.f09_g16.I1850SPINUPCN.bluefire.compare.clm4_0_09
+
+
+CLM tag used for the baseline comparison tests if applicable: clm4_0_00
+
+ChangeA answers relative to baseline: YES
+
+IF tag changes answers relative to baseline comparison the
+following should be filled in:
+
+  Summarize any changes to answers:
+    - what code configurations: ALL
+    - what platforms/compilers: ALL
+    - nature of change: larger than roundoff/same climate
+
+   If this tag changes climate describe the run(s) done to evaluate the new
+   climate in enough detail that it(they) could be reproduced, i.e.,
+   - source tag (all code used must be in the repository):
+       
+   - platform/compilers: IBM
+   - compset (and additional configure options): I1850CN
+   - build-namelist options (or complete namelist): -ndepsrc stream
+
+   MSS location of control simulations used to validate new climate:
+
+  /OLESON/csm/ccsm4_0_beta52_ndepaer
+  /OLESON/csm/ccsm4_0_beta52_ndepaertrans
+
+   The above is identical to this tag (other than the two VOC fields that changed)
+
+===.sh _sc_ds clm_std^nl_ptsmode 20030101:NONE:1800 10x15 USGS -5+-5 cold
+.............FAIL! rc= 7
+007 brAL4 TBR.sh _sc_ds clm_std^nl_ptsmode 20030101:NONE:1800 10x15 USGS -5+-5 cold
+.............FAIL! rc= 6
+  edinburgh/lf95: All PASS except...
+005 smD91 TSM.sh _persc_dh clm_per^nl_urb 20021231:NONE:1200 4x5 gx3v7 144 cold
+.................FAIL! rc= 10
+006 erD91 TER.sh _persc_dh clm_per^nl_urb 20021231:NONE:1200 4x5 gx3v7 72+72 cold
+...............FAIL! rc= 5
+007 blD91 TBL.sh _persc_dh clm_per^nl_urb 20021231:NONE:1200 4x5 gx3v7 144 cold
+.................FAIL! rc= 4
+008 smG42 TSM.sh 17p_sc_dm clm_pftdyn 10001230:NONE:1800 10x15 USGS@1000-1002 144 arb_ic
+........FAIL! rc= 10
+009 erG42 TER.sh 17p_sc_dm clm_pftdyn 10001230:NONE:1800 10x15 USGS@1000-1002 72+72
+arb_ic ......FAIL! rc= 5
+010 brG42 TBR.sh 17p_sc_dm clm_pftdyn 10001230:NONE:1800 10x15 USGS@1000-1002 72+72
+arb_ic ......FAIL! rc= 5
+011 blG42 TBL.sh 17p_sc_dm clm_pftdyn 10001230:NONE:1800 10x15 USGS@1000-1002 144 arb_ic
+........FAIL! rc= 4
+012 smG56 TSM.sh 17p_sc_m clm_pftdyn 10001230:NONE:1800 10x15 USGS@1000-1002 144 arb_ic
+.........FAIL! rc= 10
+013 smE91 TSM.sh 4p_vodsrsc_dh clm_std^nl_urb 20021230:NONE:1800 4x5 gx3v7 96 arb_ic
+............FAIL! rc= 10
+014 erE91 TER.sh 4p_vodsrsc_dh clm_std^nl_urb 20021230:NONE:1800 4x5 gx3v7 10+38 arb_ic
+.........FAIL! rc= 5
+015 brE91 TBR.sh 4p_vodsrsc_dh clm_std^nl_urb_br 20021230:NONE:1800 4x5 gx3v7 72+72
+arb_ic ......FAIL! rc= 5
+016 blE91 TBL.sh 4p_vodsrsc_dh clm_std^nl_urb 20021230:NONE:1800 4x5 gx3v7 48 arb_ic
+............FAIL! rc= 4
+018 erH52 TER.sh 17p_cnsc_dm clm_std^nl_urb 20020115:NONE:1800 10x15 USGS@2000 10+38 cold
+.......FAIL! rc= 13
+019 brH52 TBR.sh 17p_cnsc_dm clm_std^nl_urb_br 20020115:NONE:1800 10x15 USGS@2000 72+72
+cold ....FAIL! rc= 11
+025 smL51 TSM.sh _sc_dh clm_std^nl_urb 20020115:NONE:1800 10x15 USGS 96 arb_ic
+..................FAIL! rc= 10
+026 erL51 TER.sh _sc_dh clm_std^nl_urb 20020115:NONE:1800 10x15 USGS 10+38 arb_ic
+...............FAIL! rc= 5
+027 brL51 TBR.sh _sc_dh clm_std^nl_urb_br 20020115:NONE:1800 10x15 USGS 72+72 arb_ic
+............FAIL! rc= 5
+028 blL51 TBL.sh _sc_dh clm_std^nl_urb 20020115:NONE:1800 10x15 USGS 48 arb_ic
+..................FAIL! rc= 4
+029 smH41 TSM.sh 17p_cnsc_dh clm_std^nl_noicertm_sclharv 20021230:NONE:1800 10x15
+USGS@2000 96 cold FAIL! rc= 10
+030 erH41 TER.sh 17p_cnsc_dh clm_std^nl_noicertm_sclharv 20021230:NONE:1800 10x15
+USGS@2000 10+38 coFAIL! rc= 5
+031 brH41 TBR.sh 17p_cnsc_dh clm_std^nl_noicertm_sclharv 20021230:NONE:1800 10x15
+USGS@2000 72+72 coFAIL! rc= 5
+032 blH41 TBL.sh 17p_cnsc_dh clm_std^nl_noicertm_sclharv 20021230:NONE:1800 10x15
+USGS@2000 48 cold FAIL! rc= 4
+033 smL58 TSM.sh _sc_dh clm_std^nl_crcrop 20020115:NONE:1800 10x15 USGS 96 arb_ic
+...............FAIL! rc= 10
+  edinburgh/CESM testing: All PASS
+PASS  ERI_D.f10_f10.I1850.edinburgh_lahey
+PASS  ERS.f45_g37.I1850CN.edinburgh_intel
+
+LM tag used for the baseline comparison tests if applicable: clm4_0_00
+
+Changes answers relative to baseline: YES
+
+IF tag changes answers relative to baseline comparison the
+following should be filled in:
+
+  Summarize any changes to answers:
+    - what code configurations: ALL
+    - what platforms/compilers: ALL
+    - nature of change: larger than roundoff/same climate
+
+   If this tag changes climate describe the run(s) done to evaluate the new
+   climate in enough detail that it(they) could be reproduced, i.e.,
+   - source tag (all code used must be in the repository):
+       
+   - platform/compilers: IBM
+   - compset (and additional configure options): I1850CN
+   - build-namelist options (or complete namelist): -ndepsrc stream
+
+   MSS location of control simulations used to validate new climate:
+
+  /OLESON/csm/ccsm4_0_beta52_ndepaer
+  /OLESON/csm/ccsm4_0_beta52_ndepaertrans
+
+   The above is identical to this tag (other than the two VOC fields that changed)
+
+===============================================================
+===============================================================
+Tag name:  clm4_0_00 
+Originator(s):  erik (erik)
+Date: Wed May  5 09:14:31 MDT 2010
+One-line Summary:  Update to datm8, redirect aquifer overflow to drainage, add 
+       gx3v7 masks, script to extract regional datasets, add harvesting for CN, 
+       modify shrubs, include urban model, ice stream for snowcapping, new 
+       build-namelist system, scale solar by solar zenith angle in datm, deep 
+       soil with bedrock at bottom, organic matter in soils, SNICAR for snow 
+       radiation, sparce dense aero, snow cover changes
+
+Software engineering changes:
+
+    Update to cpl7 and scripts.
+    Remove offline and cpl6 modes.
+    Remove support for CASA model.
+    Update to datm8 atmospheric data model.
+    Add gx3v7 land mask for T31 and fv-4x5 horizontal resolutions.
+    Add gx1v6 land mask for f05, f09, and f19 horizontal resolutions.
+    Add tx1v1 land mask and 1.9x2.5_tx1v1 horizontal resolution.
+    Add in 2.5x3.33 horizontal resolution.
+    Add in T62 horizontal resolution so can run at same resolution as input datm data.
+    Allow first history tape to be 1D.
+    Add ability to use own version of input datasets with CLM_USRDAT_NAME variable.
+    Add a script to extract out regional datasets.
+    New build-namelist system with XML file describing all namelist items.
+    Add glacier_mec use-case and stub glacier model.
+    Add ncl script to time-interpolate between 1850 and 2000 for fndepdat dataset, for fndepdyn version.
+    Make default of maxpatch_pft=numpft+1 instead of 4.
+    Only output static 3D fields on first h0 history file to save space.
+    Add new fields for VOC (Volatile Organic Compounds) on some surface datasets
+    Add irrigation area to mksurfdata tool (NOT used in CLM yet).
+    Add multiple elevation class option for glaciers in mksurfdata tool (NOT used in CLM yet).
+    Add ascale field to land model in support of model running on it's own grid.
+
+Science changes:
+
+    Change to freezing temperature constant      
+    Forcing height at atm plus z0+d on each tile                    
+    Effective porosity divide by zero fix                          
+    Sparse/dense canopy aerodynamic parameters                 
+    Ground/snow emissivity smooth transition                                                       
+    Thermal and hydraulic properties of organic soil                                                                        
+    Init h2osoi=0.3                                                            
+    Snow compaction fix                                                          
+    Snow T profile during layer splitting fix                                  
+    Snow burial fraction                                                             
+    Snow cover fraction                                                                   
+    SNICAR (snow aging, black carbon and dust deposition, vertical distribution of solar energy) 
+    Remove SNOWAGE, no longer used                                                   
+    Deep soil (15 layers, ~50m), 5 new layers are hydrologically inactive bed rock                          
+    Ground evap (beta), stability, and litter resistance                      
+    Organic/mineral soil hydraulic conductivity percolation theory       
+    Richards equation modifications                                         
+    Normalization of frozen fraction of soil formulation                                 
+    One-step solution for soil moisture and qcharge                          
+    Changes to rsub_max for drainage and decay factor for surface runoff      
+    Fixed diurnal cycle of solar radiation in offline forcing data                            
+    Back to CLM3 lakes and wetlands datasets, but 1% rather than 5% threshold (same for glacier) 
+    Changes to pft physiology file from CN                                                                                     
+    New grass optical properties                                                                   
+    New surface dataset assuming no herbaceous understory  
+    Direct versus diffuse radiation offline                                           
+    New VOC model (MEGAN)                                                                                            
+    Snow-capped runoff goes to new ice stream and routed to ocean as ice                                         
+    Dust model always on, LAI threshold parameter change from 0.1 to 0.3     
+    Daylength control on vcmax                                                           
+    SAI and get_rad_dtime fix                                                              
+    Always run with MAXPATCH_PFT=npfts + 1 instead of 4                                                                               
+    Transient land cover/use mode - datasets, energy and water balance   
+    RTM sub-cycling                                                     
+    Twostream bug fix                                
+    Update soil colors     
+    2m relative humidity        
+    Fix for aquifer leak (SoilHydrologyMod, BalanceCheckMod)              
+    New nitrogen deposition file (units and sum of NOx, NHy)  
+
+Quickstart to new cpl7 scripts...
+
+         cd scripts
+         ./create_newcase -help      # get help on how to run create_newcase
+         ./create_newcase -case testI -mach bluefire -res f19_g16 -compset I    # create new "I" case for bluefire at 1.9x2.5_gx1v6 res
+                                     # "I" case is clm active, datm7, and inactive ice/ocn
+         cd testI
+         ./xmlchange -help           # Get help on editor for XML files
+         ./xmlchange <options> env_conf.xml env_mach_pes  # Edit configure files if needed
+         configure -case             # create scripts
+         ./xmlchange <options> env_build.xml              # Edit build files if needed
+         testI.build                 # build model and create namelists
+         ./xmlchange <options> env_run.xml                # Edit run files if needed
+         bsub < testI.run            # submit script
+                                     # (NOTE: edit env_run.xml to set RESUBMIT to number of times to automatically resubmit)
+Quickstart to use of regional extraction scripts and PERSONAL datasets:
+
+       # Run the script to create an area to put your files (assume CSMDATA set to standard inputdata)
+       cd scripts
+       setenv MYCSMDATA $HOME/myinputdata
+       link_dirtree $CSMDATA $MYCSMDATA
+
+       # Run the extraction for data from 52-73 North latitude, 190-220 longitude
+       # that creates 13x12 gridcell region from the f19 (1.9x2.5) global resolution over
+       # Alaska
+       cd ../models/lnd/clm/tools/ncl_scripts
+       setenv MYID 13x12pt_f19_alaskaUSA
+       getregional_datasets.pl -sw 52,190 -ne 73,220 -id $MYID -mycsmdata $MYCSMDATA
+
+       # Now create a case that uses these datasets
+       cd ../../../../../scripts
+       create_newcase -case testregional -compset I -mach bluefire -res pt1_pt1
+       cd testregional
+       $EDITOR env_conf.xml # change CLM_BLDNML_OPTS to include "-clm_usr_name $MYID" (expand $MYID)
+       $EDITOR env_mach_pes.xml # Change tasks/threads as appropriate (defaults to serial)
+       xmlchange -file env_run.xml -id DIN_LOC_ROOT_CSMDATA -val $MYCSMDATA
+
+       # Do other changes to xml files as appropriate
+       # configure as normal, then edit the datm namelist
+
+       configure -case
+
+       # Then build and run the case as normal
+
+Known bugs (include bugzilla ID):
+                                  701 (svn keyword)
+                                  717 (archiving bug -- only archive 1000 files at a time)
+                                  722 (threading slow)
+                                  789 (1pt sims 2.5X slow)
+                                  794 (hist avg strange)
+                                  883 (aerosol deposition not from atm)
+                                  896 (T62 mode does not work)
+                                  920 (glacier_mec problems in mksurfdata)
+                                  935 (RTM warning NOT an error)
+                                  990 (CN transient blowup)
+                                  994 (finidat files on jaguar for pftdyn fail)
+                                 1017 (SCM mode can NOT restart)
+                                 1025 (SCM mode can NOT use a global finidat file)
+                                 1063 (Problem in restarts for CCSM spinup data)
+                                 1092 (Problems running in debug mode on dublin with datm8)
+                                 1124 (Reported energy for pftdyn grid-cell not right)
+                                 1139 (LAND and PFTS 1D vector averaging doesn't work)
+                                 1147 (mkgriddata can't straddle over Greenich)
+                                 1155 (Problem with ndeplintInterp for historical case)
+Describe any changes made to build system:
+
+   Change directory structure to match CCSM.
+   Add BGP target.
+   Add choice between ESMF and MCT frameworks.
+   Start removing #ifdef and directives that supported Cray-X1 Phoenix as now decommissioned.
+   Make default of maxpatch_pft=numpft+1 instead of 4 for all configurations.
+   By default turn on CLAMP when either CN or CASA is enabled
+   New SNICAR_FRC, CARBON_AERO, and C13 CPP ifdef tokens.
+
+   New options added to configure:
+
+     -comp_intf <name>   Component interface to use (ESMF or MCT) (default MCT)
+     -nofire             Turn off wildfires for bgc setting of CN (default includes fire for CN)
+     -pio <name>         Switch enables building with Parallel I/O library. [on | off] (default is on)
+     -snicar_frc <name>  Turn on SNICAR radiative forcing calculation. [on | off] (default is off)
+
+Describe any changes made to the namelist:
+
+   NOTE: build-namelist now checks the validity of your namelist you generate by looking at data in the namelist_definition.xml
+         file. In order to add new namelist items you need to change the code and also edit this file. To view information
+         on the namelist view the file:
+         models/lnd/clm/bld/namelist_files/namelist_definition.xml
+         in your browser and you'll see the names, type, description and valid_values for all namelist variables.
+
+   Changes to build-namelist:
+     Transient sim_year ranges (i.e. 1850-2000)
+     Remove cam_hist_case option.
+     Make sure options ONLY used for stand-alone testing have a "drv_" or "datm_" prefix in them and list these
+     options all together and last when asking for help from build-namelist.
+   New options to build-namelist:
+     -clm_usr_name     "name" Dataset resolution/descriptor for personal datasets. Default: not used
+                              Example: 1x1pt_boulderCO_c090722 to describe location,
+                                       number of pts, and date files created
+   New list options to build-namelist:
+     build-namelist -res list          # List valid resolutions
+     build-namelist -mask list         # List valid land-masks
+     build-namelist -sim_year list     # List valid simulation years and simulation year ranges
+     build-namelist -clm_demand list   # List namelist variables including those you could demand to be included.
+     build-namelist -use_case list     # List valid use-cases
+     build-namelist -rcp list          # List valid representative concentration pathways
+                                       # for future scenarios
+
+     List of use-cases for build-namelist:
+
+1850-2100_rcp4.5_transient = Simulate transient land-use, and aerosol deposition changes
+with historical data from 1850 to 2005 and then with the RCP4.5 scenario from MINICAM
+
+1850-2100_rcp8.5_transient = Simulate transient land-use, and aerosol deposition changes
+with historical data from 1850 to 2005 and then with the RCP8.5 scenario from MESSAGE
+
+   1850_control = Conditions to simulate 1850 land-use
+2000-2100_rcp8.5_transient = Simulate transient land-use, and aerosol deposition changes
+with historical data from 2000 to 2005 and then with the RCP8.5 scenario from MESSAGE
+
+   2000_control = Conditions to simulate 2000 land-use
+20thC_transient = Simulate transient land-use, and aerosol deposition changes from 1850
+to 2005
+         pergro = Perturbation error growth test with initial conditions perturbed by
+roundoff level
+        pergro0 = Perturbation error growth test with unperturbed initial conditions
+
+
+   New namelist items:
+
+        urban_hac = OFF, ON or ON_WASTEHEAT   (default OFF)     Flag for urban Heating and Air-Conditioning
+                                                       OFF          = Building internal temperature is un-regulated.
+                                                       ON           = Building internal temperature is bounded to reasonable range.
+                                                       ON_WASTEHEAT = Building internal temperature is bounded and resultant waste
+                                                                      heat is given off.
+        urban_traffic = .true. or .false.     (default .false.) Flag to include additional multiplicative factor of urban traffic
+                                                                to sensible heat flux.
+        fsnowoptions = filename          file for snow/aerosol optical properties (required)
+        fsnowaging   = filename          file for snow aging parameters (required)
+        faerdep      = filename          file of aerosol deposition (required)
+
+  New history variables: (note watt vs. W in units, 26 vs. 76)
+     BCDEP                      total BC deposition (dry+wet) from atmosphere                kg/m^2/s
+     BIOGENCO                   biogenic CO flux                                             uGC/M2/H
+     C13_PRODUCT_CLOSS          C13 total carbon loss from wood product pools                gC13/m^2/s
+     DSTDEP                     total dust deposition (dry+wet) from atmosphere              kg/m^2/s
+     EFLX_DYNBAL                dynamic land cover change conversion energy flux             W/m^2
+     FGR12                      heat flux between soil layers 1 and 2                        watt/m^2
+     FSAT                       fractional area with water table at surface                  unitless
+     FSH_NODYNLNDUSE		sensible heat flux not including correction for land use change
+                                                                                             watt/m^2
+     GC_HEAT1                   initial gridcell total heat content                          J/m^2
+     GC_HEAT2                   post land cover change total heat content                    J/m^2    inactive
+     GC_ICE1                    initial gridcell total ice content                           mm/s
+     GC_ICE2                    post land cover change total ice content                     mm/s     inactive
+     GC_LIQ1                    initial gridcell total liq content                           mm
+     GC_LIQ2                    initial gridcell total liq content                           mm       inactive <<<< name??
+     H2OSNO_TOP                 mass of snow in top snow layer                               kg
+     HEAT_FROM_AC               sensible heat flux put into canyon due to heat removed from air conditioning
+                                                                                             watt/m^2
+     HK                         hydraulic conductivity                                       mm/s     inactive
+     ISOPRENE                   isoprene flux                                                uGC/M2/H
+     LAND_USE_FLUX              total C emitted from land cover conversion and wood produc t pools gC/m^2/s
+     LAND_UPTAKE                NEE minus LAND_USE_FLUX, negative for update                 gC/m^2/s
+     LWup                       upwelling longwave radiation                                 watt/m^2 inactive
+     MONOTERP                   monoterpene flux                                             uGC/M2/H
+     NBP                        net biome production, includes fire, landuse, and harvest flux, positive for sink
+                                                                                             gC/m^2/s
+     OCDEP                      total OC deposition (dry+wet) from atmosphere                kg/m^2/s
+     OVOC                       other VOC flux                                               uGC/M2/H
+     ORVOC                      other reactive VOC flux                                      uGC/M2/H
+     PBOT                       atmospheric pressure                                         Pa
+     PCO2                       atmospheric partial pressure of CO2                          Pa
+     PRODUCT_CLOSS              total carbon loss from wood product pools                    gC/m^2/s
+     PRODUCT_NLOSS              total N loss from wood product pools                         gN/m^2/s
+     Qair                       atmospheric specific humidity                                kg/kg    inactive
+     Qanth                      anthropogenic heat flux                                      watt/m^2 inactive
+     Qtau                       momentum flux                                                kg/m/s^2
+     QFLX_LIQ_DYNBAL            liq dynamic land cover change conversion runoff flux         mm/s
+     QFLX_ICE_DYNBAL            ice dynamic land cover change conversion runoff flux         mm/s
+     QRUNOFF_NODYNLNDUSE        total liquid runoff not including correction for land use change (does not include QSNWCPICE) 
+                                                                                             mm/s
+     QSNWCPICE                  excess snowfall due to snow capping                          mm/s
+     QSNWCPICE_NODYNLNDUSE      excess snowfall due to snow capping not including correction for land use change
+                                                                                             mm/s
+     QSNWCPLIQ                  excess rainfall due to snow capping                          mm/s     inactive
+     SMP                        soil matric potential                                        mm       inactive
+     SNOAERFRC2L                surface forcing of all aerosols in snow, averaged only when snow is present (land)
+                                                                                             watt/m^2
+     SNOAERFRCL                 surface forcing of all aerosols in snow (land)               watt/m^2
+     SNOBCFRCL                  surface forcing of BC in snow (land)                         watt/m^2
+     SNOBCMCL                   mass of BC in snow column                                    kg/m2
+     SNOBCMSL                   mass of BC in top snow layer                                 kg/m2
+     SNOdTdzL                   top snow layer temperature gradient (land)                   K/m
+     SNODSTFRC2L                surface forcing of dust in snow, averaged only when snow is present (land)
+                                                                                             watt/m^2
+     SNODSTFRCL                 surface forcing of dust in snow (land)                       watt/m^2
+     SNODSTMCL                  mass of dust in snow column                                  kg/m2
+     SNODSTMSL                  mass of dust in top snow layer                               kg/m2
+     SNOFSRND                   direct nir reflected solar radiation from snow               watt/m^2 inactive
+     SNOFSRNI                   diffuse nir reflected solar radiation from snow              watt/m^2 inactive
+     SNOFSRVD                   direct vis reflected solar radiation from snow               watt/m^2 inactive
+     SNOFSRVI                   diffuse vis reflected solar radiation from snow              watt/m^2 inactive
+     SNOFSDSND                  direct nir incident solar radiation on snow                  watt/m^2 inactive
+     SNOFSDSNI                  diffuse nir incident solar radiation on snow                 watt/m^2 inactive
+     SNOFSDSVD                  direct vis incident solar radiation on snow                  watt/m^2 inactive
+     SNOFSDSVI                  diffuse vis incident solar radiation on snow                 watt/m^2 inactive
+     SNOLIQFL                   top snow layer liquid water fraction (land)                  fraction inactive
+     SNOOCMCL                   mass of OC in snow column                                    kg/m2
+     SNOOCMSL                   mass of OC in top snow layer                                 Kg/m2
+     SNOOCFRC2L                 surface forcing of OC in snow, averaged only when snow is present (land)
+     SNOOCFRCL                  surface forcing of OC in snow (land)                         watt/m^2
+                                                                                             watt/m^2
+     SNORDSL                    top snow layer effective grain radius                        m^-6     inactive
+     SNOTTOPL                   snow temperature (top layer)                                 K/m      inactive <<< units?
+     SOILWATER_10CM             soil liquid water + ice in top 10cm of soil                  kg/m2
+     SWup                       upwelling shortwave radiation                                watt/m^2 inactive
+     TSOI_10CM                  soil temperature in top 10cm of soil                         K
+     URBAN_AC                   urban air conditioning flux                                  watt/m^2
+     URBAN_HEAT                 urban heating flux                                           watt/m^2
+     VOCFLXT                    total VOC flux into atmosphere                               uGC/M2/H
+     Wind                       atmospheric wind velocity magnitude                          m/s      inactive
+     WOOD_HARVESTC              wood harvest (to product pools)                              gC/m^2/s
+     WOOD_HARVESTN              wood harvest (to product pools)                              gN/m^2/s
+
+  History field name changes:
+
+     ANNSUM_PLANT_NDEMAND  => ANNSUM_POTENTIAL_GPP
+     ANNSUM_RETRANSN       => ANNMAX_RETRANSN
+     C13_DWT_PROD10C_LOSS  => C13_PROD10C_LOSS
+     C13_DWT_PROD100C_LOSS => C13_PROD100C_LOSS
+     C13_DWT_PROD10N_LOSS  => C13_PROD10N_LOSS
+     C13_DWT_PROD100C_LOSS => C13_PROD100C_LOSS
+     DWT_PROD100N_LOSS     => PROD10N_LOSS
+     DWT_PROD100N_LOSS     => PROD100N_LOSS
+     DWT_PROD100C_LOSS     => PROD10C_LOSS
+     DWT_PROD100C_LOSS     => PROD100C_LOSS
+     HCSOISNO              => HC
+     TEMPSUM_PLANT_NDEMAND => TEMPSUM_POTENTIAL_GPP
+     TEMPSUM_RETRANSN      => TEMPMAX_RETRANSN
+
+   History field names deleted:
+     SNOWAGE, TSNOW, FMICR, FCO2, DMI, QFLX_SNOWCAP
+
+  Add new urban oriented _U, and _R (Urban and Rural) for:
+        EFLX_LH_TOT, FGR, FIRA, FSH, FSM, Q2M, QRUNOFF, RH2M, SoilAlpha, TG, TREFMNAV, TREFMXAV, and TSA
+        (missing _R for SoilAlpha)
+
+Describe timing and memory performance:
+
+Versions of any externally defined libraries:
+
+   scripts             scripts4_100108b
+   drv                 vocemis-drydep12_drvseq3_1_11
+   datm                datm8_091218
+   socn                stubs1_2_02/socn
+   sice                stubs1_2_02/sice
+   sglc                stubs1_2_02/sglc
+   csm_share           vocemis-drydep13_share3_091217
+   esmf_wrf_timemgr    esmf_wrf_timemgr_090402
+   timing              timing_090929
+   mct                 MCT2_7_0_100106
+   pio                 pio60_prod
+   cprnc               cprnc_081022
+
+Summary of testing:
+
+  bluefire: All PASS except...
+025 smG41 TSM.sh 17p_sc_dh clm_pftdyn 10001230:NONE:1800 10x15 USGS@1000-1002 144 arb_ic ........FAIL! rc= 10
+026 erG41 TER.sh 17p_sc_dh clm_pftdyn 10001230:NONE:1800 10x15 USGS@1000-1002 72+72 arb_ic ......FAIL! rc= 5
+027 brG41 TBR.sh 17p_sc_dh clm_pftdyn 10001230:NONE:1800 10x15 USGS@1000-1002 72+72 arb_ic ......FAIL! rc= 5
+028 blG41 TBL.sh 17p_sc_dh clm_pftdyn 10001230:NONE:1800 10x15 USGS@1000-1002 144 arb_ic ........FAIL! rc= 4
+029 smG55 TSM.sh 17p_sc_h clm_pftdyn 10001230:NONE:1800 10x15 USGS@1000-1002 144 arb_ic .........FAIL! rc= 10
+043 smLI1 TSM.sh _sc_dh clm_std 20020101:NONE:1800 94x192 T62 -10 arb_ic ........................FAIL! rc= 10
+044 erLI1 TER.sh _sc_dh clm_std 20020101:NONE:1800 94x192 T62 -5+-5 arb_ic ......................FAIL! rc= 5
+045 brLI1 TBR.sh _sc_dh clm_std 20020101:NONE:1800 94x192 T62 -10+-10 arb_ic ....................FAIL! rc= 5
+046 blLI1 TBL.sh _sc_dh clm_std 20020101:NONE:1800 94x192 T62 -10 arb_ic ........................FAIL! rc= 4
+048 erL58 TER.sh _sc_dh clm_std^nl_crcrop 20020115:NONE:1800 10x15 USGS 12+84 arb_ic ............FAIL! rc= 12
+  bluefire interactive testing: All PASS except...
+013 blNB4 TBL.sh _nrmexsc_ds clm_urb1pt^nl_urb 19931201:NONE:3600 1x1_mexicocityMEX navy 157 arb_ic FAIL! rc= 5
+019 blCA8 TBL.sh _nrsc_ds clm_std^nl_urb 20021230:NONE:3600 1x1_asphaltjungleNJ navy -90 arb_ic .FAIL! rc= 5
+021 erAK4 TER.sh _sc_ds clm_std^nl_ptsmode 20030101:NONE:1800 1.9x2.5 gx1v6 -5+-5 cold ..........FAIL! rc= 7
+022 brAK4 TBR.sh _sc_ds clm_std^nl_ptsmode 20030101:NONE:1800 1.9x2.5 gx1v6 -5+-5 cold ..........FAIL! rc= 6
+026 brAK8 TBR.sh _sc_ds clm_std^nl_ptsmode_ocn 20030101:NONE:1800 1.9x2.5 gx1v6 -5+-5 cold ......FAIL! rc= 6
+  bluefire/CCSM testing: All PASS except
+FAIL  PST.f45_g37.I1850.bluefire.compare.clm3_7_10 
+FAIL  PET_PT.f45_g37.I1850.bluefire.compare.clm3_7_10 
+FAIL  ERB.f09_g16.I1850SPINUPCN.bluefire 
+BFAIL ERB.f09_g16.I1850SPINUPCN.bluefire.generate.clm3_7_15 
+BFAIL ERB.f09_g16.I1850SPINUPCN.bluefire.compare.clm3_7_10 
+FAIL  ERH_D.f10_f10.I1850CN.bluefire.compare.clm3_7_10 
+BFAIL PST.f10_f10.I8520CN.bluefire.compare.clm3_7_10 
+BFAIL PET_PT.f10_f10.I8520CN.bluefire.compare.clm3_7_10 
+FAIL  ERS_D.f19_g16.IRCP85CN.bluefire.compare_hist.clm3_7_10 
+FAIL  ERS_D.f19_g16.IRCP85CN.bluefire.compare.clm3_7_10 
+  jaguar: All PASS except..
+005 smB51 TSM.sh _scsnf_dh clm_std^nl_urb 20021230:NONE:1800 10x15 USGS 144 arb_ic ..............FAIL! rc= 10
+006 erB51 TER.sh _scsnf_dh clm_std^nl_urb 20021230:NONE:1800 10x15 USGS 72+72 arb_ic ............FAIL! rc= 5
+007 brB51 TBR.sh _scsnf_dh clm_std^nl_urb 20021230:NONE:1800 10x15 USGS 72+72 arb_ic ............FAIL! rc= 5
+026 smLI2 TSM.sh _sc_dm clm_std 20020101:NONE:1800 94x192 T62 -10 arb_ic ........................FAIL! rc= 10
+027 erLI2 TER.sh _sc_dm clm_std 20020101:NONE:1800 94x192 T62 -5+-5 arb_ic ......................FAIL! rc= 5
+028 brLI2 TBR.sh _sc_dm clm_std 20020101:NONE:1800 94x192 T62 -10+-10 arb_ic ....................FAIL! rc= 5
+030 smL58 TSM.sh _sc_dh clm_std^nl_crcrop 20020115:NONE:1800 10x15 USGS 96 arb_ic ...............FAIL! rc= 10
+031 erL58 TER.sh _sc_dh clm_std^nl_crcrop 20020115:NONE:1800 10x15 USGS 12+84 arb_ic ............FAIL! rc= 5
+  jaguar interactive testing: All PASS except...
+006 erAK4 TER.sh _sc_ds clm_std^nl_ptsmode 20030101:NONE:1800 1.9x2.5 gx1v6 -5+-5 cold ..........FAIL! rc= 7
+007 brAK4 TBR.sh _sc_ds clm_std^nl_ptsmode 20030101:NONE:1800 1.9x2.5 gx1v6 -5+-5 cold ..........FAIL! rc= 6
+009 smG43 TSM.sh 17p_sc_do clm_pftdyn 10001230:NONE:1800 10x15 USGS@1000-1002 144 arb_ic ........FAIL! rc= 10
+010 erG43 TER.sh 17p_sc_do clm_pftdyn 10001230:NONE:1800 10x15 USGS@1000-1002 72+72 arb_ic ......FAIL! rc= 5
+011 brG43 TBR.sh 17p_sc_do clm_pftdyn 10001230:NONE:1800 10x15 USGS@1000-1002 72+72 arb_ic ......FAIL! rc= 5
+  edinburgh/ifort interactive testing: All PASS except...
+006 erAL4 TER.sh _sc_ds clm_std^nl_ptsmode 20030101:NONE:1800 10x15 USGS -5+-5 cold .............FAIL! rc= 7
+007 brAL4 TBR.sh _sc_ds clm_std^nl_ptsmode 20030101:NONE:1800 10x15 USGS -5+-5 cold .............FAIL! rc= 6
+014 erOC4 TER.sh _nrvansc_ds clm_urb1pt^nl_urb 19920812:NONE:3600 1x1_vancouverCAN navy 115+115 arb_FAIL! rc= 5
+015 brOC4 TBR.sh _nrvansc_ds clm_urb1pt^nl_urb_br 19920812:NONE:3600 1x1_vancouverCAN navy 72+72 arbFAIL! rc= 5
+016 blOC4 TBL.sh _nrvansc_ds clm_urb1pt^nl_urb 19920812:NONE:3600 1x1_vancouverCAN navy 330 arb_ic FAIL! rc= 4
+018 erNB4 TER.sh _nrmexsc_ds clm_urb1pt^nl_urb 19931201:NONE:3600 1x1_mexicocityMEX navy 57+100 arb_FAIL! rc= 5
+019 brNB4 TBR.sh _nrmexsc_ds clm_urb1pt^nl_urb_br 19931201:NONE:3600 1x1_mexicocityMEX navy 72+72 arFAIL! rc= 5
+020 blNB4 TBL.sh _nrmexsc_ds clm_urb1pt^nl_urb 19931201:NONE:3600 1x1_mexicocityMEX navy 157 arb_ic FAIL! rc= 4
+  edinburgh/ifort: All PASS except...
+002 erA92 TER.sh _sc_dm clm_std^nl_urb 20030101:NONE:3600 4x5 gx3v7 -3+-3 arb_ic ................FAIL! rc= 7
+003 brA92 TBR.sh _sc_dm clm_std^nl_urb_br 20030101:NONE:3600 4x5 gx3v7 -3+-3 arb_ic .............FAIL! rc= 6
+006 erD91 TER.sh _persc_dh clm_per^nl_urb 20021231:NONE:1200 4x5 gx3v7 72+72 cold ...............FAIL! rc= 7
+007 blD91 TBL.sh _persc_dh clm_per^nl_urb 20021231:NONE:1200 4x5 gx3v7 144 cold .................FAIL! rc= 5
+008 smG42 TSM.sh 17p_sc_dm clm_pftdyn 10001230:NONE:1800 10x15 USGS@1000-1002 144 arb_ic ........FAIL! rc= 10
+009 erG42 TER.sh 17p_sc_dm clm_pftdyn 10001230:NONE:1800 10x15 USGS@1000-1002 72+72 arb_ic ......FAIL! rc= 5
+010 brG42 TBR.sh 17p_sc_dm clm_pftdyn 10001230:NONE:1800 10x15 USGS@1000-1002 72+72 arb_ic ......FAIL! rc= 5
+011 blG42 TBL.sh 17p_sc_dm clm_pftdyn 10001230:NONE:1800 10x15 USGS@1000-1002 144 arb_ic ........FAIL! rc= 4
+  breeze,gale,hail,gust/ifort interactive testing: All PASS except...
+011 blCA8 TBL.sh _nrsc_ds clm_std^nl_urb 20021230:NONE:3600 1x1_asphaltjungleNJ navy -90 arb_ic .FAIL! rc= 5
+020 smG53 TSM.sh 17p_sc_do clm_pftdyn 10001230:NONE:1800 10x15 USGS@1000-1002 144 arb_ic ........FAIL! rc= 10
+021 erG53 TER.sh 17p_sc_do clm_pftdyn 10001230:NONE:1800 10x15 USGS@1000-1002 10+38 arb_ic ......FAIL! rc= 5
+022 brG53 TBR.sh 17p_sc_do clm_pftdyn 10001230:NONE:1800 10x15 USGS@1000-1002 72+72 arb_ic ......FAIL! rc= 5
+023 blG53 TBL.sh 17p_sc_do clm_pftdyn 10001230:NONE:1800 10x15 USGS@1000-1002 144 arb_ic ........FAIL! rc= 4
+
+CLM tag used for the baseline comparison tests if applicable: clm3_5_00
+
+IF tag changes answers relative to baseline comparison the
+following should be filled in:
+
+  Summarize any changes to answers:
+    - what code configurations: All
+    - what platforms/compilers: All
+    - nature of change: new climate for clm4
+
+   If this tag changes climate describe the run(s) done to evaluate the new
+   climate in enough detail that it(they) could be reproduced, i.e.,
+    ccsm4_0_beta35
+    bluefire
+    -compset B_1850_TRACK1_CN -res f19_g16
+
+   MSS location of control simulations used to validate new climate:
+
+/DLAWREN/csm/b40.1850.track1.2deg.003.snow
+   
+   URL for LMWG diagnostics output used to validate new climate:
+
+http://www.cgd.ucar.edu/ccr/paleo/b40.snow/b40.1850.track1.2deg.003.snow-b40.1850.track1.2deg.003.control/
+	
+===============================================================
+===============================================================
+Tag name:  clm3_8_00
+Originator(s):  erik (erik)
+Date: Tue May  4 22:39:18 MDT 2010
+One-line Summary: Get future scenarios working, finalize documentation, bring in MEGAN VOC and CNDV, simplify, mksurfdata optimization, fix bugs: snow enthalpy, BMOZ, pergro, use pft weights from fsurdat NOT finidat
+
+Purpose of changes:
+
+Get all of the future scenarios working (other than rcp=6.0) and get all of the datasets
+for these scenarios (pftdyn, fndepdyn, and aerdep files, for rcp=2.6,4.5, and 8.5).
+Finalize the User's Guide for now, with reviews from: Sam, Keith, Dave, and Sean, as
+well as more work on tools chapter, and adding testing chapter in appendix. We brought
+in the MEGAN version of the Volatile Organic Compounds (VOC) module which also reads
+in VOC emission factors from the surface dataset, and hence all fsurdat files needed
+to be replaced. Along with this the mksurfdata tool was changed in order to handle VOC's
+and effort was made to optimize it, add shared memory paralelism, and do memory
+optimization. We also removed the old Dynamic Global Vegetation Model (DGVM) and replaced
+it with the Carbon Nitrogen Dynamic Vegetation model (CNDV). Make some simplifications
+in the configure system to always use the CCSM version of build files, remove some 
+unused options, put standalone test options last in configure. Improve documenation in
+XML files for configure and build-namelist options.
+
+Fix many different bugs. Enthalpy in snow combination was sometimes NOT conserved and now
+is. There was a problem running DryDeposition for the BMOZ compset that is now fixed.
+There were multiple issues running PERGRO testing that is now fixed. Previously, if 
+both the finidat file and the fsurdat file had PFT weights on them, the values from
+the finidat file was used, now it will use the values from the fsurdat file. There are
+also several cases where if the weights are different it will abort with an error, or
+at least send a message to the log file about the differences.
+
+Known bugs (include bugzilla ID):
+                                  701 (svn keyword)
+                                  717 (archiving bug -- only archive 1000 files at a time)
+                                  722 (threading slow)
+                                  789 (1pt sims 2.5X slow)
+                                  794 (hist avg strange)
+                                  883 (aerosol deposition not from atm)
+                                  896 (T62 mode does not work)
+                                  920 (glacier_mec problems in mksurfdata)
+                                  935 (RTM warning NOT an error)
+                                  990 (CN transient blowup)
+                                  994 (finidat files on jaguar for pftdyn fail)
+                                 1017 (SCM mode can NOT restart)
+                                 1025 (SCM mode can NOT use a global finidat file)
+                                 1063 (Problem in restarts for CCSM spinup data)
+                                 1092 (Problems running in debug mode on dublin with datm8)
+                                 1124 (Reported energy for pftdyn grid-cell not right)
+                                 1139 (LAND and PFTS 1D vector averaging doesn't work)
+                                 1147 (mkgriddata can't straddle over Greenich)
+                                 1155 (Problem with ndeplintInterp for historical case)
+    http://bugs.cgd.ucar.edu/
+
+Type of tag: doc
+
+Describe any changes made to build system:
+   Switch cndv for dgvm, Have configure disallow bad cases
+   Change configure to NOT allow supln with spinup cases
+   Do NOT allow exit_spinup and ad_spinup at the same time.
+   Only allow voc to be set for seq_ccsm NOT ext_ccsm_seq
+   Remove carbon_aero and pio from configure (always build with pio)
+   emove unused configure options: clm_exe, -clm_exedir, and -clm_bld.
+   Move standalone testing options to the end of help. Use CCSM version
+   of mkSrcfiles/mkDepends, separate config vars into categories, work
+   on documentation with comments from Keith/Sam.
+
+Describe any changes made to the namelist:
+   Add 2000-2100 simulation year range as allowed option
+
+   Two new history fields:
+
+        TSOI_10CM      = soil temperature in top 10cm of soil (K)
+        SOILWATER_10CM = soil liquid water + ice in top 10cm of soil (kg/m2)
+
+   Check for some files based on rcp (fpftdyn, ndepdyn, and aerdep)
+
+   Add in ability to add a user namelist in your case directory to input
+   namelist items at configure time. Simply add a file called "user_nl_clm"
+   as a valid namelist and the items in that namelist will show up in the initial
+   BuildConf/clm.buildnml.csh file.
+
+List any changes to the defaults for the boundary datasets:
+    get urbanc_alpha grid and frac files in
+    get in new single-point datasets
+              new qtr-degree, T62 and T85 fsurdat
+              new f10, f05, f09, 1850 fsurdat
+              new rcp=8.5, f19 pftdyn, 
+              new rcp=4.5 f09, f19, f10 pftdyn
+              new rcp=2.6 f09, f19, f10 pftdyn
+              new rcp=8.5/4.5/2.6 f19 aerdep 1850-2100 datasets
+              new rcp=8.5/4.5 f19 fndepdyn 1850-2100 datasets
+              new rcp=2.6/4.5 f10, f45, f25, f09 aerdep/ndepdyn datasets
+              new rcp=2.6/4.5,8.5 f19 decadal averages for ndepdat
+   (Note: harvest was updated in PFTDYN files and raw PFT input files for 2006).
+   New 10x15 and 4x5 finidat files so that transient cases will work at those resolutions
+     New finidat files for 1-deg and 2-deg (from fully coupled simulations)
+     New datasets for I cases that are set in scripts
+   Duplicate cn datasets for cndv
+    New pft-physiology files with extra fields for CNDV
+   Remove 360x720 files, gx3v5, gx1v5 files
+   Remove 1x1.25, 2x2.5, and 2.5x3.33 grid resolutions
+   Remove gx1v3, gx1v4, gx1v5 land masks, add drydep defaults.
+   add mksrf_fvegtyp@1000-1004
+
+Describe any substantial timing or memory changes: None
+
+Code reviewed by:
+    snow changes came from dlawren and also reviewed by oleson
+    PFT weight change also reviewed by: dlawren, slevis, oleson
+    CNDV came from slevis
+    VOC changes came from Francis Vitt and Jean-Francois Lamarque
+    history changes came from Keith Oleson, reviewed by Dave Lawrenece
+    OpenMP bug fix came from Mariana-Vertenstein, reviewed by Pat Worley
+
+List any svn externals directories updated (csm_share, mct, etc.): all
+    scripts    to scripts4_100406a
+    drv        to drvseq3_1_23
+    datm       to datm8_100406
+    csm_share  to share3_100407
+    pio        to pio1_0_18
+    timing     to timing_091021
+
+Summary of testing:
+
+  bluefire: All PASS except...
+025 smG41 TSM.sh 17p_sc_dh clm_pftdyn 10001230:NONE:1800 10x15 USGS@1000-1002 144 arb_ic ........FAIL! rc= 10
+026 erG41 TER.sh 17p_sc_dh clm_pftdyn 10001230:NONE:1800 10x15 USGS@1000-1002 72+72 arb_ic ......FAIL! rc= 5
+027 brG41 TBR.sh 17p_sc_dh clm_pftdyn 10001230:NONE:1800 10x15 USGS@1000-1002 72+72 arb_ic ......FAIL! rc= 5
+028 blG41 TBL.sh 17p_sc_dh clm_pftdyn 10001230:NONE:1800 10x15 USGS@1000-1002 144 arb_ic ........FAIL! rc= 4
+029 smG55 TSM.sh 17p_sc_h clm_pftdyn 10001230:NONE:1800 10x15 USGS@1000-1002 144 arb_ic .........FAIL! rc= 10
+043 smLI1 TSM.sh _sc_dh clm_std 20020101:NONE:1800 94x192 T62 -10 arb_ic ........................FAIL! rc= 10
+044 erLI1 TER.sh _sc_dh clm_std 20020101:NONE:1800 94x192 T62 -5+-5 arb_ic ......................FAIL! rc= 5
+045 brLI1 TBR.sh _sc_dh clm_std 20020101:NONE:1800 94x192 T62 -10+-10 arb_ic ....................FAIL! rc= 5
+046 blLI1 TBL.sh _sc_dh clm_std 20020101:NONE:1800 94x192 T62 -10 arb_ic ........................FAIL! rc= 4
+048 erL58 TER.sh _sc_dh clm_std^nl_crcrop 20020115:NONE:1800 10x15 USGS 12+84 arb_ic ............FAIL! rc= 12
+  bluefire interactive testing: All PASS except...
+013 blNB4 TBL.sh _nrmexsc_ds clm_urb1pt^nl_urb 19931201:NONE:3600 1x1_mexicocityMEX navy 157 arb_ic FAIL! rc= 5
+019 blCA8 TBL.sh _nrsc_ds clm_std^nl_urb 20021230:NONE:3600 1x1_asphaltjungleNJ navy -90 arb_ic .FAIL! rc= 5
+021 erAK4 TER.sh _sc_ds clm_std^nl_ptsmode 20030101:NONE:1800 1.9x2.5 gx1v6 -5+-5 cold ..........FAIL! rc= 7
+022 brAK4 TBR.sh _sc_ds clm_std^nl_ptsmode 20030101:NONE:1800 1.9x2.5 gx1v6 -5+-5 cold ..........FAIL! rc= 6
+026 brAK8 TBR.sh _sc_ds clm_std^nl_ptsmode_ocn 20030101:NONE:1800 1.9x2.5 gx1v6 -5+-5 cold ......FAIL! rc= 6
+  bluefire/CCSM testing: All PASS except
+FAIL  PST.f45_g37.I1850.bluefire.compare.clm3_7_10 
+FAIL  PET_PT.f45_g37.I1850.bluefire.compare.clm3_7_10 
+FAIL  ERB.f09_g16.I1850SPINUPCN.bluefire 
+BFAIL ERB.f09_g16.I1850SPINUPCN.bluefire.generate.clm3_7_15 
+BFAIL ERB.f09_g16.I1850SPINUPCN.bluefire.compare.clm3_7_10 
+FAIL  ERH_D.f10_f10.I1850CN.bluefire.compare.clm3_7_10 
+BFAIL PST.f10_f10.I8520CN.bluefire.compare.clm3_7_10 
+BFAIL PET_PT.f10_f10.I8520CN.bluefire.compare.clm3_7_10 
+FAIL  ERS_D.f19_g16.IRCP85CN.bluefire.compare_hist.clm3_7_10 
+FAIL  ERS_D.f19_g16.IRCP85CN.bluefire.compare.clm3_7_10 
+  jaguar: All PASS except..
+005 smB51 TSM.sh _scsnf_dh clm_std^nl_urb 20021230:NONE:1800 10x15 USGS 144 arb_ic ..............FAIL! rc= 10
+006 erB51 TER.sh _scsnf_dh clm_std^nl_urb 20021230:NONE:1800 10x15 USGS 72+72 arb_ic ............FAIL! rc= 5
+007 brB51 TBR.sh _scsnf_dh clm_std^nl_urb 20021230:NONE:1800 10x15 USGS 72+72 arb_ic ............FAIL! rc= 5
+026 smLI2 TSM.sh _sc_dm clm_std 20020101:NONE:1800 94x192 T62 -10 arb_ic ........................FAIL! rc= 10
+027 erLI2 TER.sh _sc_dm clm_std 20020101:NONE:1800 94x192 T62 -5+-5 arb_ic ......................FAIL! rc= 5
+028 brLI2 TBR.sh _sc_dm clm_std 20020101:NONE:1800 94x192 T62 -10+-10 arb_ic ....................FAIL! rc= 5
+030 smL58 TSM.sh _sc_dh clm_std^nl_crcrop 20020115:NONE:1800 10x15 USGS 96 arb_ic ...............FAIL! rc= 10
+031 erL58 TER.sh _sc_dh clm_std^nl_crcrop 20020115:NONE:1800 10x15 USGS 12+84 arb_ic ............FAIL! rc= 5
+  jaguar interactive testing: All PASS except...
+006 erAK4 TER.sh _sc_ds clm_std^nl_ptsmode 20030101:NONE:1800 1.9x2.5 gx1v6 -5+-5 cold ..........FAIL! rc= 7
+007 brAK4 TBR.sh _sc_ds clm_std^nl_ptsmode 20030101:NONE:1800 1.9x2.5 gx1v6 -5+-5 cold ..........FAIL! rc= 6
+009 smG43 TSM.sh 17p_sc_do clm_pftdyn 10001230:NONE:1800 10x15 USGS@1000-1002 144 arb_ic ........FAIL! rc= 10
+010 erG43 TER.sh 17p_sc_do clm_pftdyn 10001230:NONE:1800 10x15 USGS@1000-1002 72+72 arb_ic ......FAIL! rc= 5
+011 brG43 TBR.sh 17p_sc_do clm_pftdyn 10001230:NONE:1800 10x15 USGS@1000-1002 72+72 arb_ic ......FAIL! rc= 5
+  edinburgh/ifort interactive testing: All PASS except...
+006 erAL4 TER.sh _sc_ds clm_std^nl_ptsmode 20030101:NONE:1800 10x15 USGS -5+-5 cold .............FAIL! rc= 7
+007 brAL4 TBR.sh _sc_ds clm_std^nl_ptsmode 20030101:NONE:1800 10x15 USGS -5+-5 cold .............FAIL! rc= 6
+014 erOC4 TER.sh _nrvansc_ds clm_urb1pt^nl_urb 19920812:NONE:3600 1x1_vancouverCAN navy 115+115 arb_FAIL! rc= 5
+015 brOC4 TBR.sh _nrvansc_ds clm_urb1pt^nl_urb_br 19920812:NONE:3600 1x1_vancouverCAN navy 72+72 arbFAIL! rc= 5
+016 blOC4 TBL.sh _nrvansc_ds clm_urb1pt^nl_urb 19920812:NONE:3600 1x1_vancouverCAN navy 330 arb_ic FAIL! rc= 4
+018 erNB4 TER.sh _nrmexsc_ds clm_urb1pt^nl_urb 19931201:NONE:3600 1x1_mexicocityMEX navy 57+100 arb_FAIL! rc= 5
+019 brNB4 TBR.sh _nrmexsc_ds clm_urb1pt^nl_urb_br 19931201:NONE:3600 1x1_mexicocityMEX navy 72+72 arFAIL! rc= 5
+020 blNB4 TBL.sh _nrmexsc_ds clm_urb1pt^nl_urb 19931201:NONE:3600 1x1_mexicocityMEX navy 157 arb_ic FAIL! rc= 4
+  edinburgh/ifort: All PASS except...
+002 erA92 TER.sh _sc_dm clm_std^nl_urb 20030101:NONE:3600 4x5 gx3v7 -3+-3 arb_ic ................FAIL! rc= 7
+003 brA92 TBR.sh _sc_dm clm_std^nl_urb_br 20030101:NONE:3600 4x5 gx3v7 -3+-3 arb_ic .............FAIL! rc= 6
+006 erD91 TER.sh _persc_dh clm_per^nl_urb 20021231:NONE:1200 4x5 gx3v7 72+72 cold ...............FAIL! rc= 7
+007 blD91 TBL.sh _persc_dh clm_per^nl_urb 20021231:NONE:1200 4x5 gx3v7 144 cold .................FAIL! rc= 5
+008 smG42 TSM.sh 17p_sc_dm clm_pftdyn 10001230:NONE:1800 10x15 USGS@1000-1002 144 arb_ic ........FAIL! rc= 10
+009 erG42 TER.sh 17p_sc_dm clm_pftdyn 10001230:NONE:1800 10x15 USGS@1000-1002 72+72 arb_ic ......FAIL! rc= 5
+010 brG42 TBR.sh 17p_sc_dm clm_pftdyn 10001230:NONE:1800 10x15 USGS@1000-1002 72+72 arb_ic ......FAIL! rc= 5
+011 blG42 TBL.sh 17p_sc_dm clm_pftdyn 10001230:NONE:1800 10x15 USGS@1000-1002 144 arb_ic ........FAIL! rc= 4
+  breeze,gale,hail,gust/ifort interactive testing: All PASS except...
+011 blCA8 TBL.sh _nrsc_ds clm_std^nl_urb 20021230:NONE:3600 1x1_asphaltjungleNJ navy -90 arb_ic .FAIL! rc= 5
+020 smG53 TSM.sh 17p_sc_do clm_pftdyn 10001230:NONE:1800 10x15 USGS@1000-1002 144 arb_ic ........FAIL! rc= 10
+021 erG53 TER.sh 17p_sc_do clm_pftdyn 10001230:NONE:1800 10x15 USGS@1000-1002 10+38 arb_ic ......FAIL! rc= 5
+022 brG53 TBR.sh 17p_sc_do clm_pftdyn 10001230:NONE:1800 10x15 USGS@1000-1002 72+72 arb_ic ......FAIL! rc= 5
+023 blG53 TBL.sh 17p_sc_do clm_pftdyn 10001230:NONE:1800 10x15 USGS@1000-1002 144 arb_ic ........FAIL! rc= 4
+
+CLM tag used for the baseline comparison tests if applicable: clm3_7_00
+
+Changes answers relative to baseline: Yes!
+    snow change has a small effect on climate (see below)
+    Bringing in MEGAN VOC changes answers for VOC fluxes in a diagnostic way
+    Changing to use weights from fsurdat file rather than finidat file, changes
+      answers for cases with finidat startup files, if the weights are different.
+
+IF tag changes answers relative to baseline comparison the
+following should be filled in:
+
+  Summarize any changes to answers:
+    - what code configurations: All
+    - what platforms/compilers: All
+    - nature of change: same climate
+
+   If this tag changes climate describe the run(s) done to evaluate the new
+   climate in enough detail that it(they) could be reproduced, i.e.,
+    ccsm4_0_beta35
+    bluefire
+    -compset B_1850_TRACK1_CN -res f19_g16
+
+   MSS location of control simulations used to validate new climate:
+
+/DLAWREN/csm/b40.1850.track1.2deg.003.snow
+   
+   URL for LMWG diagnostics output used to validate new climate:
+
+http://www.cgd.ucar.edu/ccr/paleo/b40.snow/b40.1850.track1.2deg.003.snow-b40.1850.track1.2deg.003.control/
+http://www.cgd.ucar.edu/ccr/dlawren/research/clm4.0_dev/b40.1850.track1.2deg.003.snowa-b40.1850.track1.2deg.003.controla/setsIndex.html
+	
+===============================================================
+===============================================================
+Tag name:  clm3_7_00
+Originator(s):  erik (Kluzek Erik 1326 CGD)
+Date: Fri Jan 22 22:48:09 MST 2010
+One-line Summary: Update to datm8, redirect aquifer overflow to drainage, add gx3v7 
+                  masks, script to extract regional datasets, add harvesting for CN, 
+                  modify shrubs, include urban model, ice stream for snowcapping, 
+                  scale solar by solar zenith angle in datm, deep soil with bedrock 
+                  at bottom, organic matter in soils, SNICAR for snow radiation, 
+                  sparce dense aero, snow cover changes
+
+Software engineering changes:
+
+    Update to cpl7 and scripts.
+    Remove offline and cpl6 modes.
+    Remove support for CASA model.
+    Update to datm8 atmospheric data model.
+    Add gx3v7 land mask for T31 and fv-4x5 horizontal resolutions.
+    Add gx1v6 land mask for f05, f09, and f19 horigonzl resolutions.
+    Add tx1v1 land mask and 1.9x2.5_tx1v1 horizontal resolution.
+    Add in 2.5x3.33 horizontal resolution.
+    Add in T62 horizontal resolution so can run at same resolution as input datm data.
+    Allow first history tape to be 1D.
+    Add ability to use own version of input datasets with CLM_USRDAT_NAME variable.
+    Add a script to extract out regional datasets.
+    New build-namelist system with XML file describing all namelist items.
+    Add glacier_mec use-case and stub glacier model.
+    Add ncl script to time-interpolate between 1850 and 2000 for fndepdat dataset, for fndepdyn version.
+    Make default of maxpatch_pft=numpft+1 instead of 4.
+    Only output static 3D fields on first h0 history file to save space.
+    Add new fields for VOC (Volatile Organic Compounds) on some surface datasets, that will be 
+    needed for the new MEGAN VOC model (NOT incorporated yet).
+    Add irrigation area to mksurfdata tool (NOT used in CLM yet).
+    Add multiple elevation class option for glaciers in mksurfdata tool (NOT used in CLM yet).
+    Add ascale field to land model in support of model running on it's own grid.
+
+Science changes:
+
+    Change to freezing temperature constant      
+    Forcing height at atm plus z0+d on each tile                    
+    Effective porosity divide by zero fix                          
+    Sparse/dense canopy aerodynamic parameters                 
+    Ground/snow emissivity smooth transition                                                       
+    Thermal and hydraulic properties of organic soil                                                                        
+    Init h2osoi=0.3                                                            
+    Snow compaction fix                                                          
+    Snow T profile during layer splitting fix                                  
+    Snow burial fraction                                                             
+    Snow cover fraction                                                                   
+    SNICAR (snow aging, black carbon and dust deposition, vertical distribution of solar energy) 
+    Remove SNOWAGE, no longer used                                                   
+    Deep soil (15 layers, ~50m), 5 new layers are hydrologically inactive bed rock                          
+    Ground evap (beta), stability, and litter resistance                      
+    Organic/mineral soil hydraulic conductivity percolation theory       
+    Richards equation modifications                                         
+    Normalization of frozen fraction of soil formulation                                 
+    One-step solution for soil moisture and qcharge                          
+    Changes to rsub_max for drainage and decay factor for surface runoff      
+    Fixed diurnal cycle of solar radiation in offline forcing data                            
+    Back to CLM3 lakes and wetlands datasets, but 1% rather than 5% threshold (same for glacier) 
+    Changes to pft physiology file from CN                                                                                     
+    New grass optical properties                                                                   
+    New surface dataset assuming no herbaceous understory  
+    Direct versus diffuse radiation offline                                           
+    Snow-capped runoff goes to new ice stream and routed to ocean as ice                                         
+    Dust model always on, LAI threshold parameter change from 0.1 to 0.3     
+    Daylength control on vcmax                                                           
+    SAI and get_rad_dtime fix                                                              
+    Always run with MAXPATCH_PFT=npfts + 1 instead of 4                                                                               
+    Transient land cover/use mode - datasets, energy and water balance   
+    RTM sub-cycling                                                     
+    Twostream bug fix                                
+    Update soil colors     
+    2m relative humidity        
+    Fix for aquifer leak (SoilHydrologyMod, BalanceCheckMod)              
+    New nitrogen deposition file (units and sum of NOx, NHy)  
+
+Known bugs (include bugzilla ID):
+                                  701 (svn keyword)
+                                  717 (archiving bug -- only archive 1000 files at a time)
+                                  722 (threading slow)
+                                  789 (1pt sims 2.5X slow)
+                                  794 (hist avg strange)
+                                  883 (aerosol deposition not from atm)
+                                  896 (T62 mode does not work)
+                                  920 (glacier_mec problems in mksurfdata)
+                                  926 (pftdyn code needs to be shared in mksurfdata)
+                                  935 (RTM warning NOT an error)
+                                  990 (CN transient blowup)
+                                  994 (finidat files on jaguar for pftdyn fail)
+                                 1017 (SCM mode can NOT restart)
+                                 1025 (SCM mode can NOT use a global finidat file)
+                                 1063 (Problem in restarts for CCSM spinup data)
+                                 1092 (Problems running in debug mode on dublin with datm8)
+                                 1102 (OpenMP problem with pftdyn mode)
+
+Describe any changes made to build system:
+
+   Change directory structure to match CCSM.
+   Add BGP target.
+   Add choice between ESMF and MCT frameworks.
+   Start removing #ifdef and directives that supported Cray-X1 Phoenix as now decommisioned.
+   Make default of maxpatch_pft=numpft+1 instead of 4 for all configurations.
+   By default turn on CLAMP when either CN or CASA is enabled
+   New SNICAR_FRC, CARBON_AERO, and C13 CPP ifdef tokens.
+
+   New options added to configure:
+
+     -comp_intf <name>   Component interface to use (ESMF or MCT) (default MCT)
+     -nofire             Turn off wildfires for bgc setting of CN (default includes fire for CN)
+     -pio <name>         Switch enables building with Parallel I/O library. [on | off] (default is on)
+     -snicar_frc <name>  Turn on SNICAR radiative forcing calculation. [on | off] (default is off)
+
+Describe any changes made to the namelist:
+
+   NOTE: build-namelist now checks the validity of your namelist you generate by looking at data in the namelist_definition.xml
+         file. In order to add new namelist items you need to change the code and also edit this file. To view information
+         on the namelist view the file:
+         models/lnd/clm/bld/namelist_files/namelist_definition.xml
+         in your browser and you'll see the names, type, description and valid_values for all namelist variables.
+
+   Changes to build-namelist:
+     Transient sim_year ranges (i.e. 1850-2000)
+     Remove cam_hist_case option.
+     Make sure options ONLY used for stand-alone testing have a "drv_" or "datm_" prefix in them and list these
+     options all together and last when asking for help from build-namelist.
+   New options to build-namelist:
+     -clm_usr_name     "name" Dataset resolution/descriptor for personal datasets. Default: not used
+                              Example: 1x1pt_boulderCO_c090722 to describe location,
+                                       number of pts, and date files created
+   New list options to build-namelist:
+     build-namelist -res list          # List valid resolutions
+     build-namelist -mask list         # List valid land-masks
+     build-namelist -sim_year list     # List valid simulation years and simulation year ranges
+     build-namelist -clm_demand list   # List namelist variables including those you could demand to be included.
+     build-namelist -use_case list     # List valid use-cases
+
+Summary of testing:
+  bluefire: All PASS up to...017 blF92 TBL.sh 17p_vodsrsc_dm clm_std^nl_urb 20021230:NONE:1800 4x5 gx3v5 48 cold .............PASS
+  bluefire interactive testing: All PASS up to..
+021 erAK4 TER.sh _sc_ds clm_std^nl_ptsmode 20030101:NONE:1800 1.9x2.5 gx1v6 -5+-5 cold ..........FAIL! rc= 7
+  bluefire/CCSM testing:
+PASS  ERH.f09_g16.B20TRCN.bluefire
+BFAIL ERH.f09_g16.B20TRCN.bluefire.compare.ccsm4_0_beta38 --- compset names changed -- but cpl.log files compare exactly
+!
+> ../Tools/check_exactrestart.pl cpl.log.100109-171753 $FISHOME/ccsm4_0_beta38/scripts/ERH.f09_g16.B20TRTR1CN.bluefire.G
+.172652/logs/cpl.log.100108-181015
+log files match!
+PASS
+PASS  SMS_RLA.f45_f45.I.bluefire
+PASS  SMS_RLB.f45_f45.I.bluefire
+PASS  SMS_ROA.f45_f45.I.bluefire
+PASS  ERS_D.f45_g37.I.bluefire
+PASS  ERS_D.f45_g37.I.bluefire.compare_hist.clm3_6_58+datm8
+PASS  ERS_D.f45_g37.I.bluefire.compare.clm3_6_58+datm8
+PASS  PET.f45_g37.I1850.bluefire.cpl
+PASS  PET.f45_g37.I1850.bluefire.atm
+PASS  PET.f45_g37.I1850.bluefire.lnd
+PASS  PET.f45_g37.I1850.bluefire.ice
+PASS  PET.f45_g37.I1850.bluefire.ocn
+PASS  PET.f45_g37.I1850.bluefire.glc
+PASS  PET.f45_g37.I1850.bluefire.compare.clm3_6_58+datm8
+PASS  ERS.f19_g16.I1850.bluefire
+PASS  ERS.f19_g16.I1850.bluefire.compare_hist.clm3_6_58+datm8
+PASS  ERS.f19_g16.I1850.bluefire.compare.clm3_6_58+datm8
+PASS  ERB.f09_g16.I_1948-2004.bluefire
+PASS  ERB.f09_g16.I_1948-2004.bluefire.compare.clm3_6_58+datm8
+FAIL  ERB.f09_g16.I1850SPINUPCN.bluefire  <<<<<<<<<<<<<<<<<<<<<<<<< Failed before bug 1063
+PASS  ERH_D.f10_f10.I1850CN.bluefire
+PASS  PET.f10_f10.I8520CN.bluefire.cpl
+PASS  PET.f10_f10.I8520CN.bluefire.atm
+PASS  PET.f10_f10.I8520CN.bluefire.lnd
+PASS  PET.f10_f10.I8520CN.bluefire.ice
+PASS  PET.f10_f10.I8520CN.bluefire.ocn
+PASS  PET.f10_f10.I8520CN.bluefire.glc
+  jaguar interactive testing: All PASS up to...
+006 erAK4 TER.sh _sc_ds clm_std^nl_ptsmode 20030101:NONE:1800 1.9x2.5 gx1v6 -5+-5 cold ..........FAIL! rc= 7
+  dublin/lf95 interactive testing: None PASS because of bug 1092
+  dublin/lf95: None PASS because of bug 1092
+  dublin/INTEL interactive testing: ALL PASS except (and didn't compare to baseline)
+006 erAL4 TER.sh _sc_ds clm_std^nl_ptsmode 20030101:NONE:1800 10x15 USGS -5+-5 cold .............FAIL! rc= 7
+007 brAL4 TBR.sh _sc_ds clm_std^nl_ptsmode 20030101:NONE:1800 10x15 USGS -5+-5 cold .............FAIL! rc= 6
+028 smM94 TSMncl_tools.sh ndepregrid ............................................................FAIL! rc= 6
+030 sm984 TSCext_ccsmseq_scam.sh ext_ccsm_seq_64x128_s scam_prep scam_ds scam 3 .................FAIL! rc= 4
+  dublin/INTEL: All PASS up to  021 smJ92 TSM.sh (and didn't compare to baseline)
+008 smG42 TSM.sh 17p_sc_dm clm_pftdyn 10001230:NONE:1800 10x15 USGS@1000-1002 144 arb_ic ........FAIL! rc= 10
+009 erG42 TER.sh 17p_sc_dm clm_pftdyn 10001230:NONE:1800 10x15 USGS@1000-1002 72+72 arb_ic ......FAIL! rc= 5
+010 brG42 TBR.sh 17p_sc_dm clm_pftdyn 10001230:NONE:1800 10x15 USGS@1000-1002 72+72 arb_ic ......FAIL! rc= 5
+011 blG42 TBL.sh 17p_sc_dm clm_pftdyn 10001230:NONE:1800 10x15 USGS@1000-1002 144 arb_ic ........FAIL! rc= 4
+012 smG46 TSM.sh 17p_sc_m clm_pftdyn 10001230:NONE:1800 10x15 USGS@1000-1002 144 arb_ic .........FAIL! rc= 10
+	
+===============================================================
+===============================================================
+Tag name:  clm3_6_00
+Originator(s):  erik (Kluzek Erik 1326 CGD)
+Date: Thu Mar 20 13:32:07 MDT 2008
+One-line Summary: Fully implement sequential-ccsm mode, upgrade configure, 
+         build-namelist and testing, upgrade interpolation tool, 
+         add mkdatadomain, write to iulog rather than 6 explicitly, SCAM update, 
+         Update datasets, add archiving, and build-streams, add in point version 
+         of Urban model, change directory structure to mimic CCSM
+
+Software engineering changes:
+
+   Fully implement sequential-ccsm mode.
+   Upgrade configure, build-namelist and testing, and build-streams.
+   Upgrade interpolation tool, 
+   Add mkdatadomain to convert CLM input datasets to CCSM datm7 format.
+   Write to iulog rather than 6 explicitly.
+   SCAM update.
+   Update datasets used.
+   Add archiving as a script run after model completes.
+   Change directory structure to mimic CCSM.
+
+    QUICKSTART: using the new CPL7 scripts:
+
+         cd scripts
+         ./create_newcase            # get help on how to run create_newcase
+         ./create_newcase -case testI -mach blueice -res f19_g15 -compset I    # create new "I" case for blueice at 1.9x2.5_gx1v5 res
+                                     # "I" case is clm active, datm7, and inactive ice/ocn
+         cd testI
+         configure -mach blueice     # create scripts
+         testI.build                 # build model and create namelists
+         bsub < testI.run            # submit script  
+                                     # (NOTE: edit env_run to set RESUBMIT to number of times to automatically resubmit)
+
+Science changes:
+
+   Interpinic:
+
+   Get it to work with OMP to run faster and optimized. Validate that different numbers of threads gives the same answers.
+   Correct problem to find nearest points for PFT data. Get interpinic to work on a half-degree dataset. Change interpinic 
+   so it doesn't work on a given set of variables -- but does all applicable variables based on a set of rules of what the
+   variables dimensions are. This allows interpinic to work for CN cases.
+
+   Urban model:
+
+   Urban code was started by Gordon Bonan, and taken up by Mariana Vertenstein and Keith Oleson.
+   This represents work that has been ongoing for several years. Revision dates go back to
+   before 2003.
+
+   Some papers on the work are available from:
+
+   Oleson et.-al. Journal of Applied Meteorology and Climatology, in-Press as of Jan/2008
+
+   http://www.cgd.ucar.edu/tss/staff/oleson/publications/JAMC1597_rev_jul27_2007.pdf
+   http://www.cgd.ucar.edu/tss/staff/oleson/publications/JAMC1598_rev_jul27_2007.pdf
+
+   Newcn06:
+
+   Move newcn06-02_clm3_5_00 branch tag to trunk. Add ability for CN to do pftdyn mode. Add new options to configure
+   and namelist.
+
+Known bugs (include bugzilla ID): 251 (TwoStream), 672 (3.5.4-3.5.14 diffs), 680 (t0 precip diff for seq-ccsm), 
+                                  698 (cprnc bug gives false difference), 701 (svn keyword), 708, (xlf bug on bluevista)
+                                  717 (archiving bug -- only archive 1000 files at a time), 724 (cprnc core dumps)
+                                 1079 (rpointer file updated with clm.i files)
+                                 1083 (Units of NEE exported should be kg CO2 NOT kg C)
+
+    Known bugs that will NOT be resolved: 512 (mksurf on PGI), 546(interpinic for DGVM), 
+                                          694 (restarts for offline) , 
+                                          652 (threads different answers with older PGI versions)
+                                          725 (bug in offline mode for lightning with ifort compiler)
+
+Describe any changes made to build system:
+
+   Add new options to configure
+
+     -ad_spinup    Turn on AD_SPINUP mode for bgc setting of CN [on | off]
+     -exit_spinup  Turn on EXIT_SPINUP mode for bgc setting of CN [on | off]
+     -pergro       Switch enables building CLM for perturbation growth tests.
+
+   Add BUILDPIO CPP variable
+
+   Implement a build-namelist script to create namelists for you:
+
+build-namelist -help
+SYNOPSIS
+     build-namelist [options]
+OPTIONS
+     -cam_config "file"      Read the CAM config cache file (rather than the CLM version) to get
+                             build-time configuration information.
+                             (Default -- not used.)
+     -cam_hist_case "caseid" Use the input CAM simulation caseid to build a streams file with that case id.
+                             (Default -- not used).
+     -case "name"            Case identifier up to 32 characters
+     -clm_cfg "dir"          Directory containing CLM configuration scripts.
+     -clm_demand "list"      List of variables to require on clm namelist besides the usuals.
+     -config "file"          Read the given config cache file to get the configuration
+                             of the CLM executable.  Default: config_cache.xml.
+     -csmdata "dir"          Head directory location of CCSM input data.
+                             Can also be set by using the CSMDATA environment variable.
+     -cycle_beg_year "year"  The begining year to cycle input datasets over.
+     -cycle_end_year "year"  The ending year to cycle input datasets over.
+     -cycle_init_year "year" The simulation year that will correspond to the data
+                             for cycle_beg_year.
+     -d "directory"          Output directory name of resulant namelists.
+                             Default: ./
+     -datm_data_dir "path"   Directory path to the datm data
+                             (only used when mode=ccsm_seq)
+     -datm_domain "file"     File name of domain file for datm data matching resolution data resolution.
+                             (only used when mode=ccsm_seq)
+     -datm_dom_dir "path"    Directory path to the datm_domain file.
+                             (only used when mode=ccsm_seq)
+     -help [or -h]           Print usage to STDOUT.
+     -ignore_ic_date         Ignore the date on the initial condition files (ic_ymd and ic_tod)
+                             when determining what input initial condition file to use.
+     -ignore_ic_year         Ignore just the year part of the date on the initial condition files (ic_ymd and ic_tod)
+                             when determining what input initial condition file to use.
+     -infile "file"          Specify a namelist file to read values from.
+     -lnd_res "Resolution"   Horizontal resolution of fine mesh for land
+                             (if different than resolution coupling to atmosphere)
+     -mask "land-mask"       Type of land-mask (default, navy, gx3v5, gx1v5 etc.)
+     -namelist "namelist"    Specify namelist settings using FORTRAN namelist syntax, e.g.,
+                              -namelist "&clm_inparm hist_dov2xy=.true. /"
+     -res "Resolution"       Horizontal resolution (default, 64x128, 1.9x2.5, 1x1_brazil etc.)
+     -runlength "length"     Length of simulation (e.g. default, 10d, 5s, 2y)
+                             (Corresponding to: default, 10 days, 5 steps, or 2 years)
+                             classifiers (d=days, s=steps, y=years)
+     -s                      Turns on silent mode - only fatal messages issued.
+     -sim_year year          Year to simulate for input datasets (i.e. 1890, 2000, etc.)
+     -source "source"        Source data to use for datm (for ccsm_seq mode)
+     -start_type "type"      Type of simulation (arb_ic, startup, continue, or branch)
+     -test                   Enable checking that initial and boundary datasets exist on local filesystem.
+     -use_case "case"        Specify a use case which will provide default values.
+     -v n                    Set verbosity to level n.  1 (default), 2 or 3.
+
+Note: The precedence for setting the values of namelist variables is (highest to lowest):
+      1. interactive prompting,
+      2. namelist values set by specific command-line options, e.g., -case -start_type and -ignore_ic_date,
+      3. values set on the command-line using the -namelist option,
+      4. values read from the file specified by -infile,
+      5. values specified by the -use_case option,
+      6. values from defaults files in the CLM configuration
+         script directory.
+
+      Use the "drv_in" 'virtual namelist' to have build-namelist decide which namelist
+      to put driver control information in.
+ Use build-streams for sequential-CCSM
+  Builds the streams files on the fly. This allows running data over any period.
+  Add usecase option to build-namelist to set multiple things (currently only implementing pergro and pergro0)
+  Add notes to namelist files generated with build-namelist so can reconstruct.
+  See details of new build-namelist options in documentation on build-namelist below.
+
+
+Describe any changes made to the namelist:
+
+   Remove mss options (mss_irt, mss_wpass and archive_dir)
+   Remove ability to change restart pointer filename (rpntpath)
+   Actually use pertlim for arbitrary initial conditions if > 0
+
+     o co2_ppmv               = real for CO2 parts per million by volume                         [MUST be set on namelist]
+     o model_version          = character for model version running with
+     o hostname               = character for model version running with
+     o username               = character for model version running with
+     o stop_final_ymd         = integer if want to stop early (only offline mode -- use stop_ymd in drv_in for seq_ccsm)
+     o furbinp                = character if want to turn urban datasets on                      (default " ")
+     o outnc_large_files      = logical true if want to use NetCDF 64-bit large file format      [.FALSE., .TRUE.]
+                                for output files (history and restart files)
+
+   History experimental options (mostly for PIO which isn't fully implemented yet):
+
+     o hist_pioflag           = logical true if want to turn on hist with pio                    [.FALSE., .TRUE.]
+     o ncd_lowmem2d           = logical true if want to turn on low memory 2d writes in clm hist [.TRUE., .FALSE.]
+     o ncd_pio_def            = logical true if want default pio use setting                     [.FALSE., .TRUE.]
+     o ncd_pio_UseRearranger  = logical true if want to use MCT as Rearranger                    [.TRUE., .FALSE.]
+     o ncd_pio_UseBoxRearr    = logical true if want to use box as Rearranger                    [.FALSE., .TRUE.]
+     o ncd_pio_SerialCDF      = logical true if want to write with pio serial netcdf mode        [.FALSE., .TRUE.]
+     o ncd_pio_IODOF_rootonly = logical true if want to write history in pio from root only      [.FALSE., .TRUE.]
+     o ncd_pio_DebugLevel     = integer pio debug level                                          ( default 2)
+     o ncd_pio_num_iotasks    = integer number of iotasks to use for PIO                         (default all PEs)
+
+   New output variables added:
+
+        BUILDHEAT     heat flux from urban building interior to walls and roof            W/m^2  active
+        LWdown        atmospheric longwave radiation                                      W/m^2
+        PSurf         surface pressure                                                    Pa
+        Qh            sensible heat                                                       W/m^2
+        Qle           total evaporation                                                   W/m^2
+        Qstor         storage heat flux (includes snowmelt)                               W/m^2
+        RH            atmospheric relative humidity                                       %
+        Rainf         atmospheric rain                                                    mm/s
+        Rnet          net radiation                                                       W/m^2
+        SWdown        atmospheric incident solar radiation                                W/m^2
+        TBUILD        internal urban building temperature                                 K      active
+        TRAFFICFLUX   sensible heat flux from urban traffic                               W/m^2  active
+        Tair          atmospheric air temperature                                         K
+        WASTEHEAT     sensible heat flux from heating/cooling sources of urban waste heat W/m^2  active
+        HCSOI         soil heat content                                                   MJ     active
+        HCSOISNO      soil plus snow heat content                                         MJ     active
+
+   (Fields not mentioned above as active are set to inactive unless asked for. They are "ALMA" variables needed for
+    an urban model intercomparision project.)
+
+Describe timing and memory performance:
+
+   On blueice
+
+       128 Tasks, nosmp   = 1.9x2.5_gx1v5 resolution:  115 sim-years/Wall-Day 
+                                                        61 sim-years/Wall-Day (CN mode) 3.9 GBytes memory
+	64 Tasks, nosmp   = 1.9x2.5_gx1v5 resolution:  143 sim-years/Wall-Day
+                                                        73 sim-years/Wall-Day (CN mode) 2.1 GBytes memory
+	32 Tasks, nosmp   = 1.9x2.5_gx1v5 resolution:  131 sim-years/Wall-Day 
+                                                        60 sim-years/Wall-Day (CN mode) 2.2 GBytes memory
+	32 threads, nospmd= 1.9x2.5_gx1v5 resolution:   98 sim-years/Wall-Day 
+                                                        49 sim-years/Wall-Day (CN mode) 1.7 GBytes memory
+         8 Tasks, nosmp   = 1.9x2.5_gx1v5 resolution:   88 sim-years/Wall-Day 
+                                                        38 sim-years/Wall-Day (CN mode) 774 MBytes memory
+       Note: With 64 Tasks CLM is spending roughly 40% of it's time on I/O. Hence, increasing the processor
+             count doesn't increase the throughput -- since I/O is only on one task.
+
+   Depending on the configuration -- offline mode is about the same to 168% slower (in CN mode)
+
+Versions of any externally defined libraries:
+
+   doc                           doc_060127
+   scripts                       scripts4_080311
+   models/drv/seq_mct            drvseq2_0_12
+   models/atm/datm7              drva07_datm7_071129
+   models/ocn//socn              stubs1_0_7
+   models/ice//sice              stubs1_0_7
+   models/csm_share              loga26_share3_071107
+   models/utils/esmf_wrf_timemgr esmf_wrf_timemgr_060616
+   models/utils/timing           timing_070525
+   models/utils/mct              seqa07_MCT2_4_2_071026
+   models/utils/pio              pio11_prod
+   models/lnd/clm/tools/cprnc    cprnc_070817
+   models/lnd/clm/bld/perl5lib   perl5lib_071204
+
+Summary of testing:
+
+  bluevista:
+011 er111 TER.sh 4p_vodsr_dh clm_std 19981231:YEARLY:1800 48x96 gx3v5 10+38 arb_ic ..............FAIL! rc= 13 <<<< Bug 694
+016 er112 TER.sh 4p_vodsr_dm clm_std 19981231:YEARLY:1800 48x96 gx3v5 10+38 arb_ic ..............FAIL! rc= 13 <<<< Bug 694
+021 er113 TER.sh 4p_vodsr_do clm_std 19981231:YEARLY:1800 48x96 gx3v5 10+38 arb_ic ..............FAIL! rc= 13 <<<< Bug 694
+070 smJ11 TSM.sh 4p_casasc_dh clm_std 19981231:NONE:1800 48x96 gx3v5 48 arb_ic ..................FAIL! rc= 4 <<<<< Bug 708
+071 erJ11 TER.sh 4p_casasc_dh clm_std 19981231:NONE:1800 48x96 gx3v5 10+38 arb_ic ...............FAIL! rc= 5 <<<<< Bug 708
+072 brJ11 TBR.sh 4p_casasc_dh clm_std 19981231:NONE:1800 48x96 gx3v5 24+24 arb_ic ...............FAIL! rc= 5 <<<<< Bug 708
+073 blJ11 TBL.sh 4p_casasc_dh clm_std 19981231:NONE:1800 48x96 gx3v5 48 arb_ic ..................FAIL! rc= 4 <<<<< Bug 708
+074 smJ15 TSM.sh 4p_casasc_h clm_std 19981231:NONE:1800 48x96 gx3v5 48 arb_ic ...................FAIL! rc= 4 <<<<< Bug 708
+  blueice: All PASS except...
+011 er111 TER.sh 4p_vodsr_dh clm_std 19981231:YEARLY:1800 48x96 gx3v5 10+38 arb_ic ..............FAIL! rc= 13 <<<< Bug 694
+016 er112 TER.sh 4p_vodsr_dm clm_std 19981231:YEARLY:1800 48x96 gx3v5 10+38 arb_ic ..............FAIL! rc= 13 <<<< Bug 694
+021 er113 TER.sh 4p_vodsr_do clm_std 19981231:YEARLY:1800 48x96 gx3v5 10+38 arb_ic ..............FAIL! rc= 13 <<<< Bug 694
+022 br113 TBR.sh 4p_vodsr_do clm_std 19981231:YEARLY:1800 48x96 gx3v5 24+24 arb_ic ..............FAIL! rc= 11 <<<< Bug 694
+032 brE12 TBR.sh 4p_vodsrsc_dm clm_std 19981231:YEARLY:1800 48x96 gx3v5 24+24 arb_ic ............FAIL! rc= 6 <<<< MPI error...
+  jaguarcnl: All PASS except...
+009 smB11 TSMruncase.sh .........................................................................FAIL! rc= 4 <<<< bad hostname
+013 bl111 TBL.sh 4p_vodsr_dh clm_std 19981231:YEARLY:1800 48x96 gx3v5 48 arb_ic .................FAIL! rc= 5
+018 bl112 TBL.sh 4p_vodsr_dm clm_std 19981231:YEARLY:1800 48x96 gx3v5 48 arb_ic .................FAIL! rc= 5
+023 bl113 TBL.sh 4p_vodsr_do clm_std 19981231:YEARLY:1800 48x96 gx3v5 48 arb_ic .................FAIL! rc= 7
+028 blE11 TBL.sh 4p_vodsrsc_dh clm_std 19981231:YEARLY:1800 48x96 gx3v5 48 arb_ic ...............FAIL! rc= 5
+033 blE12 TBL.sh 4p_vodsrsc_dm clm_std 19981231:YEARLY:1800 48x96 gx3v5 48 arb_ic ...............FAIL! rc= 5
+035 smE13 TSM.sh 4p_vodsrsc_do clm_std 19981231:YEARLY:1800 48x96 gx3v5 48 arb_ic ...............FAIL! rc= 10
+038 blE13 TBL.sh 4p_vodsrsc_do clm_std 19981231:YEARLY:1800 48x96 gx3v5 48 arb_ic ...............FAIL! rc= 4
+  lightning/pathf90: All PASS except...
+011 er111 TER.sh 4p_vodsr_dh clm_std 19981231:YEARLY:1800 48x96 gx3v5 10+38 arb_ic ..............FAIL! rc= 13 <<<< Bug 694
+012 br111 TBR.sh 4p_vodsr_dh clm_std 19981231:YEARLY:1800 48x96 gx3v5 24+24 arb_ic ..............FAIL! rc= 11 <<<< Bug 694
+013 bl111 TBL.sh 4p_vodsr_dh clm_std 19981231:YEARLY:1800 48x96 gx3v5 48 arb_ic .................FAIL! rc= 7 <<<< Bug 694
+016 er112 TER.sh 4p_vodsr_dm clm_std 19981231:YEARLY:1800 48x96 gx3v5 10+38 arb_ic ..............FAIL! rc= 13 <<<< Bug 694
+018 bl112 TBL.sh 4p_vodsr_dm clm_std 19981231:YEARLY:1800 48x96 gx3v5 48 arb_ic .................FAIL! rc= 7 <<<< Bug 694
+021 er113 TER.sh 4p_vodsr_do clm_std 19981231:YEARLY:1800 48x96 gx3v5 10+38 arb_ic ..............FAIL! rc= 13 <<<< Bug 694
+022 br113 TBR.sh 4p_vodsr_do clm_std 19981231:YEARLY:1800 48x96 gx3v5 24+24 arb_ic ..............FAIL! rc= 11 <<<< Bug 694
+023 bl113 TBL.sh 4p_vodsr_do clm_std 19981231:YEARLY:1800 48x96 gx3v5 48 arb_ic .................FAIL! rc= 7 <<<< Bug 694
+028 blE11 TBL.sh 4p_vodsrsc_dh clm_std 19981231:YEARLY:1800 48x96 gx3v5 48 arb_ic ...............FAIL! rc= 7
+  lightning/ifort: All PASS except...
+004 blA91 TBL.sh _sc_dh clm_std 19990101:NONE:3600 4x5 gx3v5 -10 arb_ic .........................FAIL! rc= 7 <<<< Answers different
+008 blA74 TBL.sh _sc_ds clm_std 19990101:NONE:3600 1x1_brazil navy -10 arb_ic ...................FAIL! rc= 7 <<<< Answers different
+010 sm111 TSM.sh 4p_vodsr_dh clm_std 19981231:YEARLY:1800 48x96 gx3v5 48 arb_ic .................FAIL! rc= 10 <<<< Bug 725
+011 er111 TER.sh 4p_vodsr_dh clm_std 19981231:YEARLY:1800 48x96 gx3v5 10+38 arb_ic ..............FAIL! rc= 5 <<<< Bug 725
+012 br111 TBR.sh 4p_vodsr_dh clm_std 19981231:YEARLY:1800 48x96 gx3v5 24+24 arb_ic ..............FAIL! rc= 5 <<<< Bug 725
+013 bl111 TBL.sh 4p_vodsr_dh clm_std 19981231:YEARLY:1800 48x96 gx3v5 48 arb_ic .................FAIL! rc= 4 <<<< Bug 725
+014 sm115 TSM.sh 4p_vodsr_h clm_std 19981231:YEARLY:1800 48x96 gx3v5 48 arb_ic ..................FAIL! rc= 10 <<<< Bug 725
+016 er112 TER.sh 4p_vodsr_dm clm_std 19981231:YEARLY:1800 48x96 gx3v5 10+38 arb_ic ..............FAIL! rc= 13 <<<< Bug 725
+018 bl112 TBL.sh 4p_vodsr_dm clm_std 19981231:YEARLY:1800 48x96 gx3v5 48 arb_ic .................FAIL! rc= 7 <<<< Bug 725
+021 er113 TER.sh 4p_vodsr_do clm_std 19981231:YEARLY:1800 48x96 gx3v5 10+38 arb_ic ..............FAIL! rc= 13 <<<< Bug 725
+022 br113 TBR.sh 4p_vodsr_do clm_std 19981231:YEARLY:1800 48x96 gx3v5 24+24 arb_ic ..............FAIL! rc= 11 <<<< Bug 725
+023 bl113 TBL.sh 4p_vodsr_do clm_std 19981231:YEARLY:1800 48x96 gx3v5 48 arb_ic .................FAIL! rc= 7 <<<< Bug 725
+026 erE11 TER.sh 4p_vodsrsc_dh clm_std 19981231:YEARLY:1800 48x96 gx3v5 10+38 arb_ic ............FAIL! rc= 13 <<<< Answers different
+027 brE11 TBR.sh 4p_vodsrsc_dh clm_std 19981231:YEARLY:1800 48x96 gx3v5 24+24 arb_ic ............FAIL! rc= 11 <<<< Answers different
+ifort tests abort early here...
+  bangkok/lf95:  All PASS except...
+011 er111 TER.sh 4p_vodsr_dh clm_std 19981231:YEARLY:1800 48x96 gx3v5 10+38 arb_ic ..............FAIL! rc= 13 <<<< Bug 694
+016 er112 TER.sh 4p_vodsr_dm clm_std 19981231:YEARLY:1800 48x96 gx3v5 10+38 arb_ic ..............FAIL! rc= 13 <<<< Bug 694
+021 er113 TER.sh 4p_vodsr_do clm_std 19981231:YEARLY:1800 48x96 gx3v5 10+38 arb_ic ..............FAIL! rc= 13 <<<< Bug 694
+135 sm061 TSMext_ccsmcon.sh ERS f19_g13 .........................................................FAIL! rc= 4 <<<< Bad hostname
+      >>>>>>>>>>>>>>>>>>>> Random MPI errors????
+029 smE15 TSM.sh 4p_vodsrsc_h clm_std 19981231:YEARLY:1800 48x96 gx3v5 48 arb_ic ................FAIL! rc= 10
+044 smF25 TSM.sh 17p_vodsrsc_h clm_std 19981231:YEARLY:1800 48x96 gx3v5 48 arb_ic ...............FAIL! rc= 10
+045 smE31 TSM.sh 4p_vodsrsc_dh clm_std 19981231:YEARLY:1800 64x128^360x720 USGS 48 arb_ic .......FAIL! rc= 10
+046 erE31 TER.sh 4p_vodsrsc_dh clm_std 19981231:YEARLY:1800 64x128^360x720 USGS 10+38 arb_ic ....FAIL! rc= 5
+047 brE31 TBR.sh 4p_vodsrsc_dh clm_std 19981231:YEARLY:1800 64x128^360x720 USGS 24+24 arb_ic ....FAIL! rc= 5
+049 smE35 TSM.sh 4p_vodsrsc_h clm_std 19981231:YEARLY:1800 64x128^360x720 USGS 48 arb_ic ........FAIL! rc= 10
+054 smG45 TSM.sh 17p_sc_h clm_pftdyn 10001230:MONTHLY:1800 10x15 USGS 48 arb_ic .................FAIL! rc= 10
+063 smH06 TSM.sh 17p_cnnsc_m clm_std^nl_lfiles 19800101:NONE:1800 0.47x0.63 gx1v5@2000 48 startup FAIL! rc= 10
+074 smJ15 TSM.sh 4p_casasc_h clm_std 19981231:NONE:1800 48x96 gx3v5 48 arb_ic ...................FAIL! rc= 10
+079 smK15 TSM.sh 10p_dgvmsc_h clm_std 19981231:NONE:1800 48x96 gx3v5 48 arb_ic ..................FAIL! rc= 10
+080 smK18 TSM.sh 10p_dgvmsc_h clm_std 19981231:NONE:1800 48x96 gx3v5 -213 arb_ic ................FAIL! rc= 10
+081 erK18 TER.sh 10p_dgvmsc_h clm_std 19981231:NONE:1800 48x96 gx3v5 -90+-121 arb_ic ............FAIL! rc= 5
+093 smL61 TSM.sh _sc_h clm_std 19980101:MONTHLY:1800 1.9x2.5 gx1v5 -10 startup ..................FAIL! rc= 10
+094 erL61 TER.sh _sc_h clm_std 19980101:MONTHLY:1800 1.9x2.5 gx1v5 -5+-5 startup ................FAIL! rc= 5
+095 brL61 TBR.sh _sc_h clm_std 19980101:MONTHLY:1800 1.9x2.5 gx1v5 -10+-10 startup ..............FAIL! rc= 5
+  bangkok/pgi: All PASS except...
+011 er111 TER.sh 4p_vodsr_dh clm_std 19981231:YEARLY:1800 48x96 gx3v5 10+38 arb_ic ..............FAIL! rc= 13 <<<< Bug 694
+012 br111 TBR.sh 4p_vodsr_dh clm_std 19981231:YEARLY:1800 48x96 gx3v5 24+24 arb_ic ..............FAIL! rc= 11 <<<< Bug 694
+016 er112 TER.sh 4p_vodsr_dm clm_std 19981231:YEARLY:1800 48x96 gx3v5 10+38 arb_ic ..............FAIL! rc= 13 <<<< Bug 694
+021 er113 TER.sh 4p_vodsr_do clm_std 19981231:YEARLY:1800 48x96 gx3v5 10+38 arb_ic ..............FAIL! rc= 13 <<<< Bug 694
+022 br113 TBR.sh 4p_vodsr_do clm_std 19981231:YEARLY:1800 48x96 gx3v5 24+24 arb_ic ..............FAIL! rc= 11 <<<< Bug 694
+135 sm061 TSMext_ccsmcon.sh ERS f19_g13 .........................................................FAIL! rc= 4 <<<< Bad hostname
+045 smE31 TSM.sh 4p_vodsrsc_dh clm_std 19981231:YEARLY:1800 64x128^360x720 USGS 48 arb_ic .......FAIL! rc= 10 <<<< Bug 464
+046 erE31 TER.sh 4p_vodsrsc_dh clm_std 19981231:YEARLY:1800 64x128^360x720 USGS 10+38 arb_ic ....FAIL! rc= 5 <<<< Bug 464
+047 brE31 TBR.sh 4p_vodsrsc_dh clm_std 19981231:YEARLY:1800 64x128^360x720 USGS 24+24 arb_ic ....FAIL! rc= 5 <<<< Bug 464
+049 smE35 TSM.sh 4p_vodsrsc_h clm_std 19981231:YEARLY:1800 64x128^360x720 USGS 48 arb_ic ........FAIL! rc= 10 <<<< Bug 464
+      >>>>>>>>>>>>>>>>>>>> Random MPI errors???? (seems to randoming have trouble finding files -- but they are there later...)
+040 smF21 TSM.sh 17p_vodsrsc_dh clm_std 19981231:YEARLY:1800 48x96 gx3v5 48 arb_ic ..............FAIL! rc= 10
+041 erF21 TER.sh 17p_vodsrsc_dh clm_std 19981231:YEARLY:1800 48x96 gx3v5 10+38 arb_ic ...........FAIL! rc= 5
+042 brF21 TBR.sh 17p_vodsrsc_dh clm_std 19981231:YEARLY:1800 48x96 gx3v5 24+24 arb_ic ...........FAIL! rc= 5
+055 smG74 TSM.sh 17p_sc_ds clm_pftdyn 10001230:NONE:3600 1x1_tropicAtl test -1100 arb_ic ........FAIL! rc= 10
+063 smH06 TSM.sh 17p_cnnsc_m clm_std^nl_lfiles 19800101:NONE:1800 0.47x0.63 gx1v5@2000 48 startup FAIL! rc= 10
+069 smI58 TSMcnspinup.sh 17p_cnadspinupsc_dh 17p_cnexitspinupsc_dh 17p_cnsc_dh clm_std 19980115:NONEFAIL! rc= 5
+080 smK18 TSM.sh 10p_dgvmsc_h clm_std 19981231:NONE:1800 48x96 gx3v5 -213 arb_ic ................FAIL! rc= 10
+081 erK18 TER.sh 10p_dgvmsc_h clm_std 19981231:NONE:1800 48x96 gx3v5 -90+-121 arb_ic ............FAIL! rc= 5
+083 erK74 TER.sh 10p_dgvmsc_s clm_std 19971231:NONE:1800 1x1_brazil navy -334+-336 arb_ic .......FAIL! rc= 6
+  tempest: All PASS except..
+009 smB11 TSMruncase.sh .........................................................................FAIL! rc= 4 <<<< No tempest run script
+011 er111 TER.sh 4p_vodsr_dh clm_std 19981231:YEARLY:1800 48x96 gx3v5 10+38 arb_ic ..............FAIL! rc= 13 <<< Bug 694
+012 br111 TBR.sh 4p_vodsr_dh clm_std 19981231:YEARLY:1800 48x96 gx3v5 24+24 arb_ic ..............FAIL! rc= 11 <<< Bug 694
+013 bl111 TBL.sh 4p_vodsr_dh clm_std 19981231:YEARLY:1800 48x96 gx3v5 48 arb_ic .................FAIL! rc= 7 <<< Bug 694
+016 er112 TER.sh 4p_vodsr_dm clm_std 19981231:YEARLY:1800 48x96 gx3v5 10+38 arb_ic ..............FAIL! rc= 13 <<< Bug 694
+021 er113 TER.sh 4p_vodsr_do clm_std 19981231:YEARLY:1800 48x96 gx3v5 10+38 arb_ic ..............FAIL! rc= 13 <<< Bug 694
+022 br113 TBR.sh 4p_vodsr_do clm_std 19981231:YEARLY:1800 48x96 gx3v5 24+24 arb_ic ..............FAIL! rc= 11 <<< Bug 694
+023 bl113 TBL.sh 4p_vodsr_do clm_std 19981231:YEARLY:1800 48x96 gx3v5 48 arb_ic .................FAIL! rc= 7 <<< Bug 694
+046 erE31 TER.sh 4p_vodsrsc_dh clm_std 19981231:YEARLY:1800 64x128^360x720 USGS 10+38 arb_ic ....FAIL! rc= 7 <<<< Stack memory problem
+047 brE31 TBR.sh 4p_vodsrsc_dh clm_std 19981231:YEARLY:1800 64x128^360x720 USGS 24+24 arb_ic ....FAIL! rc= 6 <<<< Stack memory problem
+063 smH06 TSM.sh 17p_cnnsc_m clm_std^nl_lfiles 19800101:NONE:1800 0.47x0.63 gx1v5@2000 48 startup FAIL! rc= 10 <<<< Memory limit
+123 sm921 TSMext_ccsmseq_cam.sh ext_ccsm_seq_4x5_dh ext_ccsm_seq_cam 48 .........................FAIL! rc= 8 <<<<< MPI_GROUP_MAX limit
+124 bl921 TSMext_ccsmseq_cam.sh ext_ccsm_seq_4x5_dh ext_ccsm_seq_cam 48 .........................FAIL! rc= 2 <<<<< MPI_GROUP_MAX limit
+135 sm061 TSMext_ccsmcon.sh ERS f19_g13 .........................................................FAIL! rc= 4 <<<<< Bad hostname
+
+===============================================================
+===============================================================
+Tag name:  clm3_5_00
+Originator(s):  erik (Erik Kluzek)
+Date: Thu May  3 12:03:53 MDT 2007
+Date:One-line Summary: New surface datasets, improved canopy integration, and various improvements to Hydrology
+
+Purpose of changes (Since CLM3.0):
+
+  CLM3.5 is considerably different to CLM3.0, particularly with respect to its 
+  simulation of the hydrologic cycle.   The modifications consist of new surface 
+  datasets based on Moderate Resolution Imaging Spectroradiometer (MODIS) products 
+  (Lawrence and Chase 2007), an improved canopy integration scheme 
+  (Thornton and Zimmermann 2007), scaling of canopy interception (Lawrence et al. 2007), 
+  a simple TOPMODEL-based model for surface and sub-surface runoff (Niu et al. 2005), a 
+  simple groundwater model for determining water table depth (Niu et al. 2007), and a 
+  new frozen soil scheme (Niu and Yang 2006).  
+
+  There are four additional modifications.  Three of these, an improved description of 
+  soil water availability, a resistance term to reduce excessive soil evaporation, and the
+  introduction of a factor to simulate nitrogen limitation on plant productivity, can be 
+  categorized as new or improved parameterizations from the perspective of CLM3.  The 
+  other may be categorized as fixing an algorithmically defective existing parameterization
+  (correction to snowage calculation so that snowage increases monotonically) 
+  (Dickinson et al. 2006).
+
+  See:
+
+  http://www.cgd.ucar.edu/tss/clm/distribution/clm3.5/
+
+  for more information, and for technical and scientific papers that describe CLM3.5.
+
+  Lastly, we are distributing a new forcing dataset with the new code.  This
+  dataset was derived by combining observation-based analyses of monthly precipitation and
+  surface air temperature with intramonthly variations from the NCEP/NCAR reanalysis 
+  (Qian et al., 2006)
+
+  If you would like to run CLM-CN, please contact Peter Thornton (thornton@ucar.edu).
+  If you would like to run CLM-DGVM, please contact Sam Levis (slevis@ucar.edu).
+  If you would like to run CLM-CASA', please contact Forrest Hoffman (hof@ornl.gov).
+
+Describe any bug fixes:
+
+  o A revision of RTM-subcycling and corrections to a few land-locked grid cells.
+  o A more efficient soil evaporation calculation based on PFT demand.
+  o A fix to aggregation of LAI from high-resolution source data to CLM surface data.
+  o Changing Temperature of freezing of water from 273.16 (triple point of water) to 273.15.
+
+Summarize any software engineering improvements:
+
+  o Add option to run CLM at a finer resolution than the atmospheric model coupled to
+     (Tony Craig and others)
+  o MCT (Model Coupling Toolkit) used to describe decompositions and do redistributions.
+  o Remove dependences on CAM modules and data structures.
+  o Use csm_share clocks and CCSMInit objects for simulation time information and
+    initialization information needed by all CCSM models.
+  o Update time-management to ESMF_2_2_2r interfaces and use the WRF implementation of
+    ESMF time-management modules.
+  o Made restart datasets double precision NetCDF rather than binary 
+    (except history restarts).
+  o Add interface layers to link to Sequential CCSM (formally standalone CAM) using MCT.
+  o Parallelize RTM, by Tony Craig and Pat Worley.
+  o Add a new testing suite to do automated testing for any code changes.
+  o Improve memory scaling with a new decomposition from Tony Craig.
+  o Move make surface dataset capability to an offline tool (mksurfdata).
+  o Add an offline tool to create grid datasets needed for initialization (mkgriddata).
+  o Add ability to run concurrent CCSM in single-executable mode.
+  o Running with SCAM (Single Column Atmospheric Model) mode modularized better.
+
+Versions of any externally defined libraries: (under src/utils)
+
+  o csm_share:        share3_070321 (add flds, eshr and dshr directories, 
+                                     add shr_inputinfo_mod, eshr_timemgr_mod, 
+                                     other modules for shared data work)
+  o esmf_wrf_timemgr: esmf_wrf_timemgr_060616 (or can link to full ESMF_2_2_2r)
+  o timing:           timing_070328 (extensive updates and utilize PAPI and new namelist)
+  o mct:              MCT2_3_0_070206 (allow to build with code, Cray mods, misc.)
+
+Describe any changes made to build system: 
+
+  o A configure script was created to create files needed to build the model. 
+  o There are also cshell run scripts for different platforms to: 
+       configure, build and run the model.
+  o Remove SPMD CPP token -- use src/utils/mct/mpi-serial library for serial mode.
+  o Remove HIDE_MPI token.
+  o Remove CAM and COUP_CAM CPP tokens -- replace with SEQ_MCT and SEQ_ESMF.
+  o Remove NOCOMPETE CPP token.
+  o Most SCAM #ifdef's removed.
+  o Remove TIMING_BARRIERS CPP token -- add option to prof_inparm namelist.
+  o See src/utils/timing for new tokens added for timing library 
+     (HAVE_PAPI, THREADED_OMP, DIAG, HASH).
+  o MCT included with offline CLM.
+
+  Build features added -- but unsupported for public release:
+
+  o Port to jaguar.ccs.ornl.gov (Cray XT3/XT4)
+  o Port to Bluegene/L (frost.ucar.edu) (add BGL CPP token)
+  o Port to lightning.ucar.edu (frost.ucar.edu with Pathscale)
+  o Add SINGLE_EXEC CPP token for running concurrent CCSM in single-executable mode.
+  o Add CN CPP token and CN BGC code.
+  o Add NO_FIRE CPP token for use by CN mode.
+  o Add AD_SPINUP and EXIT_SPINUP CPP token for initial spinup of CN.
+  o Add DUST and PROGSST CPP tokens.
+  o Add COUP_WRF CPP token.
+
+Describe any changes made to the namelist:
+
+  Main namelist name changed from clmexp to clm_inparm
+
+  Option to run clm at a finer mesh than the atmosphere added several namelist items.
+
+  flndtopo        = 256 character land topography file name
+  fatmgrid        = 256 character atmosphere grid data file name
+  fatmlndfrc      = 256 character landfrac (on atm grid) file name
+  fatmtopo        = 256 character atmosphere topography file name
+
+  Decomposition/performance control:
+
+  nsegspc         = Number of segments per clump for new decomp. 
+                    1 will produce poor loadbalance, infinity yields too many
+                    segments per pe but good load balance. (default 20)
+
+  All mksrf_* options moved to the mksurfdata offline tool. So instead of
+  creating surface datasets by running clm -- you run the mksurfdata tool
+  to create them.
+
+  mksrf_* = Removed from namelist.
+
+  Miscellaneous:
+
+  rest_flag            = logical, turns restart file writing on (default .true.)
+  wrtdia               = true if want output written  (default .false.)
+  create_crop_landunit = true => separate crop landunit is not created by default
+                         (currently broken see KnownBugs) (default .false.)
+
+  New prof_inparm namelist added for timing library.
+
+   profile_single_file  = Write timing output to single file or file per task 
+                          (default single)
+   profile_disable      = Turn timing off. (default .false.)
+   profile_barrier      = Turn MPI barriers on in t_barrierf calls. (default .false.)
+   profile_depth_limit  = Integer indicating maximum number of levels of timer nesting 
+                          (default 99999)
+   profile_detail_limit = integer indicating maximum detail level to profile (default 0)
+   profile_timer        = integer indicating which timer to use
+      GPTLwall           = 1
+      GPTLcpu            = 2
+      GPTLabort_on_error = 3
+      GPTLoverhead       = 4
+      GPTLdepthlimit     = 5
+      GPTLgettimeofday   = 6
+      GPTLnanotime       = 7
+      GPTLrtc            = 8
+      GPTLmpiwtime       = 9
+      GPTLclockgettime   = 10
+      GPTLpapitime       = 11
+      (default is 9, except on UNICOSMP where it is 8)
+
+  Namelist items added -- but unsupported in public release:
+
+  co2_type             = values of 'prognostic','diagnostic','constant' 
+                         (only constant mode for OFFLINE)
+
+  CASA':
+
+  spunup   =  0=no, 1=yes (used with nsrest/=1 only)   (default 0)
+  lalloc   =  0=fixed allocation, 1=dynamic allocation (default 1)
+  lnpp     =  1=gpp*gppfact,2=fn(lgrow)*gppfact        (default 2)
+  q10      =  temperature dependence                   (default 2.0)
+  fcpool   =  Carbon Pool initial state filename
+
+List any changes to the defaults for the boundary datasets:
+
+ Use following files for T42 resolution:
+
+ finidat        = '$CSMDATA/inidata_3.1/offline/clmi_0000-01-01_064x128_c070403.nc'
+ fsurdat        = '$CSMDATA/surfdata/surfdata_64x128_c070501.nc'
+ fatmgrid       = '$CSMDATA/griddata/griddata_64x128_060829.nc'
+ fatmlndfrc     = '$CSMDATA/griddata/fracdata_64x128_USGS_070110.nc'
+ fpftcon        = '$CSMDATA/pftdata/pft-physiology.c070207'
+ offline_atmdir = '$CSMDATA/NCEPDATA.Qian.T62.c051024'
+ frivinp_rtm    = '$CSMDATA/rtmdata/rdirc.05.061026'
+
+ Only needed for CN mode:
+
+ fndepdat       = '$CSMDATA/ndepdata/ndep_clm_2000_64x128_c060414.nc'
+
+Code reviewed by: 
+   bonan, dlawren, erik, mvertens, nanr, oleson, pworley, slevis, tcraig, thornton
+
+Summary of testing: Other than bugs documented in KnownBugs works on following machines:
+
+   bluevista.ucar.edu ---- IBM/SP running AIX
+   blueice.ucar.edu ------ IBM/SP running AIX
+   bangkok.cgd.ucar.edu -- Linux cluster (both PGI and Lahey compilers)
+   tempest.ucar.edu ------ SGI running IRIX
+   lightning.ucar.edu ---- Linux cluster (using Pathscale compiler)
+   jaguar.ccs.ornl.edu --- Cray XT3/XT4 (using Cray-specific PGI compiler) (builds)
+   phoenix.ccs.ornl.edu -- Cray X1 (using Cray-specific PGI compiler) (builds)
+
+  MSS location of control simulations used to validate new climate:
+
+	OFFLINE: /OLESON/csm/hydp2_off_communn_hk44
+        CAM/CLM: /OLESON/csm/hydp2_communn_hk44a
+        CCSM:    /CCSM/csm/b31.020ws
+   
+  URL for LMWG diagnostics output used to validate new climate:
+
+OFFLINE:
+http://www.cgd.ucar.edu/tss/clm/diagnostics/lmwg_hydro/hydp2_off_communn_hk44a-hyd_off_con3d/setsIndex.html
+
+CAM/CLM:
+http://www.cgd.ucar.edu/tss/clm/diagnostics/lmwg_hydro/hydp2_communn_hk44aa-hyd_sstb/setsIndex.html
+
+CCSM:
+http://www.cgd.ucar.edu/tss/clm/diagnostics/ccsm2_prod/b31.020wsb-b31.002b/setsIndex.html
+
+===============================================================

@@ -1,0 +1,31 @@
+#
+# Make sure most of the I compsets are exercised
+# Also do multi-instance, PTS_MODE, single-point
+# threading tests, debug on/off, transient
+# also IG tests with CISM, with ESMF
+# and all types of restart: ERI, ERB, ERS
+#
+# PTS_MODE tests
+SMS_RLA.f45_f45.I.bluefire_ibm
+SMS_RLB.f45_f45.I.bluefire_ibm
+SMS_ROA.f45_f45.I.bluefire_ibm
+# 2000, 1850, 1948-2004, and spinup cases
+ERS_D.f45_g37.I.bluefire_ibm
+NCK.T31_g37.I.bluefire_ibm
+PET_PT.f45_g37.I1850.bluefire_ibm
+ERS_E.T31_g37.I1850.bluefire_ibm
+ERI.T31_g37.IG1850.bluefire_ibm
+ERB.ne30_g16.I_1948-2004.bluefire_ibm
+ERB.f09_g16.I1850SPINUPCN.bluefire_ibm
+ERH_D.T31_g37.I1850CN.bluefire_ibm
+SMS.T31_g37.IG4804.bluefire_ibm
+# Single-point
+SMS.1x1_mexicocityMEX.I1PT.bluefire_ibm
+SMS.1x1_numaIA.ICN.bluefire_ibm
+ERS_Lm3.1x1_vancouverCAN.I1PT.bluefire_ibm
+# Transient cases
+ERS_D.f19_g16.IGRCP26CN.bluefire_ibm
+ERS_Lm3.f19_g16.IGRCP60CN.bluefire_ibm
+PET_PT.f10_f10.I20TRCN.bluefire_ibm
+SMS.f10_f10.IRCP45CN.bluefire_ibm
+ERS_D.f19_g16.IRCP85CN.bluefire_ibm

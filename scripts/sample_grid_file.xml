@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+
+<config_horiz_grid>
+
+<horiz_grid GLOB_GRID="ne120np4"  nx="777602" ny="1"    />
+<horiz_grid GLOB_GRID="gx1v6"     nx="320"    ny="384"  />
+
+<horiz_grid GRID="ne120np4_gx1v6" SHORTNAME="ne120_g16"
+            ATM_GRID="ne120np4" LND_GRID="ne120np4" OCN_GRID="gx1v6" ICE_GRID="gx1v6" ROF_GRID="r05"
+            ATM_NCPL="96" OCN_NCPL="1"
+            CAM_DYCORE="homme"
+            CCSM_GCOST="10"
+            ICE_DOMAIN_PRIMEFACS=""  
+	    ATM_DOMAIN_FILE="domain.lnd.ne120np4_gx1v6.110502.nc"
+	    LND_DOMAIN_FILE="domain.lnd.ne120np4_gx1v6.110502.nc"
+	    ICE_DOMAIN_FILE="domain.ocn.gx1v6.090206.nc"
+	    OCN_DOMAIN_FILE="domain.ocn.gx1v6.090206.nc"
+            ATM_DOMAIN_PATH="$DIN_LOC_ROOT/share/domains"
+            LND_DOMAIN_PATH="$DIN_LOC_ROOT/share/domains"   
+            ICE_DOMAIN_PATH="$DIN_LOC_ROOT/share/domains"
+            OCN_DOMAIN_PATH="$DIN_LOC_ROOT/share/domains"
+            DESC="1/4 deg HOMME atm/lnd grid and 1 deg ocn/ice grid." 
+/>
+
+</config_horiz_grid>

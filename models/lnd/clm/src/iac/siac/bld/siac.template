@@ -1,0 +1,42 @@
+#! /bin/csh -f
+
+if !(-d $CASEBUILD) mkdir $CASEBUILD
+
+# ---------------------------------------------------------------------------
+#  Create resolved namelist 
+# ---------------------------------------------------------------------------
+
+cat >! $CASEBUILD/siac.buildnml.csh << EOF1
+#! /bin/csh -f 
+
+set exedir = \$RUNDIR; cd \$exedir
+
+# nothing to do for stubs
+
+EOF1
+
+# ---------------------------------------------------------------------------
+#  Create script to build dead model
+# ---------------------------------------------------------------------------
+
+cat >! $CASEBUILD/siac.buildexe.csh << EOF2
+#! /bin/csh -f 
+
+set objdir = \$OBJROOT/iac/obj; cd \$objdir
+set comp = 'unknown'
+if (\$COMP_INTERFACE == 'MCT' ) set comp = mct
+if (\$COMP_INTERFACE == 'ESMF') set comp = esmf
+
+#------------------------------------------------------------------------------
+# Build the library
+#------------------------------------------------------------------------------
+cat >! Filepath << EOF
+\$CASEROOT/SourceMods/src.siac
+\$CODEROOT/iac/siac
+\$CODEROOT/iac/siac/cpl_\$comp
+EOF
+
+gmake complib -j \$GMAKE_J MODEL=siac COMPLIB=\$LIBROOT/libiac.a -f \$CASETOOLS/Makefile MACFILE=\$CASEROOT/Macros.\$MACH || exit 2
+
+EOF2
+

@@ -1,0 +1,91 @@
+!------------------------------------------------------------------------
+! Users should ONLY USE user_nl_cpl to change namelists variables
+! for namelist variables in drv_in (except for the ones below) and 
+! any keyword/values in seq_maps.rc 
+! Users should add ALL user specific namelist and seq_maps.rc changes below 
+! using the following syntax
+!   namelist_var = new_namelist_value 
+! or 
+!   mapname = new_map_name
+! For example to change the deafult value of ocn2atmfmapname to 'foo' use
+!   ocn2atmfmapname =  'foo' 
+! The following namelist variables CANNOT BE CHANGE - the corresponding
+! xml variables are in env_case.xml
+!    case_name      => CASE
+!    username       => CCSMUSER
+!    hostname       => MACH
+!    model_version  => CCSM_REPOTAG
+!
+! The following namelist variables MAY ONLY BE CHANGED in env_run.xml
+! left  hand column is the driver namelist variable 
+! right hand column is the env_run.xml     variable
+!
+!    brnch_retain_casename => BRNCH_RETAIN_CASENAME
+!    bfbflag        => BFBFLAG
+!    calendar       => CALENDAR
+!    case_desc      => CASESTR
+!    do_budgets     => BUDGETS
+!    flux_albav     => CPL_ALBAV
+!    flux_epbal     => CPL_EPBAL
+!    info_debug     => INFO_DBUG
+!    history_option => HIST_OPTION
+!    history_n      => HIST_N
+!    history_ymd    => HIST_DATE
+!    restart_option => REST_OPTION
+!    restart_n      => REST_N
+!    restart_ymd    => REST_DATE
+!    scmlat         => PTS_LAT
+!    scmlon         => PTS_LON
+!    start_type     => RUN_TYPE
+!    start_tod      => START_TOD
+!    stop_option    => STOP_OPTION
+!    stop_n         => STOP_N
+!    stop_ymd       => STOP_DATE
+!    ocean_tight_coupling => OCN_TIGHT_COUPLING 
+!    run_barriers   => RUN_BARRIERS
+!
+! The following namelist variables MAY ONLY BE CHANGED in env_pesetup.xml  
+! left  hand column is the driver namelist variable 
+! right hand column is the env_pesetup.xml variable
+!    atm_ntasks     => NTASKS_ATM
+!    atm_nthreads   => NTHRDS_ATM
+!    atm_rootpe     => ROOTPE_ATM
+!    atm_pestride   => PSTRID_ATM
+!    atm_layout     => NINST_ATM_LAYOUT
+!    lnd_ntasks     => NTASKS_LND
+!    lnd_nthreads   => NTHRDS_LND
+!    lnd_rootpe     => ROOTPE_LND
+!    lnd_pestride   => PSTRID_LND
+!    lnd_layout     => NINST_LND_LAYOUT
+!    ice_ntasks     => NTASKS_ICE
+!    ice_nthreads   => NTHRDS_ICE
+!    ice_rootpe     => ROOTPE_ICE
+!    ice_pestride   => PSTRID_ICE
+!    ice_layout     => NINST_ICE_LAYOUT
+!    ocn_ntasks     => NTASKS_OCN
+!    ocn_nthreads   => NTHRDS_OCN
+!    ocn_rootpe     => ROOTPE_OCN
+!    ocn_pestride   => PSTRID_OCN
+!    ocn_layout     => NINST_OCN_LAYOUT
+!    glc_ntasks     => NTASKS_GLC
+!    glc_nthreads   => NTHRDS_GLC
+!    glc_rootpe     => ROOTPE_GLC
+!    glc_pestride   => PSTRID_GLC
+!    glc_layout     => NINST_GLC_LAYOUT
+!    rof_ntasks     => NTASKS_ROF
+!    rof_nthreads   => NTHRDS_ROF
+!    rof_rootpe     => ROOTPE_ROF
+!    rof_pestride   => PSTRID_ROF
+!    rof_layout     => NINST_ROF_LAYOUT
+!    cpl_ntasks     => NTASKS_CPL
+!    cpl_nthreads   => NTHRDS_CPL
+!    cpl_rootpe     => ROOTPE_CPL
+!    cpl_pestride   => PSTRID_CPL
+!    pio_stride     => PIO_STRIDE
+!    pio_root       => PIO_ROOT
+!    pio_numiotasks => PIO_NUMTASKS
+!    pio_typename   => PIO_TYPENAME
+!    pio_debug_level=> PIO_DEBUG_LEVEL
+!    pio_blocksize  => PIO_BLOCKSIZE
+!    pio_buffer_size_limit => PIO_BUFFER_SIZE_LIMIT
+!------------------------------------------------------------------------

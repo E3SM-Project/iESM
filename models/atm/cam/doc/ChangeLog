@@ -1,0 +1,289 @@
+===============================================================
+Tag name: cesm1_1_x_n05_cam5_2_00
+Originator(s): fischer
+Date: 19 Jul 2013
+One-line Summary: New use_cases for BGC RCP 
+
+A models/atm/cam/bld/namelist_files/use_cases/2005-2100_cam4_rcp45_bgc.xml
+A models/atm/cam/bld/namelist_files/use_cases/2005-2100_cam4_rcp85_bgc.xml
+
+===============================================================
+Tag name: cesm1_1_x_n04_cam5_2_00
+Originator(s): jedwards
+Date: 16 Jul 2013
+One-line Summary: mem leak fix, default changes for last milliniam ensemble
+
+M               bld/namelist_files/use_cases/1850_cam5.xml
+M               src/utils/cam_pio_utils.F90
+
+
+===============================================================
+Tag name: cesm1_1_x_n03_cam5_2_00
+Originator(s): fischer
+Date: 10 Jul 2013
+One-line Summary: COSP build cleanup, MPI2 all gathers removed,
+                  test script updates
+
+A       models/atm/cam/test/system/tests_pretag_yellowstone
+M       models/atm/cam/test/system/TCB.sh
+M       models/atm/cam/test/system/TDD.sh
+M       models/atm/cam/test/system/TCB_ccsm.sh
+M       models/atm/cam/test/system/TBL.sh
+M       models/atm/cam/test/system/TBR.sh
+M       models/atm/cam/test/system/TPF.sh
+M       models/atm/cam/test/system/test_driver.sh
+M       models/atm/cam/test/system/TER.sh
+M       models/atm/cam/test/system/TEQ_ccsm.sh
+M       models/atm/cam/test/system/TER_ccsm.sh
+M       models/atm/cam/test/system/TSM_ccsm.sh
+M       models/atm/cam/test/system/TMC.sh
+M       models/atm/cam/test/system/CAM_runcmnd.sh
+M       models/atm/cam/test/system/TBL_ccsm.sh
+M       models/atm/cam/test/system/TSC.sh
+M       models/atm/cam/test/system/TEQ.sh
+M       models/atm/cam/test/system/TNE_ccsm.sh
+M       models/atm/cam/test/system/TSM.sh
+.  Update test scripts to work on yellowstone
+
+M       models/atm/cam/bld/configure
+M       models/atm/cam/bld/cam.buildnml.csh
+.  COSP build cleanup
+
+M       models/atm/cam/bld/Makefile.in
+.  Add -DNO_C_SIZEOF for PIO modules
+
+M       models/atm/cam/bld/namelist_files/namelist_definition.xml
+. COSP doc fixes
+
+M       models/atm/cam/src/utils/spmd_utils.F90
+M       models/atm/cam/src/dynamics/homme/dyn_grid.F90
+.  Removed MPI2 references
+
+M       SVN_EXTERNAL_DIRECTORIES
+.  Update externals to match current release tag.
+
+===============================================================
+Tag name: cesm1_1_1_LE_n02_cam5_2_00
+Originator(s): jedwards
+Date: 24 May 2013
+One-line Summary: bug fix for multi-instance cam-homme 
+
+Only the first instance should write HommeMapping.nc
+===============================================================
+Tag name: cesm1_1_1_LE_n01_cam5_2_00
+Originator(s): jedwards
+Date: 24 May 2013
+One-line Summary: cam release branch for cesm1_1_2
+
+Additional diagnostics for LE experiments
+
+===============================================================
+Tag name: cesm1_1_1_n10_cam5_2_00
+Originator(s): fischer
+Date: 18 Jan 2013
+One-line Summary: cam release branch for cesm1_1_1
+
+Fix dust emission tuning factor for CAM5 SE.
+Fix Chemistry Preprocessor build bug on Yellowstone.
+Add new diagnostics.
+Tuning adjustment for CAM SE ne120.
+
+===============================================================
+Tag name: cesm1_1_1_n09_cam5_2_00
+Originator(s): fischer
+Date: 15 Jan 2013
+One-line Summary: cam release branch for cesm1_1_1
+
+A       models/atm/cam/bld/run-yellowstone.csh
+.  Add cam stand alone example run script.
+
+===============================================================
+Tag name: cesm1_1_0_n07_cam5_2_00
+Originator(s): fischer
+Date: 13 Nov 2012
+One-line Summary: cam release branch for cesm1_1_0
+
+New features in CAM-5.2
+=======================
+
+. CAM-SE
+  . Add tuning mods for SE/cam5 on ne30np4 grid (nominal 1 deg).  New
+    utility for creating the topography datasets is also included.
+
+. CAM-FV
+  . Change default vertical remap subcycles for 1-deg FV to nspltvrm=2.  This
+    is to make the 1-deg simulation more stable.
+
+. CARMA
+  . Add CARMA (Community Aerosol and Radiation Model for Atmospheres),
+    along with several CARMA models: bc_strat, cirrus, meteor_smoke, pmc,
+    sea_salt, sulfate and dust.
+  . New features used by CARMA, but potentially relevant outside of
+    CARMA, include:
+    - The ability to turn off some processes in MG microphysics and
+      Park macrophysics.
+    - A flag specifying the stage at which a constituent will undergo
+      convective transport.
+    - New spectral flux outputs for radiation.
+    - The ability to calculate the Obukhov length outside the HB/HBR
+      eddy scheme.
+
+. CLUBB
+  . CLUBB (Cloud Layers Unified by Bi-normals) is a higher-order turbulence closure 
+    centered around an assumed double Guassian PDF.  It is a unified parametrization 
+    in that it returns tendencies due to PBL, shallow convection, and cloud macrophysical 
+    processes.  This unified moist turbulence parametrization uses multivariate PDFs 
+    to predict moments to generate shallow and stratiform clouds that are then passed 
+    to the microphysics.
+
+. Diagnostic radiation calculations enabled for modal aerosols.
+  . The previous version of diagnostic radiation calculations with modal
+    aerosols had hardcoded the restriction that no modal aerosols were
+    present in any diagnostic calculation.  This restriction has been
+    removed.
+  . The capability to do diagnostic radiation calculations with the modal
+    aerosols is functional, but with the important restriction that the
+    derived QAERWAT and DGNUMWET fields are not recomputed for the modes
+    used in a diagnostic calculation.
+  . new variable, mode_defs, provides the metadata necessary to define the
+    modes.  The default value is set by build-namelist.
+  . The existing namelist variables used by rad_constituents, i.e.,
+    rad_climate and rad_diag_*, have been updated to accept modes as entities
+    that can effect the climate and diagnostic radiation calculations.  The
+    default value of rad_climate is set by build-namelist.
+  . The syntax of the rad_climate and rad_diag_* variables has been changed.
+    The source term has been renamed: 'P' has been changed to 'A' (for advected)
+    and 'D' has been changed to 'N' (for non-advected).
+
+. Chemistry updates
+  . Revived broken trop_mam7 and super_fast_llnl_mam3 chem packages.
+  . Add new chemistry packages for MAM: trop_mozart_mam3, trop_strat_mam3,
+    trop_strat_mam7.
+  . Added new chemistry packages: trop_mozart_soa and waccm_mozart_sulfur.
+  . Add flexibility in specifying VOC emissions from MEGAN in CLM.
+  . Add ability in offline dynamics driver to turn off surface feedbacks to
+    climate.
+  . Invoke O1D_to_2OH_adj subroutine when chemistry is super_fast_llnl_mam3
+  . Include wet removal of H2SO4 for aerosol chemistry packages other than
+    trop_mam3.
+  . H2SO4 added to drydep and wetdep lists.
+  . Include HCOOH emissions in default namelist for tropospheric chemistry
+    packages.
+  . Simplified specifications of default emission files for MAM-chemistry
+    packages.
+  . Chemistry preprocessor changes:
+    - supports chem species names up to 16 chars
+    - remove references to het specifications -- all species can have wet removal
+    - carbon mass of species output
+    - calculates molecular masses using double precision to get consistent
+      masses wrt invoking the preprocessor on different platforms and
+      compilers
+    - new functionality for generating chem rate diagnostics
+  . Added ability to support chemistry species names up to 16 characters
+  . Maximum length for history increased to 24 characters.
+  . Mods to mo_setsox to generalize the method for calculating pH value of
+    cloud water. 
+
+. WACCM
+  . Add features for WACCM5 compatibility.
+    - Troposphere cloud physics "top" added to more modules.
+    - Enable RRTMG radiation with cam4 physics.
+    - Enable WACCM with cam5 physics and RRTMG radiation.
+    - Add chemistry package: waccm_mozart_mam3.
+  . Add use_case for WACCM-X solar minimum conditions.
+  . Include of solar/geomagnetic activity data in history files for WACCM.
+  . TMS turned on for SC WACCM and SD WACCM.
+
+Code cleanup and refactoring:
+=============================
+
+. Changes to the build:
+  . Mods to CAM standalone build to support running SE in F compset
+    configurations (i.e., active land, thermodynamic cice, and data ocean).
+    Up to now the standalone build has only worked for SE running in
+    adiabatic, ideal physics, or aquaplanet configurations.
+  . MCT is now built as a stand alone library.  In order to build mct, changes
+    where made to configure and Makefile.in.
+  . Removed CSIM4 as a sea ice option.  
+. Implemented new physics buffer, this involves introduction of two new
+  modules - utils/buffer.F90 and physics/cam/physics_buffer.F90
+  - buffer.F90 introduces low level support for persistent arrays of types
+    r8, r4, and i4 and up to 7 dimensions (the max allowed in fortran90
+    arrays).  These arrays are accessed and manipulated through a common
+    (type independent) API.
+  - physics_buffer.F90 uses the low level buffer module and provides
+    additional methods for physics.  The physics buffer array is a derived
+    type array declared in the cam_comp module with dimensions
+    (pbufflds,begchunk:endchunk) within this structure arrays can be of
+    type r8, r4, or i4 and always have first dimension pcols, all further
+    dimensions are optional.
+. Some cleanup in the dynamics initialization layer.  In particular remove
+  a bunch of dead code from the SE dynamics interfaces.
+. Remove lots of unused code left over from the original cam5 development.
+  This was a consequence of the cam5 macro/micro physics being developed in
+  the stratiform module, and then later moved to separate macrop and
+  micro_mg modules.
+. Move several pbuf_add calls to the modules that are responsible for
+  setting the pbuf field.
+. Call the init routine for the pbl_utils from phys_init, not from
+  init_eddy_diff and init_hb_diff.
+. Remove #ifdef MODAL_AERO from vertical_diffusion.
+. Make trb_mtn_stress module fully portable.
+. Added ref_pres_nl namelist group to handle options for the reference
+  pressure module.
+. Added trop_cloud_top_press in namelist_definitions and always added by
+  build_namelist.
+. Added ability for default namelist values to depend on the ocean model.
+. Allow sat_hist to use more than one column near a given point, as
+  well as giving columns from more than one timestep, to allow
+  interpolation in time and space.
+. Updated ESMF interfaces for ESMF ver 5.2.0.
+. The microp_driver and cldwat2m_micro modules have been refactored to
+  create a three layered architecture comprised of a driver, cam physics
+  interfaces, and a portable physics parameterization.
+. Refactor the way the "state" was being used in the macrop and microp
+  drivers to conform to the physics interface design.
+. Add missing explicit r8 kind to F90 code
+. Memory reduction in src/chemistry/mozart/mo_drydep.F90
+. Memory reduction in CAM5 (don't allocate 4D camrt variables)
+. Memory reduction in CAM-SE.
+. The attempt to access the initial file from the dyn_init routine created
+  a circular dependency.  Resolved by separating the code that opens the
+  initial and topo files (and is not dycore dependent) from the
+  initial_conds routine which reads the initial file and is dycore
+  dependent.
+
+Bugs fixed:
+===========
+
+. Several physics buffer fields declared with the pbuf_times dimension were
+  being incorrectly accessed.  This is only a bug for cam5 physics using
+  Eulerian dycore.  Note in particular that this affected SCAM.
+. The T_TTEND diagnostic had the wrong sign, and due to incorrect use of
+  the physics buffer was completely invalid for runs using Eulerian dycore.
+. Fix for unreasonable concentration of some species in WACCM.  The fix
+  prevents large fluxes of species with very small concentrations.
+. Fix to wet radius calculation in the modal_aero_wateruptake module.
+. Provide a computed value for the Obukhov length in the cam5 physics
+  package.  It was inadvertently left set to zero.  This impacted dry
+  deposition calculations.
+. Mods in zm_conv to fix some inconsistency in the initialization of hu,
+  and to define su at cloud base using hu.
+. Fix memory leak in stratiform.F90.  When use_shfrc was false
+  shfrc was allocated, but never deallocated.
+. Fix mass conservation bug in molecular diffision used in WACCM and WACCMX
+. Fix bug with column data written to multiple history files
+. Fix for writing out N-dimensional fields to the "satellite" history file.
+. COSP bug fix for addfld call for U_COSP and V_COSP.
+. Fix added so COSP branch runs will work when using restart files from
+  a non COSP run.
+. Fixed a restart problem that occured when empty_htapes=.true. in waccm
+  configurations.
+. bug fix in CO+OH reaction rate for super_fast_llnl chemistry
+. bug fix in "WMO" method of tropopause calculation
+. Corrections to reactions in tropospheric chemistry packages
+  to include M in reactions:
+       MPAN + OH
+       HCN + OH
+
+

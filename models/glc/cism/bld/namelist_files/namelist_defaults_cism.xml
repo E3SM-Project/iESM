@@ -1,0 +1,192 @@
+<?xml version="1.0"?>
+
+<?xml-stylesheet type="text/xsl" href="namelist_defaults.xsl"?>
+
+<namelist_defaults>
+
+<!--
+Values to use by default for creation of CISM  model namelists.
+The element names are the same as the corresponding namelist
+variables.  Values that depend on the model configuration use
+attributes to express the dependency.
+-->
+
+<!-- =============================================================  -->
+<!-- group: derived                                                 -->
+<!-- (does not appear in namelist file cism_in; handled uniquely)   -->
+<!-- =============================================================  -->
+
+<cisminputfile glc_grid="gland20">glc/cism/gland20.input.nc</cisminputfile>
+<cisminputfile glc_grid="gland10">glc/cism/gland10.input.nc</cisminputfile>
+<cisminputfile glc_grid="gland5">glc/cism/gland5.input.nc</cisminputfile>
+<cisminputfile glc_grid="gland5UM">glc/cism/IceSheetData_UMontana/PresentDayGreenland/Greenland_5km_v1.1_SacksRev_c110629.nc</cisminputfile>
+
+<!-- =============================================================  -->
+<!-- group: cism_params                                             -->
+<!-- =============================================================  -->
+
+<cism_debug>.false.</cism_debug>
+
+<cesm_history_vars>'acab artm thk usurf uvel vvel uflx vflx temp'</cesm_history_vars>
+
+<!-- =============================================================  -->
+<!-- group: grid_nml                                                -->
+<!-- =============================================================  -->
+
+<horiz_grid_opt>file</horiz_grid_opt>
+
+<horiz_grid_file lnd_grid="48x96"   >glc/cism/fracdata/fracdata_48x96_gx3v7_c090915.glc.nc</horiz_grid_file>
+<horiz_grid_file lnd_grid="0.9x1.25">glc/cism/fracdata/fracdata_0.9x1.25_gx1v6_c090317.glc.nc</horiz_grid_file>
+<horiz_grid_file lnd_grid="1.9x2.5" >glc/cism/fracdata/fracdata_1.9x2.5_gx1v6_c090206.glc.nc</horiz_grid_file>
+
+<mask_varname>LANDMASK</mask_varname>
+
+<frac_varname>LANDFRAC</frac_varname>
+
+<!-- =============================================================  -->
+<!-- group: time_manager_nml                                        -->
+<!-- =============================================================  -->
+
+<date_separator>-</date_separator>
+
+<stop_option>never</stop_option>
+
+<allow_leapyear>.false.</allow_leapyear>
+
+<!-- =============================================================  -->
+<!-- group: cism.config: control parameters                         -->
+<!-- =============================================================  -->
+
+<do_gthf>.false.</do_gthf>
+
+<do_isostasy>.false.</do_isostasy>
+
+<!-- =============================================================  -->
+<!-- group: cism.config: grid                                       -->
+<!-- =============================================================  -->
+
+<ewn glc_grid="gland10" >151</ewn>
+<ewn glc_grid="gland20" >76</ewn>
+<ewn glc_grid="gland5"  >301</ewn>
+<ewn glc_grid="gland5UM">301</ewn>
+
+<nsn glc_grid="gland10" >281</nsn>
+<nsn glc_grid="gland20" >141</nsn>
+<nsn glc_grid="gland5"  >561</nsn>
+<nsn glc_grid="gland5UM">561</nsn>
+
+<upn>11</upn>
+
+<dew glc_grid="gland10" >10000.</dew>
+<dew glc_grid="gland20" >20000.</dew>
+<dew glc_grid="gland5"  >5000.</dew>
+<dew glc_grid="gland5UM">5000.</dew>
+
+<dns glc_grid="gland10" >10000.</dns>
+<dns glc_grid="gland20" >20000.</dns>
+<dns glc_grid="gland5"  >5000.</dns>
+<dns glc_grid="gland5UM">5000.</dns>
+
+<!-- =============================================================  -->
+<!-- group: cism.config: sigma                                      -->
+<!-- =============================================================  -->
+
+<!-- These levels focus resolution at the bottom -->
+<sigma_levels>0.00 0.15 0.30 0.45 0.60 0.75 0.83 0.90 0.95 0.98 1.00</sigma_levels>
+
+<!-- =============================================================  -->
+<!-- group: cism.config: climate                                    -->
+<!-- =============================================================  -->
+
+<precip_mode>1</precip_mode>
+
+<acab_mode>0</acab_mode>
+
+<!-- =============================================================  -->
+<!-- group: cism.config: projection                                 -->
+<!-- =============================================================  -->
+
+<type>"STERE"</type>
+
+<centre_latitude>90.0</centre_latitude>
+
+<centre_longitude>321.0</centre_longitude>
+
+<false_easting>800000.0</false_easting>
+
+<false_northing>3400000.0</false_northing>
+
+<standard_parallel>71.0</standard_parallel>
+
+<!-- =============================================================  -->
+<!-- group: cism.config: options                                    -->
+<!-- =============================================================  -->
+
+<temperature>1</temperature>
+
+<flow_law>0</flow_law>
+
+<basal_water>2</basal_water>
+
+<marine_margin>1</marine_margin>
+
+<slip_coeff>0</slip_coeff>
+
+<evolution>0</evolution>
+
+<vertical_integration>0</vertical_integration>
+
+<hotstart runtype="startup">0</hotstart>
+<hotstart runtype="hybrid" >1</hotstart>
+<hotstart runtype="branch" >1</hotstart>
+
+<!-- =============================================================  -->
+<!-- group: cism.config: time                                       -->
+<!-- =============================================================  -->
+
+<dt glc_grid="gland10" >0.1</dt>
+<dt glc_grid="gland20" >0.1</dt>
+<dt glc_grid="gland5"  >0.05</dt>
+<dt glc_grid="gland5UM">0.05</dt>
+
+<ntem>1</ntem>
+
+<nvel>1</nvel>
+
+<!-- To get diagnostic once per year, set this to 1/dt -->
+<ndiag glc_grid="gland10" >10</ndiag>
+<ndiag glc_grid="gland20" >10</ndiag>
+<ndiag glc_grid="gland5"  >20</ndiag>
+<ndiag glc_grid="gland5UM">20</ndiag>
+
+<!-- 5-km idiag & jdiag chosen by Jeremy Fyke, as a point prone to CFL
+     instability (in trunk of Jakobshavn) -->
+<idiag glc_grid="gland10" >30</idiag>
+<idiag glc_grid="gland20" >30</idiag>
+<idiag glc_grid="gland5"  >76</idiag>
+<idiag glc_grid="gland5UM">76</idiag>
+
+<jdiag glc_grid="gland10" >50</jdiag>
+<jdiag glc_grid="gland20" >50</jdiag>
+<jdiag glc_grid="gland5"  >228</jdiag>
+<jdiag glc_grid="gland5UM">228</jdiag>
+
+<!-- =============================================================  -->
+<!-- group: cism.config: parameters                                 -->
+<!-- =============================================================  -->
+
+<log_level>6</log_level>
+
+<ice_limit>100.</ice_limit>
+
+<marine_limit>-200.</marine_limit>
+
+<geothermal>-5.e-2</geothermal>
+
+<flow_factor>3</flow_factor>
+
+<hydro_time>1000.</hydro_time>
+
+<basal_tract>2 10 10 0 1</basal_tract>
+
+</namelist_defaults>

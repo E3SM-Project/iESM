@@ -1,0 +1,128 @@
+<!-- Beg of testing chapter-->
+<chapter id="testing">
+<title>Scripts for testing &clm;</title>
+
+<para>
+Technically, you could use the customization we gave in <xref linkend="customize"></xref>
+to test various configuration and namelist options for &clm;. Sometimes, it's also
+useful to have automated tests though to test that restarts give exactly the same 
+results as without a restart. It's also useful to have automated tests to run over a
+wide variety of configurations, resolutions, and namelist options. To do that we have
+several different types of scripts set up to make running comprehensive testing of
+&clm; easy. There are two types of testing scripts for &clm;. The first are the &cesm;
+test scripts, which utilize the <command>create_newcase</command> scripts that we
+shown how to use in this User's Guide. The second are a set of stand-alone scripts that
+use the &clm; &configure; and &buildnml; scripts to build and test the model as well as
+testing the &clm; tools as well. Below we will go into further details of how to use
+both methods.
+</para>
+
+<sect1 id="cesm_testing">
+<title>Testing &clm; Using the &cesm; Test Scripts</title>
+
+<para>
+We first introduce the test scripts that work for all CESM components. We will
+use the <command>create_test</command> and then the <command>create_test_suite</command>
+scripts. The <command>create_test</command> runs a specific type of test, at a given
+resolution, for a given compset using a given machine. There is a list of different
+tests, but the "ERI" tests do several things at once, running from startup, as well
+as doing exact branch and restart tests. So to run "ERI" testing at 2-degree with
+the I1850CN compset on yellowstone_intel you do the following.
+<screen width="99">
+> cd scripts
+> ./create_test -testname ERI.f19_g16.I1850CN.yellowstone_intel
+> cd ERI.f19_g16.I1850CN.yellowstone_intel.$id
+> ./ERI.f19_g16.I1850CN.yellowstone_intel.$id.build
+> ERI.f19_g16.I1850CN.yellowstone_intel.$id.submit
+</screen>
+When the test is done it will update the file <filename>TestStatus</filename> with
+either a PASS or FAIL message.
+</para>
+<para>
+To run a suite of tests from a list of tests with syntax similar to above you use
+<command>create_test_suite</command> as follows passing it a ASCII list of tests.
+There are already some test lists in the
+<filename>scripts/ccsm_utils/Testlists</filename> directory a few of which are specific
+to &clm;. To run for the &clm; yellowstone test list, on yellowstone, you would do the
+following:
+<screen width="99">
+> cd scripts
+> ./create_test_suite -input_list ccsm_utils/Testlists/yellowstone.clm.auxtest
+# Submit the suite of tests (note $id refers to the integer job number for this job)
+> ./cs.submit.$id.yellowstone
+# Later check the tests with...
+> ./cs.status.$id
+# The above will give a PASS or FAIL message for each test.
+</screen>
+For more information on doing testing with the &cesm; scripts see the
+<ulink url="&cesmwebmodelrel;cesm">&cesmrel;
+User's Guide</ulink> on testing.
+</para>
+</sect1>
+
+<sect1 id="clm_standalone_testing">
+<title>Testing &clm; Using the &clm; Specific Stand-Alone Tools Testing Scripts</title>
+
+<para>
+</para>
+</sect1>
+
+<sect1 id="clm_standalone_tools_testing">
+<title>Testing &clm; tools using the &clm; Stand-Alone Tools Testing Scripts</title>
+
+<para>
+In the <filename>models/lnd/clm/test/system</filename> directory there is
+a set of test scripts that is specific to stand-alone &clm; tools. It allows
+you to test the &clm; tools such as <command>mkgriddata</command> and 
+<command>mksurfdata_map</command>. The main driver script is called
+<filename>test_driver.sh</filename> and it is normally run interactively.
+Like other scripts you can get help on it by running the 
+"-help" option as: <command>test_driver.sh -help</command>. 
+There is also a <filename>README</filename>
+file that gives details about environment variables that can be given to
+<command>test_driver.sh</command> to change it's operation.
+</para>
+<para>
+To run tests interactively:
+<screen width="99">
+> cd models/lnd/clm/test/system
+> ./test_driver.sh -i
+</screen>
+The output of the help option is as follows:
+<screen width="99">
+&clmtestdriver;
+</screen>
+A table of the list of tests and the machines they are run on is available from:
+<ulink url="../../test/system/test_table.html">test_table.html</ulink>
+</para>
+</sect1>
+
+<!--
+<sect1 id="ptclm_testing">
+<title>Testing &ptclm; use the &ptclm; test script</title>
+
+<para>
+There is a simple test script for &ptclm; called <filename>testcases.csh</filename>
+in the &ptclm; directory (<filename>scripts/ccsm_utils/Tools/lnd/clm/PTCLM</filename>).
+The test script is setup to run on the machines: yellowstone, frankfurt,
+yong, and titan. You simply run the script interactively. The script will write
+out the status of tests to a file called: <filename>tc.job#.status</filename>.
+</para>
+<para>
+There are a few environment variables that can be used with
+<filename>testcases.csh</filename> to change it's operation.
+<simplelist>
+<member><envar>CESM_ROOT</envar>: To test with a separate root to &cesm; code set this
+env variable to the root directory to use.</member>
+<member><envar>CLM_SOFF</envar>: If set to <literal>TRUE</literal> - stop on first 
+failed test rather than continuing to run.</member>
+<member><envar>CLM_RETAIN_FILES</envar>: If set to <literal>FALSE</literal> - cleanup 
+tools build first.</member>
+<member><envar>DEBUG</envar>: If set to <literal>TRUE</literal> - setup cases, but 
+do not build or run.</member>
+</simplelist>
+</para>
+</sect1>
+-->
+
+</chapter>

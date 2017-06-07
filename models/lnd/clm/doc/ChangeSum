@@ -1,0 +1,46 @@
+Tag                   Who      Date  Summary
+============================================================================================================================
+clm4_0_54.in.cesm1_1_2 erik 01/03/2013 Update mkmapdata.sh to work on yellowstone, update pftdyn files for rcp 6/8.5 for f09 and f19
+   (cesm1_1_2)
+clm4_0_54.in.cesm1_1_1 jedw 01/03/2013 Fix transient CO2 in namelist
+   (cesm1_1_1)
+clm4_0_54.in.cesm1_1_0 erik 10/12/2012 Hi res mksurfdata datasets, glc bug-fix, new datasets, multi-instance, 
+   (cesm1_1_0)                         unstructured grid support MEGAN model updated, RTM seperated and 10th degree grid option                       
+clm4_0_32.in.cesm1.0.4 erik 12/09/2011 Bug fixes to cesm1_0_3
+   (cesm1_0_4)                       
+clm4_0_32.in.cesm1.0.3 erik 05/19/2011 Add crop/irrigation in, Use pio for all IO, 
+   (cesm1_0_3)                         make restart history files NetCDF.
+clm4_0_14.in.cesm1.0.2 erik 10/19/2010 Fix issues for single-point and 
+   (cesm1_0_2)                         mksurfdata/getregional scripts, add U10, 
+                                       T31 datafiles
+clm4_0_10.in.cesm1.0.1 erik 08/24/2010 Add glc multi-elev classes, snow-hydrology bug-fix,
+   (cesm1_0_1)                         new finidat files, new namelist items and history 
+                                       fields, read aerosol and nitrogen deposition in 
+                                       res-independent stream file.
+   clm4_0_00           erik 05/05/2010 Update to datm8, redirect aquifer overflow to drainage, add gx3v7 masks, 
+                                       script to extract regional datasets, add harvesting for CN, modify shrubs, 
+                                       include urban model, ice stream for snowcapping, new build-namelist system, 
+                                       scale solar by solar zenith angle in datm, deep soil with bedrock at bottom, 
+                                       organic matter in soils, SNICAR for snow radiation, sparce dense aero, 
+                                       snow cover changes
+
+   clm3_8_00           erik 05/04/2010 Get future scenarios working, finalize
+                                       documentation, bring in MEGAN VOC and CNDV, simplify,
+                                       mksurfdata optimization, fix bugs: snow enthalpy, BMOZ, pergro,
+                                       use pft weights from fsurdat NOT finidat
+
+   clm3_7_00           erik 01/22/2010 Update to datm8, redirect aquifer overflow to drainage, add 
+                                       gx3v7 masks, script to extract regional datasets, add harvesting for CN,
+                                       modify shrubs, include urban model, ice stream for snowcapping, 
+                                       new build-namelist system, scale solar by solar zenith angle in 
+                                       datm, deep soil with bedrock at bottom, organic matter in soils, 
+                                       SNICAR for snow radiation, sparce dense aero, snow cover changes
+
+   clm3_6_00           erik 03/20/2008 Fully implement sequential-ccsm mode, upgrade configure, build-namelist 
+                                       and testing, upgrade interpolation tool, add mkdatadomain, write to 
+                                       iulog rather than 6 explicitly, SCAM update, Update datasets, add 
+                                       archiving, and build-streams, add in point version of Urban model, 
+                                       change directory structure to mimic CCSM
+
+   clm3_5_00           erik 05/03/2007 New surface datasets, improved canopy integration, and various improvements 
+                                       to Hydrology

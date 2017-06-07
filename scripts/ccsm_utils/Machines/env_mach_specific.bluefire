@@ -1,0 +1,52 @@
+#! /bin/csh -f
+
+# -------------------------------------------------------------------------
+# Bluefire build specific settings
+# -------------------------------------------------------------------------
+
+# Note: nc-config --libs 
+# provides library linking information for netcdf (add -lnetcdff and -lnetcdf)
+
+source /contrib/Modules/3.2.6/init/csh
+module load netcdf/4.1.3_seq
+
+# -------------------------------------------------------------------------
+# Build and runtime environment variables - edit before the initial build 
+# -------------------------------------------------------------------------
+
+limit datasize  unlimited
+setenv OBJECT_MODE 64
+setenv XLSMPOPTS "stack=256000000"
+setenv OMP_DYNAMIC FALSE
+setenv AIXTHREAD_SCOPE S
+setenv MALLOCMULTIHEAP TRUE
+setenv MP_LABELIO yes
+
+# MPI Environment
+setenv MP_RC_USE_LMC                  yes
+setenv LAPI_DEBUG_RC_WAIT_ON_QP_SETUP yes
+setenv MP_INFOLEVEL                   2
+setenv MP_EUIDEVICE                 sn_all
+setenv MP_SHARED_MEMORY             yes
+setenv LAPI_USE_SHM                 yes
+setenv MP_EUILIB                    us
+# commenting out the following line because we believe it will be better to use 
+# the defaults, which change with processor count
+# setenv MP_EAGER_LIMIT               32k
+setenv MP_BULK_MIN_MSG_SIZE         64k
+setenv MP_POLLING_INTERVAL          20000000
+setenv MEMORY_AFFINITY              MCM
+setenv LAPI_DEBUG_ENABLE_AFFINITY   YES
+setenv LAPI_DEBUG_BINDPROC_AFFINITY YES
+setenv MP_SYNC_QP                   YES
+setenv MP_RFIFO_SIZE                16777216
+setenv MP_SHM_ATTACH_THRESH         500000
+setenv MP_EUIDEVELOP                min
+setenv MP_USE_BULK_XFER             yes
+setenv MP_BUFFER_MEM                64M
+
+setenv MP_RC_MAX_QP                 8192
+setenv LAPI_DEBUG_RC_DREG_THRESHOLD 1000000
+setenv LAPI_DEBUG_QP_NOTIFICATION   no
+setenv LAPI_DEBUG_RC_INIT_SETUP     no
+

@@ -1,0 +1,559 @@
+#!/usr/bin/env perl
+
+#===================================================================
+# Create test suite
+#===================================================================
+use strict;
+#use warnings;
+#use diagnostics;
+
+use Cwd;
+use English;
+use Getopt::Long;
+use IO::File;
+use IO::Handle;
+
+#-----------------------------------------------------------------------------------------------
+# Setting autoflush (an IO::Handle method) on STDOUT helps in debugging.  It forces the
+# test
+# descriptions to be printed to STDOUT before the error messages start.
+
+*STDOUT->autoflush();
+
+#-----------------------------------------------------------------------------------------------
+# Set the directory that contains the CCSM configuration scripts.  If the create_newcase command was
+# issued using a relative or absolute path, that path is in $ProgDir.  Otherwise assume the
+# command was issued from the current working directory.
+
+(my $ProgName = $0) =~ s!(.*)/!!;      # name of this script
+my $ProgDir = $1;                      # name of directory containing this script -- may be a
+                                       # relative or absolute path, or null if the script is in
+                                       # the user's PATH
+my $cwd = getcwd();                    # current working directory
+my $cfgdir;                            # absolute pathname of directory that contains this script
+if ($ProgDir) {
+    $cfgdir = absolute_path($ProgDir);
+} else {
+    $cfgdir = $cwd;
+}
+
+my $scriptsroot = "$cfgdir";
+(-d "$scriptsroot")  or  die <<"EOF";
+** Cannot find scriptsroot directory \"$scriptsroot\" **
+EOF
+
+#-----------------------------------------------------------------------------------------------
+if ($#ARGV == -1) {
+    print "** Required argument -input_list NOT input**\n";
+    usage();
+}
+my $testlistsubdir = "$scriptsroot/ccsm_utils/Testlists";
+my $testlid = `date +%H%M%S`;
+chomp( $testlid );
+#-----------------------------------------------------------------------------------------------
+# Parse command-line options.
+my %opts = (
+               testroot             => $cwd,
+               cesmroot             => absolute_path( "$scriptsroot/.." ),
+               clean                => "on",
+               autosubmit           => "on",
+               testid               => $testlid,
+               guessmach            => undef,
+               mach                 => undef,
+               compiler             => undef,
+               debug                => undef,
+               nobatch              => "off",
+               reruntests           => "off",
+               nobuild              => "off",
+               verbose              => 0,
+            );
+
+
+#===================================================================
+
+#-----------------------------------------------------------------------------------------------
+
+sub usage {
+    die <<EOF;
+NAME
+
+   $ProgName  - runs test suite based on input list
+
+SYNOPSIS
+
+   <pathname>/$ProgName  -input_list input 
+
+   Options:
+     [-autosubmit   on|off]
+     [-baselineroot baselineroot] 
+     [-clean        on|off]
+     [-compare      baseline_name] 
+     [-compiler     compiler_name] 
+     [-compset_file compset-file]
+     [-debug]
+     [-generate     baseline_name] 
+     [-help]
+     [-mach         mach]
+     [-nobatch      on|off]
+     [-nobuild      on|off]
+     [-reruntests   on|off]
+     [-testid       testid]
+     [-testroot     testroot] 
+     [-verbose]
+
+REQUIRED ARGUMENTS:
+
+   -input_list <file>     Filename of a list of testnames to run.
+                          If fullpath name is NOT given, will also
+                          search in the $testlistsubdir directory.
+                          NOTE: If machine name isn't given as an option
+                                or in the testnames, the first word in
+                                the input_list filename (before a ".") will be
+                                used as the machine name to use.
+
+OPTIONS:
+
+     -autosubmit <value>     Automatically submit the cs.submit.<testid> script 
+                             after running. (default $opts{'autosubmit'})
+            on               Automatically build and submit
+            off              Have the user run the cs.submit.<testid> script 
+                             by hand afterwards.
+     -baselineroot <dir>     Specifies an alternate root directory for baseline 
+                             datasets used for bfb generate/compare testing.  
+                             This option is ignored unless baseline generation or 
+                             comparison is being done.
+                             (required for -generate and -compare options)
+     -clean <value>          If should clean up afterwards or not   (default $opts{'clean'})
+            on               Remove all object, executable, and data 
+                             files after succesful completion of the test.  
+            off              Do not remove anything after the test 
+                             completes.  This is the default. 
+     -compare <name>         Specifies the cesm tag name to compare results with.
+                             This directory is assumed to be contained in the
+                             baselineroot directory.
+                             (requires the baselineoot option)
+     -compiler <name>        Specify a compiler for the target machine
+                             default: default compiler for the target machine
+                             NOTE: Can also be provided after an "_" in the
+                                   -mach option and can be given in the input_list 
+                                   testname (ending with machine_compiler).
+     -compset_file <file>    Specifies the compset file to be used.
+     -debug                  If you want to run $ProgName to show what would happen
+                             when it runs without actually running tests.
+                             (also turns verbose on and autosubmit to off)
+     -generate <name>        Specifies the cesm tag name to generate results for.
+                             This directory is assumed to be contained in 
+                             the baselineroot directory.
+                             (requires the baselineoot option)
+     -help [or -h]           Print usage to STDOUT and exit.
+     -mach <name>            Specify a CESM machine (required if NOT provided in test list).
+                             NOTE: If this option is NOT used, and it's NOT provided
+                                   in the testnames in input_list, the first word in
+                                   the input_list filename (before a ".") will be used
+                                   as the machine name.
+
+
+     -nobatch [on | off]     Run tests interactively rather than submit to queue in cs.submit.*.
+     -nobuild [on | off]     Don't run the *.build in cs.submit.*.
+     -reruntests [on | off]  Rerun tests when the cs.submit.* script is run again even if they 
+                             previously PASSed.
+     -testid <id>            Sets the testId string.  Default is to have the script
+                             pick an arbitrary string.  this can be any length.
+                             WARNING:  This option is intended for use by script developers.  
+                             WARNING:  Creation of identical tests with the same testid can 
+                             WARNING:  lead to obscure errors.
+                             (default $opts{'testid'})
+     -testroot <dir>         Set the directory where you want the test cases created
+                             (default $opts{'testroot'})
+     -verbose                Add extra printing of what's going on for debugging.
+
+   Note that <dir> could be <.>
+
+   Many options are like the create_test options and are passed right 
+   to create_test.
+
+   The input_list is a filename and is the only required argument.
+   The list of tests can take a few forms depending on the arguments 
+   to $ProgName . In general, it's a list of CESM tests, one per line,
+   with no blank lines (each line can also provide options for the invokation
+   of create_test).  It can also be a list of CESM testlists just separated by
+   white-space or new-line. It will also search both the current directory, and
+   the default location for Testlists. See below for a simple example.
+
+   STATUS and SUBMIT SCRIPTS CREATED:
+
+   cs.submit.<testid> -- Script created that will run the .build for each test
+                         and then submit it to the queue. If -autosubmit is "on"
+                         this will automatically be done while $ProgName is 
+                         running.
+   cs.status.<testid> -- Script created that will return the status of each test
+                         submitted.
+
+EXAMPLES
+
+   First, examples of $ProgName  input files
+
+   create_test_suite.list contains:
+   ERS.T31_gx3v5.A.bluefire
+   ERS.T31_gx3v5.B.bluefire
+
+   $ProgName  -help
+
+   $ProgName  -testroot ~/testroot -input_list create_test_suite.list
+
+   $ProgName  -generate cesm1_2_beta38 -compare cesm1_2_beta37 
+     -input_list create_test_suite.list -baselineroot /fs/cgd/csm/ccsm_baselines 
+     -testroot ~/testroot 
+
+   $ProgName  -input_list bluefire.prebeta -testid b38t0 
+     -generate cesm1_2_beta38 -compare cesm1_2_beta37 
+     -testroot ~/testroot 
+EOF
+}
+
+#-----------------------------------------------------------------------------------------------
+# Save commandline
+my $commandline = "$ProgName  @ARGV";
+
+
+GetOptions(
+     "input_list=s"                   => \$opts{'input_list'},
+     "testroot=s"                     => \$opts{'testroot'},
+     "testid=s"                       => \$opts{'testid'},
+     "mach=s"                         => \$opts{'mach'},
+     "baselineroot=s"                 => \$opts{'baselineroot'},
+     "generate=s"                     => \$opts{'generate'},
+     "compiler=s"                     => \$opts{'compiler'},
+     "compset_file=s"                 => \$opts{'compset_file'},
+     "compare=s"                      => \$opts{'compare'},
+     "clean=s"                        => \$opts{'clean'},
+     "nobatch=s"                      => \$opts{'nobatch'},
+     "reruntests=s"                   => \$opts{'reruntests'},
+     "nobuild=s"                      => \$opts{'nobuild'},
+     "autosubmit=s"                   => \$opts{'autosubmit'},
+     "debug"                          => \$opts{'debug'},
+     "verbose"                        => \$opts{'verbose'},
+     "h|help"                         => \$opts{'help'},
+)  or usage();
+
+# Give usage message.
+usage() if $opts{'help'};
+
+
+# Check for unparsed argumentss
+if (@ARGV) {
+    print "ERROR: unrecognized arguments: @ARGV\n";
+    usage();
+}
+
+#---------------------------
+# check env settings
+#---------------------------
+
+if ( ! -x "$scriptsroot/create_test" ) {
+  die "** The create_test script in $scriptsroot does NOT exist\n";
+}
+if ( ! defined($opts{'testroot'}) ) {
+  die "** testroot NOT set\n";
+}
+# Verify that directories input exist
+foreach my $dir ( "testroot", "cesmroot", "baselineroot") {
+   if ( defined($opts{$dir}) ) {
+      if ( ! -d $opts{$dir} ) {
+         die "** Directory $dir does NOT exist ($opts{$dir})\n";
+      }
+   }
+}
+# debug mode
+if ( defined($opts{'debug'} ) ) {
+   # Turn verbose on and autosubmit off
+   print "Debug mode turns verbose on and autosubmit off\n";
+   $opts{'verbose'}    = 1;
+   $opts{'autosubmit'} = "off";
+}
+# Check for valid values for some fields
+my @onoffvalues = ( "on", "off" );
+my %fields = (  clean=>\@onoffvalues, autosubmit=>\@onoffvalues, nobatch=>\@onoffvalues, 
+                nobuild=>\@onoffvalues, reruntests=>\@onoffvalues );
+foreach my $item  ( keys(%fields) ) {
+   my $match = 0;
+   foreach my $value ( @{$fields{$item}} ) {
+      if ( $opts{$item} eq $value ) { $match = 1; last; }
+   }
+   if ( ! $match ) {
+      die "** Option $item NOT set to a valid value. Can be set to: @{$fields{$item}}.\n";
+   }
+}
+
+
+my $ilorig = $opts{'input_list'};
+if (! -e "$opts{'input_list'}" ) {
+  # If input list doesn't exist check if exists in Testlist area
+  if (-e "$testlistsubdir/".$opts{'input_list'} ) {
+     $opts{'input_list'} = "$testlistsubdir/".$opts{'input_list'};
+     print "Found input_list in $testlistsubdir\n" if $opts{'verbose'};
+  } else {
+    die "ERROR: input_list $opts{'input_list'} not found";
+  }
+} else {
+  # Get filename from input list pathname
+  $ilorig =~ s!(.*)/!!;
+}
+print "listname = $ilorig\n" if $opts{'verbose'};
+
+my $tlisttmp = "tlist.tmpfile.$ilorig".$opts{'testid'};
+if ( -e $tlisttmp ) {
+   system( "/bin/rm -f $tlisttmp" );
+}
+
+my $machset = undef;
+if (defined($opts{'mach'}) ) {
+  if ($opts{'mach'} =~ /^([a-zA-Z0-9_-]+?)_([a-zA-Z0-9-]+)$/ ) {
+    if ( defined($opts{'compiler'}))  {
+       die "** Can NOT specify compiler BOTH with compiler option and _compiler in mach option **"
+    }
+    $opts{'mach'}     = $1;
+    $opts{'compiler'} = $2;
+    print "mach/compiler = $opts{'mach'} / $opts{'compiler'}\n" if $opts{'verbose'};
+  }
+  $machset = "mach";
+} elsif ( $ilorig =~ /([^\.]+)\./ ) {
+  $opts{'guessmach'} = $1;
+  $machset = "guessmach";
+  print "guess machine based on input_list filename  = $opts{'guessmach'}\n" if $opts{'verbose'};
+} else {
+  print "mach NOT defined and filename doesn't include a name before a '.', needs to be set in testcase\n" if $opts{'verbose'};
+}
+
+#============================================================================
+# Now do the actual work, expand the test list, create the test script and run it
+#============================================================================
+
+print "Expand test list out\n" if $opts{'verbose'};
+&ExpandTestList( $opts{'input_list'}, $tlisttmp );
+if ( $opts{'verbose'} ) { print "print list out: $tlisttmp\n"; system( "cat $tlisttmp" ); }
+$opts{'input_list'} = $tlisttmp;
+
+#============================================================================
+my $tmprunfile = "$opts{'testroot'}/${ProgName}_run_script_tmp_".$opts{'testid'};
+print "Write run script out to $tmprunfile\n" if $opts{'verbose'};
+if ( -e $tmprunfile ) {
+  system( "/bin/rm -f $tmprunfile" );
+}
+&CreateTestScript( $tmprunfile );
+
+#============================================================================
+system( "chmod +x $tmprunfile" );
+print "Run and delete $tmprunfile < $opts{'input_list'}\n" if $opts{'verbose'};
+if ( ! defined($opts{'debug'}) ) {
+   system( "$tmprunfile < $opts{'input_list'}" );
+   system( "/bin/rm $tmprunfile" );
+}
+
+#============================================================================
+
+#============================================================================
+system( "/bin/cp $scriptsroot/ccsm_utils/Tools/testreporter.pl $opts{'testroot'}/" );
+#============================================================================
+
+if ($opts{'autosubmit'} eq "on") {
+  chdir( "$opts{'testroot'}" );
+  foreach my $file ( glob("cs.submit.$opts{'testid'}*") ) {
+     print  "\nrunning $file script automatically\n";
+     system( "./$file" );
+     print  "\ncs.submit $file complete\n";
+     my $statfile = "cs.status.$opts{'testid'}";
+     print  "check status with $statfile\n";
+  }
+}
+
+system( "/bin/rm -f $tlisttmp" );
+print "$ProgName done\n";
+
+exit;
+
+#-----------------------------------------------------------------------------------------------
+# FINNISHED ####################################################################################
+#-----------------------------------------------------------------------------------------------
+
+sub ExpandTestList {
+#
+# Expand the test list out, by expanding any test lists referenced inside the list
+# and put one test per line
+# Also remove any comments with #
+#
+  my $input_list = shift;
+  my $tlisttmp   = shift;
+  my $fh_ref     = shift;
+
+  my  $fh = new IO::File;
+  $fh->open(    "<$input_list") or die "** can't open run input_list file: $input_list\n";
+  my  $fh_out = new IO::File;
+  # If filehandle NOT passed in as last argument -- open temp file up
+  if ( ! defined($fh_ref) ) {
+     $fh_out->open(">$tlisttmp"  ) or die "** can't open run tmp list file:   $tlisttmp\n";
+  # Otherwise use the filehandle sent in
+  } else {
+     $fh_out = $fh_ref;
+  }
+  my $line;
+  while( $line = <$fh> ) {
+    # First remove any comments on the line
+    if ( $line =~ /^([^#]*)\#.*$/ ) {
+       $line = "$1\n";
+    }
+    if ( $line eq "\n" ) { next; }
+    # If arguments are given in the line assume the entire line should be sent to create_test
+    # If the arguments are incorret create_test will fail with an error
+    if ( $line =~ / -[A-Za-z0-9_]+/ ) {
+       print $fh_out $line;
+    } else {
+      # Otherwise split the line into tests seperated by whitespace
+      foreach my $test ( split( /\s+/, $line ) ) {
+         my $tlist = $test;
+         chomp( $tlist );
+         if ( $tlist eq "" ) { next; }   # ignore test names that are empty or just white-space
+         # If the testname is a file, either here or under Testlist, copy the entire file
+         if (! -e "$tlist") {
+            if (-e "$testlistsubdir/$tlist" ) {
+               $tlist = "$testlistsubdir/$tlist";
+            }
+         }
+         if (-e $tlist) {
+            &ExpandTestList( $tlist, $tlisttmp, $fh_out );
+         } else {
+           print $fh_out "$tlist\n";
+         }
+      }
+    }
+  }
+  $fh->close();
+  if ( ! defined($fh_ref) ) {
+     $fh_out->close();
+  }
+}
+
+
+sub CreateTestScript {
+#
+# Create script that will run create_test on the test list
+#
+  my $tmprunfile = shift;
+
+  my $date = `date`;
+  chomp( $date );
+  my $fh_out = new IO::File;
+  $fh_out->open(">$tmprunfile") or die "** can't open run script file: $tmprunfile\n";
+  print $fh_out <<"EOF";
+#!/bin/csh -f
+
+# script autocreated to run create_test for a suite of tests: $date by
+# $commandline
+#set echo      # uncomment in order to echo each command before execution
+EOF
+
+  # Set variables for script, not used in options
+  foreach my $item ( "input_list", "cesmroot" ) {
+    print $fh_out  "set cs_$item = \"$opts{$item}\"\n";
+  }
+
+  # Set the option variables and add them to the options argument
+  my $options = "";
+  foreach my $item ( 
+                     "generate", "compare", "baselineroot",
+                     "clean", "testroot", "testid", 
+                     "compset_file", "compiler", 
+                     "mach", "guessmach", "nobatch", "nobuild", "reruntests" ) {
+     if ( defined($opts{$item}) ) {
+       if ( $options ne "" ) { $options .= " \\\n     "; }
+       print $fh_out  "set cs_$item = \"$opts{$item}\"\n";
+       $options .= "-$item \$cs_$item";
+     }
+  }
+
+  print $fh_out <<"EOF";
+
+#---------------------------
+# generate tests : 
+#---------------------------
+
+set cs_test = "\$<"
+while ("\$cs_test" != "")
+
+  echo "------------------------------------------------------------------"
+  echo "$ProgName generating \$cs_test"
+
+  \$cs_cesmroot/scripts/create_test \\
+     -testname \$cs_test -create_suite on \\
+     $options
+
+  set cs_test = "\$<"
+
+end
+
+EOF
+   $fh_out->close( );
+}
+
+sub absolute_path {
+#
+# Convert a pathname into an absolute pathname, expanding any . or .. characters.
+# Assumes pathnames refer to a local filesystem.
+# Assumes the directory separator is "/".
+#
+  my $path = shift;
+  my $cwd = getcwd();  # current working directory
+  my $abspath;         # resulting absolute pathname
+
+# Strip off any leading or trailing whitespace.  (This pattern won't match if
+# there's embedded whitespace.
+  $path =~ s!^\s*(\S*)\s*$!$1!;
+
+# Convert relative to absolute path.
+
+  if ($path =~ m!^\.$!) {          # path is "."
+      return $cwd;
+  } elsif ($path =~ m!^\./!) {     # path starts with "./"
+      $path =~ s!^\.!$cwd!;
+  } elsif ($path =~ m!^\.\.$!) {   # path is ".."
+      $path = "$cwd/..";
+  } elsif ($path =~ m!^\.\./!) {   # path starts with "../"
+      $path = "$cwd/$path";
+  } elsif ($path =~ m!^[^/]!) {    # path starts with non-slash character
+      $path = "$cwd/$path";
+  }
+
+  my ($dir, @dirs2);
+  my @dirs = split "/", $path, -1;   # The -1 prevents split from stripping trailing nulls
+                                     # This enables correct processing of the input "/".
+
+  # Remove any "" that are not leading.
+  for (my $i=0; $i<=$#dirs; ++$i) {
+      if ($i == 0 or $dirs[$i] ne "") {
+          push @dirs2, $dirs[$i];
+      }
+  }
+  @dirs = ();
+
+  # Remove any "."
+  foreach $dir (@dirs2) {
+      unless ($dir eq ".") {
+          push @dirs, $dir;
+      }
+  }
+  @dirs2 = ();
+
+  # Remove the "subdir/.." parts.
+  foreach $dir (@dirs) {
+    if ( $dir !~ /^\.\.$/ ) {
+        push @dirs2, $dir;
+    } else {
+        pop @dirs2;   # remove previous dir when current dir is ..
+    }
+  }
+  if ($#dirs2 == 0 and $dirs2[0] eq "") { return "/"; }
+  $abspath = join '/', @dirs2;
+  return( $abspath );
+}
+
+

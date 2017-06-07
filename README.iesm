@@ -1,0 +1,237 @@
+================================
+Tag created as follows:
+================================
+
+create iesm tag, relative to cesm1_1_2_rel04
+based on cesm1_2_iesm06
+
+scripts, iesm11 branch
+ - add CLM_IAC_MODE
+   M       scripts/ccsm_utils/Case.template/config_definition.xml
+ - st archiving mods for iac
+   M       scripts/ccsm_utils/Tools/st_archive.sh
+
+Machines, iesm11 branch
+ - add iac specific env variables for the external libs and such
+   M       scripts/ccsm_utils/Machines/env_mach_specific.hopper
+   M       scripts/ccsm_utils/Machines/env_mach_specific.evergreen
+   M       scripts/ccsm_utils/Machines/env_mach_specific.titan
+ - add iac build stuff
+   M       scripts/ccsm_utils/Machines/Makefile
+ - add a filepath for some iac share code
+   M       scripts/ccsm_utils/Machines/buildlib.csm_share
+
+clm, iesm11 branch
+ - add iac build
+   M       models/lnd/clm/bld/clm.buildexe.csh
+ - add iac files and namelist
+   M       models/lnd/clm/bld/clm.buildnml.csh
+ - add call to iac model
+   M       models/lnd/clm/src/cpl_mct/lnd_comp_mct.F90
+ - mods for pftdyn reading
+   M       models/lnd/clm/src/main/pftdynMod.F90
+ - add iac code
+   A       models/lnd/clm/src/iac
+
+
+================================
+To Check Out the latest CESM1_1 iesm tag
+================================
+
+setenv SVNREPO https://svn-ccsm-models.cgd.ucar.edu/
+
+ - look at the exp_tag directory for latest cesm1_1_iesm tag
+
+svn ls $SVNREPO/cesm1/exp_tags | grep cesm1_1_iesm
+
+svn co $SVNREPO/cesm1/exp_tags/cesm1_1_iesm## cesm1_1_iesm##
+
+================================
+To run standard I case on hopper:
+================================
+cd scripts
+
+./create_newcase -case STD1 -res f09_g16 -compset IRCP45CN -mach hopper_pgi
+
+./cesm_setup
+
+./*.build
+
+./*.submit
+
+================================
+To run iesm I (CAM4) case on hopper:
+================================
+cd scripts
+
+./create_newcase -case IAC1 -res f09_g16 -compset IRCP45CN -mach hopper_pgi
+
+cd IAC1
+
+- edit env_run.xml
+  change CLM_IAC_MODE to giac
+
+./cesm_setup
+
+- edit user_nl_clm, add
+  finidat     = '/project/projectdirs/ccsm1/inputdata/iac/giac/iac2gcam/iESM_exp1.2_1990-2004.clm2.r.2005-01-01-00000_c120810.nc'
+  fsurdat     = '/project/projectdirs/ccsm1/inputdata/lnd/clm2/surfdata/surfdata_0.9x1.25_ZGICN32c_c120807.nc'
+  fpftdyn     = './surfdata_iESM_dyn.nc'
+  hist_fincl2 = 'TOTVEGC','FROOTC','LIVECROOTC','DEADCROOTC','TOTSOMC','TOTLITC','CWDC','NPP','AGNPP','BGNPP','HR'
+  hist_dov2xy = .true., .false.
+  hist_mfilt  = 1,1
+  hist_nhtfrq = 0,0
+
+- edit Buildconf/clm.buildnml.csh, add this line just before the call to build-namelist
+  set clm_startfile = " "
+
+
+./*.build
+
+./*.submit
+
+================================
+To run iesm BRCP45C5CN case on hopper:
+================================
+cd scripts
+
+./create_newcase -case BIACC5_00 -res f09_g16 -compset BRCP45C5CN -mach hopper_pgi
+
+cd BIACC5_00
+
+- edit env_run.xml
+-      change CLM_IAC_MODE to giac and temporarily point to jet's data directory 
+
+./xmlchange -file env_run.xml -id CLM_IAC_MODE -val 'giac'
+./xmlchange -file env_run.xml -id DIN_LOC_ROOT -val '/project/projectdirs/m1204/cesm/inputdata'
+./xmlchange -file env_run.xml -id DIN_LOC_ROOT_CLMFORC -val '/project/projectdirs/m1204/cesm/inputdata/atm/datm7'
+./xmlchange -file env_run.xml -id RUN_STARTDATE -val '2005-01-01'
+
+./cesm_setup
+
+- edit user_nl_clm, add
+ finidat     = '/project/projectdirs/m1204/cesm/inputdata/iac/giac/iac2gcam/iESM_CESM12_1990-2004.clm2.r.2005-01-01-00000.nc'
+ fpftdyn     = './surfdata_iESM_dyn.nc'
+ fsurdat     = '/project/projectdirs/m1204/cesm/inputdata/lnd/clm2/iESM/surfdata_0.9x1.25_BRCP45CN_c130808.nc'
+ hist_fincl2 = 'TOTVEGC','FROOTC','LIVECROOTC','DEADCROOTC','TOTSOMC','TOTLITC','CWDC','NPP','AGNPP','BGNPP','HR'
+ hist_dov2xy = .true., .false.
+ hist_mfilt  = 1,1
+ hist_nhtfrq = 0,0
+
+
+- edit Buildconf/clm.buildnml.csh, add this line just before the call to build-namelist
+  set clm_startfile = " "
+
+./*.build
+
+./*.submit
+
+================================
+To run iesm BRCP45C5CN case on hopper with dynamic co2 coupling:
+================================
+cd scripts
+
+./create_newcase -case BIACC5_00 -res f09_g16 -compset BRCP45C5CN -mach hopper_pgi
+
+cd BIACC5_01
+
+- edit env_run.xml
+-      change CLM_IAC_MODE to giac and point to data directory 
+
+./xmlchange -file env_run.xml -id CLM_IAC_MODE -val 'giac'
+./xmlchange -file env_run.xml -id DIN_LOC_ROOT -val '/project/projectdirs/m1204/cesm/inputdata'
+./xmlchange -file env_run.xml -id DIN_LOC_ROOT_CLMFORC -val '/project/projectdirs/m1204/cesm/inputdata/atm/datm7'
+./xmlchange -file env_run.xml -id RUN_STARTDATE -val '2005-01-01'
+
+./cesm_setup
+
+- edit user_nl_clm, add
+ finidat     = '/project/projectdirs/m1204/cesm/inputdata/iac/giac/iac2gcam/iESM_CESM12_1990-2004.clm2.r.2005-01-01-00000.nc'
+ fpftdyn     = './surfdata_iESM_dyn.nc'
+ fsurdat     = '/project/projectdirs/m1204/cesm/inputdata/lnd/clm2/iESM/surfdata_0.9x1.25_BRCP45CN_c130808.nc'
+ hist_fincl2 = 'TOTVEGC','FROOTC','LIVECROOTC','DEADCROOTC','TOTSOMC','TOTLITC','CWDC','NPP','AGNPP','BGNPP','HR'
+ hist_dov2xy = .true., .false.
+ hist_mfilt  = 1,1
+ hist_nhtfrq = 0,0
+
+- edit user_nl_cam, add
+ co2flux_fuel_file  = './CO2flux_iESM_dyn.nc'
+
+- edit Buildconf/clm.buildnml.csh, add this line just before the call to build-namelist
+  set clm_startfile = " "
+  set co2flux_coupling = .true.
+ 
+./*.build
+
+./*.submit
+
+================================
+To run iesm BRCP45C5CN case on titan:
+================================
+cd scripts
+
+./create_newcase -case BIACC5_00 -res f09_g16 -compset BRCP45C5CN -mach titan
+
+cd BIACC5_00
+
+- edit env_run.xml
+-      change CLM_IAC_MODE to giac and temporarily point to jet's data directory 
+
+./xmlchange -file env_run.xml -id CLM_IAC_MODE -val 'giac'
+./xmlchange -file env_run.xml -id RUN_STARTDATE -val '2005-01-01'
+./xmlchange -file env_run.xml -id DIN_LOC_ROOT -val '/tmp/proj/ccsm/jet/inputdata'
+./xmlchange -file env_run.xml -id DIN_LOC_ROOT_CLMFORC -val '/tmp/proj/ccsm/jet/inputdata/atm/datm7'
+
+./cesm_setup
+
+- edit user_nl_clm, add
+ finidat     = '/tmp/proj/ccsm/jet/inputdata/iac/giac/iac2gcam/iESM_CESM12_1990-2004.clm2.r.2005-01-01-00000.nc'
+ fpftdyn     = './surfdata_iESM_dyn.nc'
+ fsurdat     = '/tmp/proj/ccsm/jet/inputdata/lnd/clm2/iESM/surfdata_0.9x1.25_BRCP45CN_c130808.nc'
+ hist_fincl2 = 'TOTVEGC','FROOTC','LIVECROOTC','DEADCROOTC','TOTSOMC','TOTLITC','CWDC','NPP','AGNPP','BGNPP','HR'
+ hist_dov2xy = .true., .false.
+ hist_mfilt  = 1,1
+ hist_nhtfrq = 0,0
+
+- edit Buildconf/clm.buildnml.csh, add this line just before the call to build-namelist
+  set clm_startfile = " "
+
+./*.build
+
+./*.submit
+
+================================
+To run iesm 1850 Control Run using data IAC with historic GLM out and PL on titan:
+================================
+
+cd scripts
+
+./create_newcase -case DIACC5_1850_00 -mach titan -compset B20TRC5CN -res f09_g16
+
+cd DIACC5_1850_00
+
+- edit env_run.xml
+-      change CLM_IAC_MODE to diac and temporarily point to jet's data directory 
+
+./xmlchange -file env_run.xml -id CLM_IAC_MODE -val 'diac'
+./xmlchange -file env_run.xml -id DIN_LOC_ROOT -val '/tmp/proj/ccsm/jet/inputdata'
+./xmlchange -file env_run.xml -id DIN_LOC_ROOT_CLMFORC -val '/tmp/proj/ccsm/jet/inputdata/atm/datm7'
+./xmlchange -file env_run.xml -id RUN_STARTDATE -val '1850-01-01'
+
+./cesm_setup
+
+- edit user_nl_clm, add
+ finidat     = '/tmp/proj/ccsm/jet/inputdata/iac/giac/iac2gcam/iESM_CESM12_1850.clm2.r.1850-01-06-00000.nc'
+ fpftdyn     = './surfdata_iESM_dyn.nc'
+ fsurdat     = '/tmp/proj/ccsm/jet/inputdata/lnd/clm2/iESM/surfdata_0.9x1.25_simyear1850_c130819.nc'
+ hist_fincl2 = 'TOTVEGC','FROOTC','LIVECROOTC','DEADCROOTC','TOTSOMC','TOTLITC','CWDC','NPP','AGNPP','BGNPP','HR'
+ hist_dov2xy = .true., .false.
+ hist_mfilt  = 1,1
+ hist_nhtfrq = 0,0
+
+- edit Buildconf/clm.buildnml.csh, add this line just before the call to build-namelist
+  set clm_startfile = " "
+
+./*.build
+
+./*.submit

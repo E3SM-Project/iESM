@@ -1,0 +1,611 @@
+<!-- Beg of special cases chapter -->
+<chapter id="special_cases">
+<title>How to run some special cases</title>
+<para>
+In this chapter we describe how to run some special cases that take more than one step
+to do. The straightforward cases have compsets and/or build-namelist use-cases setup for
+them or require simple editing of a single-case. All of the cases here require you
+to do at least two simulations with different configurations, or require more complex
+editing of the case (changing the streams files).
+</para>
+<para>
+The nine cases we will describe are:
+<orderedlist>
+<listitem>
+<para>
+<emphasis>Running with the prognostic crop model on</emphasis>
+</para>
+</listitem>
+<listitem>
+<para>
+<emphasis>Running with the irrigation model on</emphasis>
+</para>
+</listitem>
+<listitem>
+<para>
+<emphasis>Spinning up the Satellite Phenology Model (&clmsp; spinup)</emphasis>
+</para>
+</listitem>
+<listitem>
+<para>
+<emphasis>Spinning up the biogeochemistry Carbon-Nitrogen Model (CN spinup)</emphasis>
+</para>
+</listitem>
+<listitem>
+<para>
+<emphasis>Spinning up the Carbon-Nitrogen Dynamic Global Vegetation Model (CNDV spinup)</emphasis>
+</para>
+</listitem>
+<listitem>
+<para>
+<emphasis>Running with MOAR data as atmospheric forcing to spinup the model</emphasis>
+</para>
+</listitem>
+<listitem>
+<para>
+<emphasis>Running with your own previous simulation as atmospheric forcing to spinup the model</emphasis>
+</para>
+</listitem>
+<listitem>
+<para>
+<emphasis>Doing perturbation error growth tests</emphasis>
+</para>
+</listitem>
+<listitem>
+<para>
+<emphasis>Running stand-alone &clm; with transient historical &CO2;
+concentration</emphasis>
+</para>
+</listitem>
+</orderedlist>
+</para>
+<caution>
+<para>
+The cases in this chapter are more sophisticated and require more technical knowledge
+and skill than cases in previous chapters. The user should be very familiar with doing
+simple cases before moving onto the cases described here.
+</para>
+</caution>
+<sect1 id="CROP">
+<title>Running with the prognostic crop model on</title>
+
+<para>
+In &clmcesm103; a prognostic crop model was added to &clm4;. The prognostic crop
+model is setup to work with CN for present day conditions and we have surface
+and initial condition datasets at f19 resolution. In order to use the initial condition
+file, we need to set the <envar>RUN_TYPE</envar> to <literal>startup</literal> rather
+than <literal>hybrid</literal> since the compset for f19 sets up to use an initial
+condition file without crop active. To activate the crop model we simply add "-crop on"
+to &CLMCONFIG;.
+<example>
+<title>Example Crop Simulation</title>
+<screen width="99">
+> cd scripts
+> ./create_newcase -case CROP -res f19_g16 -compset ICN -mach yellowstone_intel
+> cd CROP
+# Append "-crop on" to &CLMCONFIG; in env_build.xml (you could also use an editor)
+> ./xmlchange &CLMCONFIG;="-crop on" -append
+# Change to startup type so uses spunup initial conditions file for crop if it exists
+# By default the model will do a hybrid startup with an initial condition file
+# incompatible with the crop surface dataset.
+> ./xmlchange RUN_TYPE=startup
+> ./cesm_setup
+# Now build and run normally
+> ./CROP.build
+> ./CROP.submit
+</screen>
+</example>
+</para>
+</sect1>
+
+<sect1 id="IRRIG">
+<title>Running with the irrigation model on</title>
+
+<para>
+In &clmcesm103; an irrigation model for generic crop was added to &clm4;. Currently,
+irrigation and crop can NOT be used together see bug number 1326 in the 
+&KnownBugs; file.
+The irrigation model is tuned to work only with &clmsp; see the caution below for
+for more information on this. To turn on
+irrigation we simply add "-irrig on" to &CLMBLDNML;. Just as in the crop example we
+also change <envar>RUN_TYPE</envar> to <literal>startup</literal> so that we don't use
+an initial condition file that is incompatible with irrigation.
+<example>
+<title>Example Irrigation Simulation</title>
+<screen width="99">
+> cd scripts
+# Note here we do a &clmsp; simulation as that is what has been validated
+> ./create_newcase -case IRRIG -res f19_g16 -compset I -mach yellowstone_intel
+> cd IRRIG
+# Append "-irrig" to &CLMBLDNML; in env_run.xml (you could also use an editor)
+> ./xmlchange &CLMBLDNML;="-irrig" -append
+# Change to startup type so uses spunup initial conditions file for irrigation if it exists
+# By default the model will do a hybrid startup with an initial condition file
+# incompatible with the irrigation surface dataset.
+> ./xmlchange RUN_TYPE=startup
+> ./cesm_setup
+# Now build and run normally
+> ./IRRIG.build
+> ./IRRIG.submit
+</screen>
+</example>
+<caution>
+<para>
+We have only run the irrigation model with &clmsp; (i.e. without the CN model). We 
+recommend that if you want to run the irrigation model with CN, that you do a spinup 
+as outlined in the examples below. But, more than that you may need to make 
+the adjustments we discuss in <xref linkend="bld_nml_not_validated"></xref>.
+</para>
+</caution>
+</para>
+</sect1>
+
+<sect1 id="CLMSP_SPINUP">
+<title>Spinning up the Satellite Phenology Model (&clmsp; spinup)</title>
+
+<para>
+To spin-up the &clmsp; model you merely need to run &clmsp; for 50 simulation
+years starting from arbitrary initial conditions. You then use the final
+restart file for initial conditions in other simulations.
+Because, this is a straight forward operation we will NOT give
+the details on how to do that here, but leave it as an exercise for the reader.
+See the <xref linkend="final_CN_spinup"></xref> as an example of doing this
+as the last step for &clmcn;.
+</para>
+</sect1>
+
+<sect1 id="CN_SPINUP">
+<title>Spinning up the biogeochemistry Carbon-Nitrogen Model (CN spinup)</title>
+<para>
+To get the &clmcn; model to a steady state, you first run it from arbitrary initial conditions
+using the "accelerated decomposition spinup" (-spinup AD in &clm; &configure;) mode for 600 simulation years. After
+this you branch from this mode in the "exit spinup" (-spinup exit in &clm; &configure;), run
+for a simulation year, and then save a restart from that and use it as initial conditions 
+for further spinup of CN (at least 50 simulation years).
+</para>
+<procedure>
+<title>Spinup of &clmcn;</title>
+<step>
+<title>AD_SPINUP</title>
+<para>
+For the first step of running 600 years in "-spinup AD" mode, you will setup
+a case, and then edit the values in <filename>env_build.xml</filename> and
+<filename>env_run.xml</filename> so that the right configuration is turned on and
+the simulation is setup to run for the required length of simulation time.
+So do the following:
+<example>
+<title>Example AD_SPINUP Simulation</title>
+<screen width="99">
+> cd scripts
+> ./create_newcase -case CN_spinup -res f19_g16 -compset ICN -mach yellowstone_intel
+> cd CN_spinup
+# Append "-spinup AD" to &CLMCONFIG;
+> ./xmlchange &CLMCONFIG;="-spinup AD" -append
+# The following sets &CLMFORCECOLD; to "on" (you could also use an editor)
+> ./xmlchange &CLMFORCECOLD;=on
+# Make the output history files only annual, by adding the following to the &usernlclm; namelist
+> echo 'hist_nhtfrq = -8760' >> &usernlclm;
+# Now setup
+> ./cesm_setup -case
+# Now build
+> ./CN_spinup.build
+# The following sets RESUBMIT to 30 times in env_run.xml (you could also use an editor)
+# The following sets STOP_DATE,STOP_N and STOP_OPTION to Jan/1/601, 20, "nyears" in env_run.xml (you could also use an editor)
+> ./xmlchange RESUBMIT=30,STOP_N=20,STOP_OPTION=nyears,STOP_DATE=6010101
+# Now run normally
+> ./CN_spinup.submit
+</screen>
+</example>
+Afterwards save the last restart file from this simulation to use in the next step.
+</para>
+</step>
+
+<step>
+<title>EXIT_SPINIP</title>
+<para>
+<example>
+<title>Example EXIT_SPINUP Simulation</title>
+<screen width="99">
+> cd scripts
+> ./create_newcase -case CN_exitspinup -res f19_g16 -compset ICN -mach yellowstone_intel
+> cd CN_exitspinup
+# Append "-spinup exit" to &CLMCONFIG;
+> ./xmlchange &CLMCONFIG;="-spinup exit" -append
+# Change run type to branch and branch from the last year of the last simulation
+> ./xmlchange RUN_TYPE=branch,RUN_REFCASE=CN_spinup,RUN_REFDATE=0601-01-01,GET_REFCASE=FALSE
+> ./cesm_setup
+# Go ahead and build, so that the run directory is created
+> ./CN_exitspinup.build
+# Now, Copy the last restart files from the earlier case into your run directory
+> cp /ptmp/$LOGIN/archive/CN_spinup/rest/CN_spinup.*.r*.0601-01-01-00000* /ptmp/$LOGIN/CN_exitspinup
+# And copy the rpointer files for datm and drv from the earlier case
+> cp /ptmp/$LOGIN/archive/CN_spinup/rest/rpointer.atm /ptmp/$LOGIN/CN_exitspinup
+> cp /ptmp/$LOGIN/archive/CN_spinup/rest/rpointer.drv /ptmp/$LOGIN/CN_exitspinup
+# The following sets STOP_OPTION to "nyears" in env_run.xml (you could also use an editor)
+> ./xmlchange STOP_OPTION=nyears,STOP_N=1
+# Now run normally
+> ./CN_exitspinup.submit
+</screen>
+</example>
+</para>
+</step>
+
+<step>
+<title>Final spinup</title>
+<para>
+Next save the last restart file from this step and use it as the "finidat" file to
+use for one more spinup for at least 50 years in normal mode. 
+So do the following:
+<example id="final_CN_spinup">
+<title>Example Final CN Spinup Simulation</title>
+<screen width="99">
+> cd scripts
+> ./create_newcase -case CN_finalspinup -res f19_g16 -compset ICN -mach yellowstone_intel
+> cd CN_finalspinup
+# The following sets &CLMFORCECOLD; to "on" in env_build.xml (you could also use an editor)
+> ./xmlchange &CLMFORCECOLD;=on
+# Now, Copy the last &clm; restart file from the earlier case into your run directory
+> cp /ptmp/$LOGIN/archive/CN_exitspinup/rest/CN_exitspinup.clm*.r*.0602-01-01-00000.nc \
+/ptmp/$LOGIN/CN_finalspinup
+# And copy the rpointer files for datm and drv from the earlier case
+> cp /ptmp/$LOGIN/archive/CN_exitspinup/rest/rpointer.atm /ptmp/$LOGIN/CN_finalspinup
+> cp /ptmp/$LOGIN/archive/CN_exitspinup/rest/rpointer.drv /ptmp/$LOGIN/CN_finalspinup
+# Set the finidat file to the last restart file saved in previous step
+> echo ' finidat = "CN_exitspinup.clm2.r.0602-01-01-00000.nc"' > &usernlclm;
+# Now setup
+> ./cesm_setup
+> $EDITOR Buildconf/clm.buildnml.csh
+> Now build
+> .CN_finalspinup.build
+# The following sets RESUBMIT to 5 times in env_run.xml (you could also use an editor)
+# The following sets STOP_N and STOP_OPTION to 10 and "nyears" in env_run.xml (you could also use an editor)
+> ./xmlchange RESUBMIT=5,STOP_OPTION=nyears,STOP_N=10
+> Now run as normal
+> .CN_finalspinup.submit
+</screen>
+</example>
+</para>
+<para>
+To assess if the model is spunup plot trends of CN variables of interest. If you see
+a trend, you may need to run the simulation longer.
+Finally save the restart file from the end of this simulation to use as an "finidat" file for future
+simulations.
+</para>
+</step>
+</procedure>
+
+</sect1>
+<sect1 id="CNDV_SPINUP">
+<title>Spinning up the Carbon-Nitrogen Dynamic Global Vegetation Model (CNDV spinup)</title>
+<para>
+To spinup the &clm; CNDV model -- you first follow the procedures above to spinup the CN model.
+Then you take the CN initial state file you created for the spinup with just CN, and 
+run CNDV for 200 more years. 
+We've provided such spunup files for two resolutions (f09 and f19) and two time-periods 
+(1850 and 2000), so in this example we will use the files provided to start from.
+We've also provided a spinup file at f19 resolution for CNDV, hence the following is
+NOT required when running at f19.
+If you were to start from your own &clmcn; spunup files -- the procedure would require
+some modification.
+There are no compsets using CNDV, so in
+<filename>env_build.xml</filename> change <envar>CLM_CONFIG_OPTS</envar> to
+<literal>-bgc cndv</literal>.
+<example>
+<title>Example CNDV Spinup Simulation</title>
+<screen width="99">
+> cd scripts
+> ./create_newcase -case CNDV_spinup -res f09_g16 -compset ICN -mach yellowstone_intel
+> cd CNDV_spinup
+# Set run type to startup and do a cold start and CLM_CONFIG_OPTS to CNDV
+> ./xmlchange RUN_TYPE=startup,CLM_CONFIG_OPTS="-bgc cndv"
+# Make the default primary history file annual and add an annual 1D vector auxiliary file
+# By putting the following in a &usernlclm; file.
+> cat &lt;&lt; EOF >> &usernlclm;
+ hist_nhtfrq = -8760, -8760
+ hist_mfilt  =     1, 1
+ hist_fincl2 = 'TLAI', 'TSAI', 'HTOP', 'HBOT', 'NPP'
+ hist_dov2xy = .true., .false.
+> ./cesm_setup
+# NOTE: If you were using your own CN spinup files you would edit the namelist to use it
+# $EDITOR Buildconf/clm.buildnml.csh
+#
+# Now build and run as normal
+> ./CNDV_spinup.build
+# The following sets RESUBMIT to 10 times, STOP_N/STOP_OPTION to 20 years in env_run.xml (you could also use an editor)
+> ./xmlchange RESUBMIT=10,STOP_OPTION=nyears,STOP_N=20
+# Make sure you turn archiving on, so you save your files to long term archival
+> ./xmlchange DOUT_L_MS=TRUE
+> ./CNDV_spinup.submit
+</screen>
+</example>
+
+</para>
+<para>
+In a data analysis tool you should examine the auxiliary file and examine the
+<varname>pfts1d_wtgcell</varname> to see where and what types of vegetation have
+been established. See the caution in <xref linkend="vector1D"></xref> for more
+information on visualizing and analyzing 1D vector fields.
+</para>
+<note>
+<para>
+CNDV also writes out two vector fields to "hv" auxiliary files, on an annual basis by
+default.
+</para>
+</note>
+<note>
+<para>
+We've provided a spinup file for CNDV at f19 resolution, you could also use
+<command>interpinic</command> to interpolate this file to other resolutions.
+</para>
+</note>
+</sect1>
+
+<sect1 id="MOARFORCE">
+<title>Running with MOAR data as atmospheric forcing to spinup the model</title>
+<para>
+Because it takes so long to spinup the CN model (as we just saw previously), if you 
+are doing fully coupled simulations with active atmosphere and ocean, you will want 
+to do the spinup portion of this "offline". So instead of doing expensive fully 
+coupled simulations for the spinup duration, you run &clm; in a very cheap "I" 
+compset using atmospheric forcing from a shorter fully coupled simulation 
+(or a simulation run previously by someone else).
+</para>
+<para>
+In this example we will use the <literal>I1850SPINUPCN</literal> compset to setup
+&clm; to run with atmospheric forcing from a previous fully coupled simulation with
+data that is already stored on disk on yellowstone. There are several simulations that
+have high frequency data for which we can do this. You can also do this on a machine
+other than yellowstone, but would need to download the data from the Earth System Grid and
+change the datapath similar to <xref linkend="ownforce"></xref>. 
+<example>
+<title>Example Simulation with MOAR Data on yellowstone</title>
+<screen width="99">
+> cd scripts
+> ./create_newcase -case MOARforce1850 -res f19_g16 -compset I1850SPINUPCN -mach yellowstone_intel
+> cd MOARforce1850
+# The following sets the casename to point to for atm forcing (you could also use an editor)
+> ./xmlchange DATM_CPL_CASE=b40.1850.track1.1deg.006a
+# The following sets the align year and years to run over for atm forcing 
+#  (you could also use an editor)
+> ./xmlchange DATM_CPL_YR_ALIGN=1,DATM_CPL_YR_START=960,DATM_CPL_YR_END=1030
+> ./cesm_setup
+# Now build and run as normal
+> ./MOARforce1850.build
+> ./MOARforce1850.submit
+</screen>
+</example>
+<caution>
+<para>
+Because of bug 1339 (see the &KnownBugs; file on this) 
+you can't run with 83 or more years of forcing. If you do need to run with more years of 
+forcing, you'll need to address the issue as outlined in the &KnownBugs; file.
+</para>
+</caution>
+</para>
+</sect1>
+
+<sect1 id="OWNCPLHISTFORCE">
+<title>Running with your own previous simulation as atmospheric forcing to spinup the model</title>
+<para>
+Another way that you might want to spinup the model is to run your own simulation 
+for a relatively short period (either a B, E, or F compset) and then use it as forcing 
+for your "I" case later. By only running 20 to 50 years for the fully coupled case,
+you'll save a substantial amount of computer time rather than running the entire spinup
+period with a fully coupled model.
+</para>
+<para>
+The first thing we need to do is to run a fully coupled case and save the atmospheric
+coupling fields on a three hourly basis. In this example, we will run on yellowstone
+and archive the data to a local disk that we can then use in the next simulation.
+<example>
+<title>Example Fully Coupled Simulation to Create Data to Force Next Example Simulation</title>
+<screen width="99">
+> cd scripts
+> ./create_newcase -case myBCN1850 -res f09_g16 -compset B1850CN  -mach yellowstone_intel
+> cd myBCN1850
+> ./cesm_setup
+# Set histaux_a2x3hr to .true. in your user_nl_cpl output from the atmosphere model 
+# will be saved 3 hourly
+echo "histaux_a2x3hr=.true." >> user_nl_cpl
+# Now build
+> ./myBCN1850.build
+# The following sets the archival disk space (you could also use an editor)
+> ./xmlchange DOUT_S_ROOT='/glade/home/$USER/$CASE'
+# Make sure files are archived to disk, but NOT to long term storage 
+# (you could also use an editor)
+> ./xmlchange DOUT_S=TRUE,DOUT_L_MS=FALSE
+# Set the run length to run a total of 20 years (you could also use an editor)
+> ./xmlchange RESUBMIT=9,STOP_OPTION=nyears,STOP_N=2
+# Now run as normal
+> ./myBCN1850.submit
+</screen>
+</example>
+<caution>
+<para>
+Because of bug 1733 (see the &KnownBugs; file on this) you'll need to edit the driver
+code in order for it to produce the correct list of fields needed to run the model
+later.
+</para>
+</caution>
+</para>
+<para>
+Now we run an I compset forced with the data from the previous simulation using
+the &CPLHIST; option to DATM_MODE. See 
+<xref linkend="cplhist_mode_datm_settings"></xref> for more information on the
+&datm; settings for &CPLHIST; mode.
+<example id="ownforce">
+<title>Example Simulation Forced with Data from the Previous Simulation</title>
+<screen width="99">
+> cd scripts
+> ./create_newcase -case frcwmyBCN1850 -res f09_g16 -compset I1850SPINUPCN -mach yellowstone_intel
+> cd frcWmyBCN1850
+# The following sets the casename to point to for atm forcing (you could also use an editor)
+> ./xmlchange DATM_CPLHIST_CASE="myBCN1850"
+# The following sets the align year and years to run over for atm forcing 
+#  (you could also use an editor)
+> ./xmlchange DATM_CPLHIST_YR_ALIGN="1",DATM_CPLHIST_YR_START=1,DATM_CPLHIST_YR_END=20
+# Set the strm_datdir in the namelist_defaults_datm.xml
+# file to the archival path of the case above in the form of: /glade/home/achive/$USER/$DATM_CPLHIST_CASE/cpl/hist
+# NOTE: THIS WILL CHANGE THE PATH FOR ALL I1850SPINUPCN COMPSET CASES MADE AFTER THIS!
+> $EDITOR ../../models/atm/datm/bld/namelist_files/namelist_defaults_datm.xml
+> ./cesm_setup
+# Now build and run as normal
+> ./frcwmyBCN1850.build
+> ./frcwmyBCN1850.submit
+</screen>
+</example>
+<note>
+<para>
+We did this by editing the "namelist_defaults_datm.xml" which will change the settings for ALL future
+I1850SPINUPCN cases you run. You could also do this by editing the path in the resulting streams text
+files in the CaseDocs directory, and then create a "user_" streams file with the correct path. This would 
+change the streams file JUST for this case. The steps do it this way are:
+<screen width="99">
+> ./preview_namelists
+> cp CaseDocs/datm.streams.txt.CPLHIST3HrWx.Precip            user_datm.streams.txt.CPLHIST3HrWx.Precip
+> cp CaseDocs/datm.streams.txt.CPLHIST3HrWx.Solar             user_datm.streams.txt.CPLHIST3HrWx.Solar
+> cp CaseDocs/datm.streams.txt.CPLHIST3HrWx.nonSolarNonPrecip user_datm.streams.txt.CPLHIST3HrWx.nonSolarNonPrecip
+# Change the &lt;fieldInfo&gt; field &lt;filePath&gt; to point to the correct directory i.e.: /glade/home/achive/$USER/$DATM_CPLHIST_CASE/cpl/hist
+> $EDITOR user_datm.streams.txt.CPLHIST3HrWx.*
+> ./preview_namelists
+# Then make sure the CaseDocs/datm.streams.txt.CPLHIST3HrWx.* files have the correct path
+</screen>
+</para>
+</note>
+</para>
+</sect1>
+
+<sect1 id="DATM_CO2_TSERIES">
+<title>Running stand-alone &clm; with transient historical &CO2;
+concentration</title>
+<para>
+In this case you want to run a simulation with stand-alone &clm; responding
+to changes in &CO2; for a historical period.
+For this example, we will start with the "I_1850-2000_CN" compset that
+has transient: land-use, Nitrogen and Aerosol deposition already. You could
+also use another compset if you didn't want these other features to be transient.
+In order to get &CO2; to be transient we need to add a new streams file
+and add it to the list of streams in the user_nl_datm file. You also need
+a &netcdf; datafile that datm can read that gives the variation. You could
+supply your own file, but we have a standard file that is used by &cam; for this
+and our example will make use of this file.
+</para>
+<note>
+<para>
+Most everything here has to do with changing datm rather than &clm;
+to allow this to happen. As such the user that wishes to do this should
+first become more familiar with datm and read the 
+<ulink url="&cesmwebmodelrel;data8">&cesm; Data
+Model User's Guide</ulink> especially as it pertains to the datm.
+</para>
+</note>
+<warning>
+<para>
+This section documents the process for doing something that is non-standard.
+There may be errors with the documentation and process, and you may have to do
+some work before all of this works for you. If that is the case, we recommend
+that you do further research into understanding the process and the files, as
+well as understanding the datm and how it works. You may have to read documentation
+found in the code for datm as well as "csm_share".
+</para>
+</warning>
+<para>
+The datm has "streams" files that have rough XML-like syntax and specify the
+location and file to get data from, as well as information on the variable names
+and the data locations of the grid points. The datm expects specific variable names
+and the datm "maps" the expected variable names from the file to the names expected
+by datm. The file we are working with here is a file with a single-point, that covers 
+the entire globe (so the vertices go from -90 to 90 degrees in latitude and 0 to 360 
+degrees in longitude). Since it's a single point it's a little easier to work with
+than datasets that may be at a given horizontal resolution. The datm also expects
+that variables will be in certain units, and only expects a limited number of 
+variables so arbitrary fields can NOT be exchanged this way. However, the process
+would be similar for datasets that do contain more than one point.
+</para>
+<para>
+The three things that are needed: a domain file, a data file, and a streams text file.
+The domain file is a CF-compliant &netcdf; file that has information
+on the grid points (latitudes and longitudes for cell-centers and vertices, mask
+, fraction, and areas). The datafile is a CF-compliant &netcdf; file with the data that 
+will be mapped. The streams text file is the XML-like file that tells datm how to find
+the files and how to map the variables datm knows about to the variable names on the
+&netcdf; files. Note, that in our case the domain file and the data file are the same
+file. In other cases, the domain file may be separate from the data file.
+</para>
+<para>
+First we are going to create a case, and we will edit
+the <filename>user_nl_datm</filename> so that we add a
+&CO2; data stream in. There is a streams text file
+available in <filename>models/lnd/clm/doc/UsersGuide/datm.streams.txt.co2</filename>,
+that includes file with a &CO2; time-series from 1765 to 2007.
+<example>
+<title>Example Transient Simulation with Historical &CO2;</title>
+<screen width="99">
+> cd scripts
+> ./create_newcase -case DATM_CO2_TSERIES -res f19_g16 -compset I_1850-2000_CN \
+-mach yellowstone_intel
+> cd DATM_CO2_TSERIES
+# Set CCSM_BGC to CO2A so that CO2 will be passed from atmosphere to land
+# Set CLM_CO2_TYPE to diagnostic so that the land will use the value sent from the atmosphere
+> ./xmlchange CCSM_BGC=CO2A,CLM_CO2_TYPE=diagnostic
+> ./cesm_setup
+# Create the streams file for CO2
+> cat &lt;&lt; EOF &gt;&gt; datm.streams.txt.co2tseries
+&co2tseries;
+EOF
+# And copy it to the run directory
+> cp datm.streams.txt.co2tseries $RUNDIR
+# Run preview namelist so we have the namelist in CaseDocs
+> ./preview_namelists
+</screen>
+</example>
+The first thing we will do is to edit the user_nl_datm file to add 
+a CO2 file stream in. To do this we will copy a <filename>user_nl_datm</filename>
+in with the changes needed. The file <filename>addco2_user_nl_datm.user_nl</filename> is
+in <filename>models/lnd/clm/doc/UsersGuide</filename> and looks like this...
+<screen width="99">
+&usernldatm_co2;
+</screen>
+You just copy this into your case directory. But, also compare it to the version
+in <filename>CaseDocs</filename> to make sure the changes are just to add in
+the new &CO2; stream. Check to see that filenames, and start, end and align
+years are correct.
+<screen width="99">
+> cp ../../models/lnd/clm/doc/UsersGuide/addco2_user_nl_datm.user_nl user_nl_datm
+> diff user_nl_datm CaseDocs/datm_atm_in
+</screen>
+Once, you've done that you can build and run your case normally.
+</para>
+<warning>
+<para>
+This procedure assumes you are using a <literal>I_1850-2000_CN</literal> compset out of the box, with
+<envar>DATM_PRESAERO</envar> equal to <literal>trans_1850-2000</literal>. So it assumes standard
+Qian atmosphere forcing, and transient prescribed aerosols from streams files. If your case changes
+anything here your &usernldatm; file will need to be adjusted to work with it.
+</para>
+</warning>
+
+<note>
+<para>
+The intent of the &usernldatm; is to adds an extra streams file for &CO2; to the end of the streams variable,
+and other arrays associated with streams (adding mapalgo as a new array with bilinear for everything, but
+the &CO2; file which should be "nn" for nearest neighbor). Other variables should be the same as the other
+stream values.
+</para>
+</note>
+
+<warning>
+<para>
+The streams file above is hard-coded for the path of the file on &ncar; computers. To use it on an outside
+machine you'll need to edit the filepath in the streams file to point to the location where you have the file.
+</para>
+</warning>
+
+<para>
+After going through these steps, you will have a case where you have datm reading
+in an extra streams text file that points to a data file with &CO2;
+data on it that will send that data to the &clm;.
+</para>
+</sect1>
+</chapter>
+<!-- End of special cases chapter-->

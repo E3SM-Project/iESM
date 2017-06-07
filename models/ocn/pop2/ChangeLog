@@ -1,0 +1,58 @@
+SVN $Id: ChangeLog 49335 2013-07-19 20:46:50Z mlevy@ucar.edu $
+SVN $URL: https://svn-ccsm-models.cgd.ucar.edu/pop2/branch_tags/iesm11_tags/iesm11_01_cesm1_1_2_rel_04_cesm_pop_2_1_20130128a/ChangeLog $
+===============================================================================
+Tag Creator: mlevy
+Developers:  klindsay
+Tag Date:    19 July 2013
+Tag Name:   pop2/branch_tags/cesm1_1_2_rel_tags/cesm1_1_2_rel_04_cesm_pop_2_1_20130128a
+Tag Summary: Add RCP 4.5 and RCP 8.5 support to BGC
+
+Files Modified:
+M       bld/build-namelist
+M       bld/namelist_files/namelist_defaults_pop2.xml
+===============================================================================
+Tag Creator: mlevy
+Developers:  mlevy
+Tag Date:    16 July 2013
+Tag Name:   pop2/branch_tags/cesm1_1_2_rel_tags/cesm1_1_2_rel_03_cesm_pop_2_1_20130128a
+Tag Summary: Bug-fix: CESM 1.1.0 and 1.1.1 did not handle updated versions of
+             domain_size.F90 and POP_DomainSizeMod.F90 in SourceMods/ correctly.
+
+Files Modified:
+M       bld/pop2.buildexe.csh
+===============================================================================
+Tag Creator: mlevy
+Developers:  mlevy
+Tag Date:    16 July 2013
+Tag Name:   pop2/branch_tags/cesm1_1_2_rel_tags/cesm1_1_2_rel_02_cesm_pop_2_1_20130128a
+Tag Summary: Incorporate fixes for known_problems from CESM 1.1.1:
+             1) CECO can output with pnetcdf
+             2) Instance number will appear in all diagnostic output files when
+                running multi-instance cases.
+             3) ecosys_parms_nml variables can be set in user_nl_pop2
+
+Files Modified:
+M       source/io_netcdf.F90
+M       bld/build-namelist
+M       bld/namelist_files/namelist_definition_pop2.xml
+===============================================================================
+Tag Creator: mlevy
+Developers:  mlevy
+Tag Date:    8 July 2013
+Tag Name:   pop2/branch_tags/cesm1_1_2_rel_tags/cesm1_1_2_rel_01_cesm_pop_2_1_20130128a
+Tag Summary: Update build-namelist script to fix bug when setting initial CFCs
+             in a branch run (CESM 1.1.1 contained a fix that only worked for
+             hybrid runs)
+
+Files Modified:
+M       bld/build-namelist
+===============================================================================
+Tag Creator: mlevy
+Developers:  mlevy
+Tag Date:    8 July 2013
+Tag Name:   pop2/branch_tags/cesm1_1_2_rel_tags/cesm1_1_2_rel_00_cesm_pop_2_1_20130128a
+Tag Summary: Initial tag for CESM 1.1.2 release branch, copy of trunk tag
+             cesm_pop_2_1_20130128a
+
+Files Modified:
+===============================================================================

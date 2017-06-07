@@ -1,0 +1,226 @@
+<!--
+
+Top level docbook User's-Guide for CLM4
+
+-->
+<?xml version='1.0'?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+"http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
+
+  <!-- Files to link in -->
+  <!ENTITY compsets_list       SYSTEM "compsets_list_ofIcases.xml">
+  <!ENTITY buildnml_help       SYSTEM "buildnml_help.xml">
+  <!ENTITY res_list            SYSTEM "buildnml_resolutions.xml">
+  <!ENTITY usecases_list       SYSTEM "buildnml_usecases.xml">
+  <!ENTITY getreg_datasets     SYSTEM "getregional_datasets.xml">
+  <!ENTITY config_help         SYSTEM "config_help.xml">
+  <!ENTITY quickstart_guide    SYSTEM "quickstart_guide.xml">
+  <!ENTITY quickstart_userdata SYSTEM "quickstart_usrdat.xml">
+  <!ENTITY filecopies          SYSTEM "filecopies.xml">
+  <!ENTITY usernldatm_co2      SYSTEM "addco2_user_nl_datm.xml">
+  <!ENTITY co2tseries          SYSTEM "datm.streams.txt.co2tseries.xml">
+  <!ENTITY preface             SYSTEM "preface.xml">
+  <!ENTITY custom              SYSTEM "custom.xml">
+  <!ENTITY tools               SYSTEM "tools.xml">
+  <!ENTITY special_cases       SYSTEM "special_cases.xml">
+  <!ENTITY adding_files        SYSTEM "adding_files.xml">
+  <!ENTITY single_point        SYSTEM "single_point.xml">
+  <!ENTITY ptclmdoc            SYSTEM "ptclm.xml">
+  <!ENTITY ptclm_help          SYSTEM "ptclm_help.xml">
+  <!ENTITY ptclm_list          SYSTEM "ptclm_list.xml">
+  <!ENTITY trouble             SYSTEM "trouble_shooting.xml">
+  <!ENTITY appendix            SYSTEM "appendix.xml">
+  <!ENTITY testing             SYSTEM "testing.xml">
+  <!ENTITY mksurfdatapl        SYSTEM "mksurfdata.pl.xml">
+  <!ENTITY mknoocnmappl        SYSTEM "mknoocnmap.pl.xml">
+  <!ENTITY mkmapdatash         SYSTEM "mkmapdata.sh.xml">
+  <!ENTITY clmtestdriver       SYSTEM "test_driver.sh.xml">
+  <!ENTITY build_date          SYSTEM "build_date.xml">
+  <!ENTITY cprnc_readme        SYSTEM "cprnc_readme.xml">
+  <!ENTITY tools_readme        SYSTEM "tools_readme.xml">
+  <!ENTITY nmldfntbl           SYSTEM "namelist_definition_table.xml">
+  <!ENTITY nmldfltbl           SYSTEM "namelist_defaults_clm_table.xml">
+  <!ENTITY hisfldtbl           SYSTEM "history_fields_table.xml">
+  <!ENTITY cfgdfntbl           SYSTEM "config_definition_table.xml">
+
+  <!-- Aliases to use -->
+  <!ENTITY buildnml          "<command>build-namelist</command>">
+  <!ENTITY configure         "<command>configure</command>">
+  <!ENTITY setup             "<command>cesm_setup</command>">
+  <!ENTITY previewnml        "<command>preview_namelist</command>">
+  <!ENTITY ncar              "<acronym>NCAR</acronym>">
+  <!ENTITY esmf              "<acronym>ESMF</acronym>">
+  <!ENTITY esmfregrid        "<command>ESMF_RegridWeightGen</command>">
+  <!ENTITY scrip             "<acronym>SCRIP</acronym>">
+  <!ENTITY ccsm              "<acronym>CCSM</acronym>">
+  <!ENTITY ccsm4             "<acronym>CCSM4.0</acronym>">
+  <!ENTITY cesm              "<acronym>CESM</acronym>">
+  <!ENTITY cesm1             "<acronym>CESM1.0</acronym>">
+  <!ENTITY cesm11            "<acronym>CESM1.1</acronym>">
+  <!ENTITY cesm101           "<acronym>CESM1.0.1</acronym>">
+  <!ENTITY cesm102           "<acronym>CESM1.0.2</acronym>">
+  <!ENTITY cesm103           "<acronym>CESM1.0.3</acronym>">
+  <!ENTITY cesm104           "<acronym>CESM1.0.4</acronym>">
+  <!ENTITY cesm105           "<acronym>CESM1.0.5</acronym>">
+  <!ENTITY cesm110           "<acronym>CESM1.1.0</acronym>">
+  <!ENTITY cesm111           "<acronym>CESM1.1.1</acronym>">
+  <!ENTITY cesm112           "<acronym>CESM1.1.2</acronym>">
+  <!ENTITY cesmrel           "&cesm111;">
+  <!ENTITY ptclm             "<acronym>PTCLM</acronym>">
+  <!ENTITY ptclm1            "<acronym>PTCLM1</acronym>">
+  <!ENTITY ptclm1cesm103     "<acronym>PTCLM1.110504</acronym>">
+  <!ENTITY ptclm1cesm104     "<acronym>PTCLM1.110726</acronym>">
+  <!ENTITY ptclmrel          "&ptclm1cesm105;">
+  <!ENTITY cam               "<acronym>CAM</acronym>">
+  <!ENTITY clm               "<acronym>CLM</acronym>">
+  <!ENTITY clmcn             "<acronym>CLMCN</acronym>">
+  <!ENTITY clmsp             "<acronym>CLMSP</acronym>">
+  <!ENTITY clmu              "<acronym>CLMU</acronym>">
+  <!ENTITY clm3              "<acronym>CLM3.0</acronym>">
+  <!ENTITY clm35             "<acronym>CLM3.5</acronym>">
+  <!ENTITY clm4              "<acronym>CLM4</acronym>">
+  <!ENTITY clm45             "<acronym>CLM4.5</acronym>">
+  <!ENTITY clm40             "<acronym>CLM4.0.00</acronym>">
+  <!ENTITY clm4010           "&clm4; in &cesm101;">
+  <!ENTITY clm4014           "&clm4; in &cesm102;">
+  <!ENTITY clm4032           "&clm4; in &cesm103;">
+  <!ENTITY clm4054           "&clm4; in &cesm112;">
+  <!ENTITY clmcesm101        "&clm4010;">
+  <!ENTITY clmcesm102        "&clm4014;">
+  <!ENTITY clmcesm103        "&clm4032;">
+  <!ENTITY clmcesm104        "&clm4; in &cesm104;">
+  <!ENTITY clmcesm105        "&clm4; in &cesm105;">
+  <!ENTITY clmcesm110        "&clm4; in &cesm110;">
+  <!ENTITY clmcesm111        "&clm4; in &cesm111;">
+  <!ENTITY clmcesm112        "&clm4; in &cesm112;">
+  <!ENTITY clmrel            "&clmcesm112;">
+  <!ENTITY datm              "<acronym>DATM</acronym>">
+  <!ENTITY KnownBugs         "<ulink url='../KnownBugs'><filename>models/lnd/clm/doc/KnownBugs</filename></ulink>">
+  <!ENTITY KnownLims         "<ulink url='../KnownLimitations'><filename>models/lnd/clm/doc/KnownLimitationss</filename></ulink>">
+  <!ENTITY netcdf            "<acronym>NetCDF</acronym>">
+  <!ENTITY FORTRAN           "<acronym>FORTRAN</acronym>">
+  <!ENTITY FORTRAN90         "<acronym>FORTRAN-90</acronym>">
+  <!ENTITY mpi               "<acronym>MPI</acronym>">
+  <!ENTITY pio               "<acronym>PIO</acronym>">
+  <!ENTITY omp               "<acronym>OpenMP</acronym>">
+  <!ENTITY ncl               "<acronym>NCL</acronym>">
+  <!ENTITY perl              "<acronym>Perl</acronym>">
+  <!ENTITY xml               "<acronym>XML</acronym>">
+  <!ENTITY xmlchange         "<command>xmlchange</command>">
+  <!ENTITY xmlquery          "<command>xmlquery</command>">
+  <!ENTITY CO2               "CO<subscript>2</subscript>">
+  <!ENTITY cesmwebmodelrel   "http://www.cesm.ucar.edu/models/cesm1.1/">
+
+  <!-- Aliases of cpl7 scripts files -->
+  <!ENTITY envrun            "<filename>env_run.xml</filename>">
+  <!ENTITY envbuild          "<filename>env_build.xml</filename>">
+  <!ENTITY usernlclm         "<filename>user_nl_clm</filename>">
+  <!ENTITY usernldatm        "<filename>user_nl_datm</filename>">
+  <!ENTITY clmbuildnml       "<command>clm.buildnml.csh</command>">
+  <!ENTITY clmbuildexe       "<command>clm.buildexe.csh</command>">
+  <!ENTITY datmbuildnml      "<command>datm.buildnml.csh</command>">
+  <!ENTITY datmbuildexe      "<command>datm.buildexe.csh</command>">
+  <!ENTITY casebld           "<command>$CASE.build</command>">
+  <!ENTITY caserun           "<command>$CASE.run</command>">
+
+  <!-- Aliases of cpl7 scripts env variables to use -->
+  <!ENTITY PTSMODE           "<envar>PTS_MODE</envar>">
+  <!ENTITY CSMDATA           "<envar>CSMDATA</envar>">
+  <!ENTITY CLMFORCECOLD      "<envar>CLM_FORCE_COLDSTART</envar>">
+  <!ENTITY CLMCONFIG         "<envar>CLM_CONFIG_OPTS</envar>">
+  <!ENTITY CLMBLDNML         "<envar>CLM_BLDNML_OPTS</envar>">
+  <!ENTITY CLMUSECASE        "<envar>CLM_NML_USE_CASE</envar>">
+  <!ENTITY CLMNAMELIST       "<envar>CLM_NAMELIST_OPTS</envar>">
+  <!ENTITY CLMQIAN           "<literal>CLM_QIAN</literal>">
+  <!ENTITY CLM1PT            "<literal>CLM1PT</literal>">
+  <!ENTITY CPLHIST           "<literal>CPLHIST3HrWx</literal>">
+  <!ENTITY CLMUSRDAT         "<envar>CLM_USRDAT_NAME</envar>">
+  <!ENTITY CLMUSR            "<literal>CLM_USRDAT</literal>">
+  <!ENTITY CLMCO2            "<envar>CLM_CO2_TYPE</envar>">
+  <!ENTITY DINLOC            "<envar>DIN_LOC_ROOT</envar>">
+
+  <!-- Aliases of cpl7 scripts env variable literal values to use -->
+  <!ENTITY CLMQIAN           "<literal>CLM_QIAN</literal>">
+
+  <!ENTITY % ISOamsa.module "INCLUDE">
+  <![ %ISOamsa.module; [
+  <!ENTITY % ISOamsa PUBLIC "ISO 8879:1986//ENTITIES Added Math Symbols: Arrow Relations//EN"> 
+   %ISOamsa;
+  <!--end of ISOamsa.module-->]]>
+
+  <!ENTITY % ISOgrk1.module "INCLUDE">
+  <![ %ISOgrk1.module; [
+  <!ENTITY % ISOgrk1 PUBLIC "ISO 8879:1986//ENTITIES Greek Letters//EN"> 
+   %ISOgrk1;
+  <!--end of ISOgrk1.module-->]]>
+
+]>
+
+<book label="CLM4_UsersGuide" status="draft">
+
+<bookinfo>
+<title>&cesm; Research Tools: &clmrel; User's Guide Documentation</title>
+
+<keywordset>
+    <keyword>CESM</keyword>
+    <keyword>CLM</keyword>
+    <keyword>community earth system model</keyword>
+    <keyword>climate</keyword>
+    <keyword>climate model</keyword>
+    <keyword>earth system model</keyword>
+    <keyword>land surface model</keyword>
+    <keyword>hydrology</keyword>
+    <keyword>biogeochemistry</keyword>
+    <keyword>urban model</keyword>
+    <keyword>documentation</keyword>
+</keywordset>
+
+<authorgroup>
+
+<author>
+    <firstname>Erik</firstname>
+    <surname>Kluzek</surname>
+   <affiliation>
+   <orgname>NCAR</orgname>
+   </affiliation>
+</author>
+
+</authorgroup>
+
+<abstract>
+<para>
+The user's guide to &clmrel; which is the active land surface model component of &cesmrel;. 
+The purpose of this guide is to instruct both the novice and experienced user, as well as
+&clm; developers in the use of &clm4; for land-surface climate modeling.
+</para>
+</abstract>
+
+<releaseinfo>$URL: https://svn-ccsm-models.cgd.ucar.edu/clm2/branch_tags/iesm11_tags/iesm11_21_cesm1_1_2_rel_n03_clm4_0_54/models/lnd/clm/doc/UsersGuide/clm_ug.xml $</releaseinfo>
+
+<date>&build_date;</date>
+                     
+</bookinfo>
+
+<dedication>
+<para>
+Dedicated to the Land Model Working Group, winners of the 2008 &ccsm; Distinguished Achievement Award.
+May you continue to collaborate together well, and continue to drive
+the science of land surface modeling forward with your diligent and persistent efforts.
+</para>
+</dedication>
+
+<!-- Chapters -->
+&preface;
+&custom;
+&tools;
+&adding_files;
+&special_cases;
+&single_point;
+<!--
+&ptclmdoc;
+-->
+&trouble;
+&testing;
+&appendix;
+
+</book>

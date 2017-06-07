@@ -1,0 +1,828 @@
+#!/bin/csh -f
+
+#===================================================================
+# Create test case
+#===================================================================
+
+setenv TEST_ARGV "$argv"
+if ($#argv < 1) then
+  echo "invoke create_test -help for usage."
+  exit -1;
+endif
+
+#set verbose
+echo " "
+
+# default directory values
+set mypwd = `pwd`
+set commandpath = $0
+if ($commandpath =~ */*) then
+  set scriptsroot = $commandpath:h
+else
+  set scriptsroot = "."
+endif
+
+set ccsmroot = $scriptsroot/..
+set testroot = `pwd`
+set user_nl_dir       = ""
+set baseline_name_gen = ""
+set baseline_name_cmp = ""
+set arguments = "$argv"
+
+# defaults for create_suite
+set csscript   = "off"
+set nobatch    = "off"
+set reruntests = "off"
+set nobuild    = "off"
+
+# print help messages
+set helpheader = 0
+set i = `echo $argv[1]|cut -c2-`
+if( $i == "help" || $i == "h") then
+  set helpheader = 1
+endif
+
+#===================================================================
+
+if ( $helpheader ) then
+cat << EOF1
+NAME   
+
+      create_test - creates a new ccsm test case
+
+SYNOPSIS 
+
+      create_test -testname full-test-name 
+         [-compare baseline_name] 
+         [-generate baseline_name] 
+         [-testroot test-root-directory] 
+         [-mach machine-name]
+         [-guessmach machine_name]
+         [-compiler compiler-name]
+         [-pes_file PES_file] 
+         [-compset_file COMPSET_file] 
+         [-testid id] 
+         [-mach_dir Machines_directory ]
+         [-inputdataroot input-data-root-directory]
+         [-baselineroot baseline_root_directory] 
+         [-clean clean_option] 
+         [-user_nl_dir user-namelist-directory]
+         [-help]
+
+OPTIONS 
+
+     -baselineroot baseline_root_directory
+            Specifies an alternate root directory for baseline datasets
+            used for bfb generate/compare testing.  This option is 
+            ignored unless baseline generation or comparison is being 
+            done.  this will overwrite any env CCSM_BASELINE setting.
+
+     -compare baseline_name
+            Specifies the ccsm tag name to compare results with.
+            This directory is assumed to be contained in baseline_root_directory.
+
+     -clean clean_option
+            -clean  [ on | off ]
+            clean_option = on :  Remove all object, executable, and data 
+            files after succesful completion of the test.  
+            clean_option = off :  Do not remove anything after the test 
+            completes.  This is the default.  
+
+     -mach machine_name
+            the name of the machine as defined in config_machines.xml,
+            can be of the form \${mach}_\${compiler}.  has precedent over
+            any machine name in the testname.
+
+     -compiler compiler_name
+            the name of the compiler as defined in config_machines.xml.
+            has precendent over any compiler set in the machine name or
+            in the testname.
+
+     -generate baseline_name
+            Specifies the ccsm tag name to generate results for.
+            This directory is assumed to be contained in baseline_root_directory.
+
+     -guessmach machine_name
+            A guess at the name of the machine to use as defined in 
+            config_machines.xml, can be of the form \${mach}_\${compiler}.  
+            Has less precedence over the -mach option or any machine name 
+            in the testname.
+
+     -help 
+            Get usage documentation (includes list of tests)
+
+     -mach_dir
+            Path to the Machines directory. Default: $scriptsroot/ccsm_utils/Machines
+
+     -inputdataroot input-data-root-directory
+            Specifies an alternate root directory for ccsm input data. 
+            If -inputdataroot is not specified as an argument, 
+            it will be set to a machine-specific default value.
+
+     -pes_file PES_file
+	    Full pathname of pes file to use (will overwrite default settings) (optional).
+
+     -compset_file COMPSET_file full pathname
+            Specifies the compset file to be used.
+
+     -testid id
+            Sets the testId string.  Default is to have the script
+            pick an arbitrary string.  this can be any length.
+            WARNING:  This option is intended for use by script developers.  
+            WARNING:  Creation of identical tests with the same testid can 
+            WARNING:  lead to obscure errors.  
+
+     -testname full-test-name
+            Set full test name including test case, resolution, component set,
+            and machines.  Example is ERS.f19_g16.B.bluefire.  USE shortnames
+            for best success.  Each testcase can have options appended.  The
+            current supported options are
+              _AOA = aoflux on atm grid
+              _AOE = aoflux on exch grid
+              _CG  = gregorian calendar
+              _D   = debug
+              _E   = esmf interfaces
+              _IOP*= PnetCDF IO test where * is A(atm), C(cpl), G(glc) , I(ice), L(clm), O(ocn) or blank (all components)
+              _L*  = set run length y, m, d, h, s, n(nsteps) plus integer (ie _Lm6 for 6 months)
+              _M*  = set the mpilib where * is default, mpi-serial, mpich, etc
+              _N*  = set NINST_ env value to * where * is an integer
+              _P*  = set pecount to specific values include T,S,M,L,X,1,1x1,16,16x1,4x4, etc
+              _R*  = PTS_MODE test case, valid values are LA, LB, OA, OB
+
+     -testroot test-root-directory
+            Set the directory where you want the test case created
+
+     -user_nl_dir user-namelist-directory
+            A directory to use with user_nl_\$comp files to use for the test
+
+     The following arguments are normally only invoked by create_test_suite.
+     And they only work together (you can't set -nobuild on, or -nobatch on without
+     -create_suite on). When -create_suite is on -- two files will be created
+     to submit and check the status of tests. Also requires the -testid option
+     be used (to ensure all tests use the same id).
+
+          cs.submit.<testid> -- Script created that will run the .build for each test
+                                and then submit each test to the queue.
+          cs.status.<testid> -- Script created that will return the status of each test
+                                submitted.
+
+     -create_suite  [on | off] Create test suite scripts (see above).
+     -nobatch [on | off]       Run tests interactively rather than submit to queue in cs.submit.*.
+                               (required to be consistent for ALL tests in a test suite)
+                               (value of the first will be used by all subsequent tests)
+     -nobuild [on | off]       Don't run the *.build in cs.submit.*.
+                               (required to be consistent for ALL tests in a test suite)
+                               (value of the first will be used by all subsequent tests)
+     -reruntests [on | off]    Rerun tests even if they have already PASSed.
+
+EXAMPLES
+
+     create_test -help
+
+     create_test -testname ERS.f19_g16.B.bluefire_ibm
+
+     create_test -testname ERS.f19_g16.B.bluefire -compiler ibm
+
+     create_test -testname ERS.f19_g16.B -mach bluefire -compiler ibm
+
+     create_test -testname ERS.f19_g16.B.bluefire_ibm -mach lynx_pgi -compiler intel
+        ! this will create the test ERS.f19_g16.B.lynx_intel
+
+     create_test -testname ERS.f19_g16.B.bluefire -testid xyz123 -compiler ibm
+
+     create_test -testname ERS.f19_g16.B.bluefire -pes_file myPEfile -compiler ibm
+
+     create_test -testname ERS.f19_g16.B.bluefire -generate ccsm4_0_beta40 -baselineroot /ptmp/my_dir/mybaselines -compiler ibm
+
+     create_test -testname ERS.f19_g16.B.bluefire -compare  ccsm4_0_beta41 -baselineroot /ptmp/my_dir/mybaselines -compiler ibm
+
+     create_test -testname ERS.f19_g16.B.bluefire -generate ccsm4_0_beta40 -compare ccsm4_0_beta40 -baselineroot /ptmp/my_dir/mybaselines -compiler ibm
+
+
+SUPPORT DETAILS
+EOF1
+
+$scriptsroot/create_newcase -list -testlist
+exit;
+endif
+
+#===================================================================
+
+while ( 1 )
+  if ( $#argv < 1 ) break;
+  set i = $argv[1];
+### check the error of the input argument.
+      shift argv
+      if($#argv <1 ) then
+          echo "ERROR in ${0}: Please input the content for $i."
+          exit -1
+      endif
+      set dash = "-"
+      if( $argv[1] =~ $dash* ) then
+          echo "ERROR in ${0}: wrong argument for $i.";
+          exit -1
+      endif
+### end of check the error for the input argument
+  switch ( $i )
+    case "-testname"
+      set testname = $argv[1]
+      breaksw
+	# Make sure that testroot is set to the absolute path of the testroot
+	# given on the command line, thus ensuring that the generated cs.submit 
+	# script can find the testroot no matter what. 
+    case "-testroot"
+      #set testroot = `readlink -f $argv[1]`
+      set testroot = $argv[1]
+      breaksw
+    case "-user_nl_dir"
+      # Also get absolute path of user_nl_dir if used
+      #set user_nl_dir = `readlink -f $argv[1]`
+      set user_nl_dir = $argv[1]
+      breaksw
+    case "-compiler"
+      set icompiler = $argv[1]
+      breaksw
+    case "-mach"
+      set imach = $argv[1]
+      breaksw
+    case "-guessmach"
+      set gmach = $argv[1]
+      breaksw
+    case "-pes_file"
+      set pes_file = $argv[1]
+      breaksw
+    case "-compset_file"
+      set compset_file = $argv[1]
+      breaksw
+    case "-testid"
+      set testId = $argv[1]
+      breaksw
+    case "-create_suite"
+      set csscript = $argv[1]
+      breaksw
+    case "-nobatch"
+      set nobatch = $argv[1]
+      breaksw
+    case "-reruntests"
+      set reruntests = $argv[1]
+      breaksw
+    case "-nobuild"
+      set nobuild = $argv[1]
+      breaksw
+    case "-inputdataroot"
+      set inputdataroot = $argv[1]
+      breaksw
+    case "-compare"
+      set baseline_name_cmp = $argv[1]
+      breaksw
+    case "-generate"
+      set baseline_name_gen = $argv[1]
+      breaksw
+    case "-baselineroot"
+      if ($argv[1] =~ /* ) then
+         set baseline_root = $argv[1]
+      else
+         set baseline_root = $mypwd/$argv[1]
+      endif
+      breaksw
+    case "-clean"
+      set clean_option = $argv[1]
+      breaksw
+    case "-mach_dir"
+      set mach_dir = $argv[1]
+      breaksw      
+    default:
+      echo "unknown input, invoked create_test with no arguments for usage"
+      exit -1
+      breaksw
+  endsw
+  shift argv
+end
+
+if ( $csscript != "on" && $csscript != "off") then
+   echo "csscript set to a bad value: $csscript"
+   exit -1
+endif
+
+if ( $csscript == "on" )then
+   if ( $?testid ) then
+      echo "when -create_suite on option is used -- testid MUST be used as well"
+      exit -1
+   endif
+endif
+
+#===================================================================
+
+# Parse testname:
+# Field delimited by a ".".
+# Grid can also have up to 2 dots in it, but only in the
+#  atm/lnd grid name.  The ocean grid name is assumed to
+#  appear after the _ and will not have a dot or underscore.
+# All because grid can be "2x2.5_gx1v3" which contains a dot. 
+#   TC updated this may, 2006
+#   check where the grid is assuming an "_*" without "." or "_"
+#     to the end of the grid name (T31_gx1v3, 1x1.5_gxa, 1.9x2.5_gx1v3)
+
+  set gtest = `echo $testname | cut -f 2 -d "."`
+  set gtest1 = `echo $gtest | cut -f 1 -d "_"`
+
+  if ($gtest1 != $gtest) then
+    set testcase        = `echo $testname | cut -f 1   -d "." `
+    set grid            = `echo $testname | cut -f 2   -d "." `
+    set compset         = `echo $testname | cut -f 3   -d "." `
+    set cmach           = `echo $testname | cut -f 4-   -d "." `
+
+  else
+
+    set gtest = `echo $testname | cut -f 3 -d "."`
+    set gtest1 = `echo $gtest | cut -f 1 -d "_"`
+    if ($gtest1 != $gtest) then
+      set testcase        = `echo $testname | cut -f 1   -d "." `
+      set grid            = `echo $testname | cut -f 2-3 -d "." `
+      set compset         = `echo $testname | cut -f 4   -d "." `
+      set cmach           = `echo $testname | cut -f 5-   -d "." `
+
+    else
+
+      set gtest = `echo $testname | cut -f 4 -d "."`
+      set gtest1 = `echo $gtest | cut -f 1 -d "_"`
+      if ($gtest1 != $gtest) then
+        set testcase        = `echo $testname | cut -f 1   -d "." `
+        set grid            = `echo $testname | cut -f 2-4 -d "." `
+        set compset         = `echo $testname | cut -f 5   -d "." `
+        set cmach           = `echo $testname | cut -f 6-   -d "." `
+      endif
+    endif
+  endif
+
+# machine/compiler precendent; gmach, testname, imach, icompiler
+
+  if ($?gmach) then
+    if ($gmach =~ *_*) then 
+       set mach     = `echo $gmach | cut -f 1 -d "_"`
+       set compiler = `echo $gmach | cut -f 2 -d "_"`
+    else
+       set mach     = $gmach
+    endif
+  endif
+
+  if ("$cmach" != "") then
+    if($cmach =~ "generic*") then
+        set mach     = generic_`echo $cmach | cut -f 2 -d "_"`
+        set compiler = `echo $cmach | cut -f 3 -d "_"`
+    else
+      if ($cmach =~ *_*) then 
+        set mach     = `echo $cmach | cut -f 1 -d "_"`
+        set compiler = `echo $cmach | cut -f 2 -d "_"`
+      else
+        set mach     = $cmach
+      endif
+    endif
+  endif
+
+  if ($?imach) then
+    if ($imach =~ *_*) then 
+      set mach     = `echo $imach | cut -f 1 -d "_"`
+      set compiler = `echo $imach | cut -f 2 -d "_"`
+    else
+      set mach     = $imach
+    endif
+  endif
+  
+  if($?icompiler) then
+    set compiler = $icompiler
+  endif
+
+#===================================================================
+
+setenv SCRIPTSROOT $scriptsroot
+
+if !($?testcase) then
+    echo "ERROR in ${0}: requires testcase"
+    echo ""
+    exit;
+endif
+
+if !($?grid) then
+    echo "ERROR in ${0}: requires grid"
+    echo ""
+    exit;
+endif
+
+if !($?compset) then
+    echo "ERROR in ${0}: requires compset"
+    echo ""
+    exit;
+endif
+
+if !($?mach) then
+    echo "ERROR in ${0}: requires mach"
+    echo ""
+    exit;
+endif
+
+if !($?compiler) then
+    echo "ERROR in ${0}: requires compiler"
+    echo ""
+    exit;
+endif
+
+setenv MACH $mach
+
+set fullname = $testcase
+set nconfopts = `echo $testcase | grep _ | wc -m`
+if ($nconfopts > 0) then
+  set testv = `echo $testcase | cut -d _ -f 1`
+  set confopts = `echo $testcase | cut -d _ -f 2-`
+  set confopts = "_${confopts}"
+else
+  set testv = $testcase
+  set confopts = ""
+endif
+
+if !($?testId) then
+  ###set the test case id.
+  set yy = `date +%y`
+  set mm = `date +%m`
+  set dd = `date +%d`
+  set hh = `date +%H`
+  set mm = `date +%M`
+  set ss = `date +%S`
+  set testId = $hh$mm$ss
+endif
+setenv TEST_TESTID ${testId}
+
+set casebase = $fullname.$grid.$compset.${mach}_${compiler}
+set case = $casebase.$testId
+set basecmp = $casebase
+
+#===================================================================
+# generate/compare
+
+unsetenv GENERATE_BASELINE
+unsetenv BASEGEN_DIR
+unsetenv BASEGEN_CPLLOGFILE
+unsetenv BASEGEN_CPLHISTFILE
+unsetenv COMPARE_BASELINE
+unsetenv BASECMP_DIR
+unsetenv BASECMP_CPLLOGFILE
+unsetenv BASECMP_CPLHISTFILE
+if ( $baseline_name_gen != "" || $baseline_name_cmp != "") then
+  unsetenv BASELINE_ROOT
+  if ( $?baseline_root ) then
+    setenv BASELINE_ROOT ${baseline_root}
+    if ! ( -d $baseline_root ) then
+      echo "ERROR in ${0}:  cannot find baselineroot directory $baseline_root"; echo
+      exit -1
+    endif
+  endif
+  set regcode = ""
+  if ( $baseline_name_gen != "") then
+    setenv GENERATE_BASELINE
+    set regcode = "${regcode}G"
+    setenv BASEGEN_CASE $baseline_name_gen/$basecmp
+  endif
+  if ( $baseline_name_cmp != "") then
+    setenv COMPARE_BASELINE
+    set regcode = "${regcode}C"
+    setenv BASECMP_CASE $baseline_name_cmp/$basecmp
+  endif
+
+  set case = $casebase.$regcode.$testId
+endif
+
+#======================================================================
+# General error checking
+
+if !(-d $testroot) then
+  mkdir -p $testroot
+  if !(-d $testroot) then
+    echo "ERROR in ${0}: directory testroot $testroot does not exist."
+    exit -1
+  endif
+endif
+if (-d "$testroot/$case") then
+  echo "ERROR in ${0}: test case $testroot/$case exists."
+  exit -1
+endif
+unsetenv INPUTDATA_ROOT
+if ( $?inputdataroot ) then
+  setenv INPUTDATA_ROOT $inputdataroot
+  if ! ( -d $INPUTDATA_ROOT ) then
+    echo "ERROR in ${0}: directory inputdataroot $INPUTDATA_ROOT does not exist."
+    exit -1
+  endif
+endif
+
+#======================================================================
+# pes file
+
+if ($?pes_file) then
+  if !(-e $pes_file) then
+    echo ERROR: from create_test, pes_file $pes_file does not exist, exiting; echo
+    exit -1
+  endif
+else if (-e ${scriptsroot}/ccsm_utils/Testcases/${testv}_auto_pes_file) then
+  set pes_file = "${scriptsroot}/ccsm_utils/Testcases/${testv}_auto_pes_file"
+endif
+
+#======================================================================
+# compset file
+if ($?compset_file) then
+  if !(-e $compset_file) then
+    echo ERROR: from create_test, compset_file $compset_file does not exist, exiting; echo
+    exit -1
+  endif
+endif
+#======================================================================
+# cleanup option, the default setting will NOT clean up.
+
+unsetenv CLEANUP
+if ( $?clean_option ) then
+  if ( $clean_option == "on" ) setenv CLEANUP
+endif
+
+#======================================================================
+# Document
+  echo " "
+  echo "Setting up the following test:"
+  echo "  testcase:  $fullname"
+  echo "  grid:      $grid"
+  echo "  compset:   $compset"
+  echo "  machine:   $mach"
+  echo "  compiler:  $compiler"
+  echo "  testid:    $testId"
+  if ( $?pes_file) then
+  echo "  pes_file:  $pes_file"
+  endif
+  if ( $?compset_file) then
+  echo "  compset_file:  $compset_file"
+  endif
+  if ( $?GENERATE_BASELINE ) then
+  echo "  generate:  $BASEGEN_CASE"
+  endif
+  if ( $?COMPARE_BASELINE ) then
+  echo "  compare:   $BASECMP_CASE"
+  endif
+  if ( $?INPUTDATA_ROOT ) then
+  echo "  inputdata: $INPUTDATA_ROOT"
+  endif
+  echo " "
+
+#======================================================================
+#---- create cs.status.$testid.${mach} ---
+if ($csscript == "on" )then
+
+   set temproot = ${testroot}
+
+   foreach filelist (cs.status.$testId.${mach})
+      set tempfile = $filelist
+
+      if !(-e $temproot/$tempfile) then
+         cat >! $temproot/$tempfile <<EOF
+#!/bin/csh -f
+
+echo "Possible test result outcomes:"
+echo "  UNDEF - undefined result"
+echo "  TFAIL - test setup error"
+echo "  SFAIL - scripts case generation failed"
+echo "  GEN   - case generated"
+echo "  CFAIL - check_case script failed, env variable or build error"
+echo "  BUILD - model build passed, test not submitted"
+echo "  PEND  - case submitted"
+echo "  RUN   - case running or died during run, likely failure"
+echo "  PASS  - case passed"
+echo "  CHECK - manual review of data is required"
+echo "  FAIL  - case failed"
+echo "  BFAIL - compare test couldn't find base result"
+echo "  ERROR - test checker failed, test may or may not have passed"
+echo " "
+
+EOF
+      endif
+
+      if (-e $temproot/$tempfile) then
+         if (`grep "$case/TestStatus " $temproot/$tempfile | wc -l` == 0) then
+            cat >> $temproot/$tempfile <<EOF
+if (-e $testroot/$case/TestStatus) then
+  cat $testroot/$case/TestStatus  
+else
+  echo "TFAIL $case"
+endif
+EOF
+
+           chmod +x $temproot/$tempfile
+         endif
+      endif
+   end
+endif
+
+# --- end create test suite support scripts ---
+#======================================================================
+# setup testcase
+
+set caseroot = $testroot/$case
+
+set cn_args = " -case ${caseroot} -res ${grid} -mach ${mach} -compset ${compset}  -testname ${testv} "
+if ($?mach_dir) then
+  set cn_args = "${cn_args} -mach_dir ${mach_dir}"
+endif
+if ($nconfopts > 0) then
+  set cn_args = "${cn_args} -confopts ${confopts}"  
+endif
+if ($?pes_file) then
+  set cn_args = "${cn_args} -pes_file ${pes_file}"
+endif
+if ($?compset_file) then
+  set cn_args = "${cn_args} -compset_file ${compset_file}"
+endif
+if ($?compiler) then
+  set cn_args = "${cn_args} -compiler ${compiler}"
+endif
+
+
+#echo "tcx testv $testv"
+#echo "tcx confopts $confopts"
+#echo "tcx cn_args $cn_args"
+
+$scriptsroot/create_newcase ${cn_args}
+
+if ($status != 0) then
+  echo "ERROR: create_newcase invokation of create_newcase failed"
+  exit -1
+endif
+
+echo "create_test $arguments"    >& $testroot/$case/README.case.tmp
+cat $testroot/$case/README.case >>& $testroot/$case/README.case.tmp
+mv  $testroot/$case/README.case.tmp $testroot/$case/README.case
+
+echo "create_test $arguments"    >& $testroot/$case/CaseStatus.tmp
+cat $testroot/$case/CaseStatus  >>& $testroot/$case/CaseStatus.tmp
+mv  $testroot/$case/CaseStatus.tmp  $testroot/$case/CaseStatus
+
+echo "SFAIL $case " >&! $testroot/$case/TestStatus
+if ($status != 0) then
+  echo "ERROR: create_newcase failed"
+  exit -1
+endif
+
+# sort out testname, check if it has _something, add/overwrite based on debug option
+setenv TESTCASE `echo $fullname | cut -d _ -f 1`
+
+if ( "$user_nl_dir" != "" )then
+  if !(-d $user_nl_dir) then
+    echo "ERROR in ${0}: directory user_nl_dir  $user_nl_dir  does not exist."
+    exit -1
+  endif
+  if ( `perl -e "if ( glob('$user_nl_dir/user_nl*') ) { print 0; } else { print 1; }"` ) then
+    echo "ERROR in ${0}: directory user_nl_dir  $user_nl_dir  does not have any user_nl_* files in it."
+    exit -1
+  endif
+  cp $user_nl_dir/user_nl_* $testroot/$case
+endif
+
+cd $caseroot
+
+source ./Tools/ccsm_getenv
+cd $mypwd
+source $scriptsroot/ccsm_utils/Tools/testcase_setup.csh  
+if ($status != 0) then
+  echo "ERROR: testcase_setup failed"
+  exit -1
+endif
+
+#======================================================================
+# --- begin create test suite support scripts ---
+
+if ($csscript == "on" )then
+set temproot = ${testroot}
+
+#---- create cs.submit.$testId.${mach} ---
+set tempfile = "cs.submit.$testId.${mach}"
+# For the cs.submit script to be able to recreate tests that don't exist, 
+# and rebuild tests if they haven't passed, the absolute path to the 
+# scriptsroot is necessary.  
+set abscmdpath = `readlink -f $commandpath`
+set scriptsrootabs = $abscmdpath:h
+set dobuild = interactive
+if ($nobuild == "on" ) set dobuild = none
+set submitruns = batch
+if ($nobatch == "on" ) set submitruns = interactive
+
+if ($?BATCHSUBMIT &&  !(-e $temproot/$tempfile)) then
+cat >! $temproot/$tempfile <<EOF
+#!/bin/csh -f
+
+set dobuild    = "$dobuild"       # interactive, batch (not yet supported), none
+set submitruns = "$submitruns"    # interactive, batch, none
+set reruntests = "$reruntests"    # on, off
+set cleanbuild = "$clean_option"  # on, off
+
+if (\$dobuild != "interactive" && \$dobuild != "batch" && \$dobuild != "none") then
+  echo "dobuild not set properly"
+  exit -9
+endif
+if (\$submitruns != "interactive" && \$submitruns != "batch" && \$submitruns != "none") then
+  echo "submitruns not set properly"
+  exit -9
+endif
+if (\$reruntests != "on" && \$reruntests != "off") then
+  echo "reruntests not set properly"
+  exit -9
+endif
+if (\$cleanbuild != "on" && \$cleanbuild != "off") then
+  echo "cleanbuild not set properly"
+  exit -9
+endif
+
+EOF
+endif
+
+if ($?BATCHSUBMIT &&  (-e $temproot/$tempfile)) then
+if (`grep "# $case " $temproot/$tempfile | wc -l` == 0) then
+cat >> $temproot/$tempfile <<EOF
+# $case    
+  cd $testroot
+  # If the test doesn't exist, we need to recreate the case.  
+  if( ! -e $testroot/$case) then
+    echo "The test case $testroot/$case does not exist"
+    echo "Recreating the test case $case"
+    echo "executing $scriptsrootabs/create_newcase ${cn_args}"
+    $scriptsrootabs/create_newcase ${cn_args}
+    echo "create_test $arguments" >>& $testroot/$case/README.case
+    echo "create_test $arguments" >& $testroot/$case/CaseStatus.test
+    cat $testroot/$case/CaseStatus >>& $testroot/$case/CaseStatus.test
+    mv $testroot/$case/CaseStatus.test $testroot/$case/CaseStatus
+    echo "SFAIL $case " >&! $testroot/$case/TestStatus
+    if (\$status != 0) then
+      echo "ERROR: create_newcase failed"
+      exit -1
+    endif
+    setenv TESTCASE `echo $fullname |cut -d _ -f 1`
+    cd $testroot/$case
+    source ./Tools/ccsm_getenv
+    cd $mypwd
+    source $scriptsrootabs/ccsm_utils/Tools/testcase_setup.csh
+    if (\$status != 0) then
+        echo "ERROR: testcase_setup failed"
+        exit -1
+    endif
+  endif
+  # Clean and build the test if the test status is not PASS..
+  # This section does both the intial build, and the rebuild of failed
+  # tests. 
+  if ( -e $testroot/$case/TestStatus ) then
+	set teststatus=\`head -1 $testroot/$case/TestStatus | cut -f1 -d " " -\`
+    if(\$teststatus != "PASS" || \$reruntests == "on" ) then
+      cd $testroot/$case
+      source ./Tools/ccsm_getenv
+      ./check_input_data -inputdata \$DIN_LOC_ROOT -export
+      set submit = \$submitruns
+      if (\$dobuild == "batch") then
+        echo "dobuild = batch not yet supported"
+        exit -2
+        set submit = none
+        if (\$cleanbuild == "on" ) ./$case.clean_build
+        $BATCHSUBMIT $case.test_build -batch
+      else if (\$dobuild == "interactive") then
+        if (\$cleanbuild == "on" ) ./$case.clean_build
+        ./$case.test_build
+        ./check_case
+        if (\$status != 0) then
+           set submit = none
+           echo "CFAIL $case " >&! $testroot/$case/TestStatus
+        else
+           echo "BUILD $case " >&! $testroot/$case/TestStatus
+        endif
+      endif
+      if (\$submit == "batch") then
+        $BATCHSUBMIT $case.test
+        echo "PEND  $case " >&! $testroot/$case/TestStatus
+      else if (\$submit == "interactive") then
+        ./$case.test
+      else if (\$dobuild == "batch") then
+        echo "$case.test submitted by test_build script"
+      else
+        echo "$case.test **NOT** run"
+      endif
+    endif
+  endif
+
+EOF
+
+chmod +x $temproot/$tempfile
+
+endif
+endif
+
+endif
+#======================================================================
+# update TestStatus
+
+set basestatus = "GEN  "
+echo "$basestatus $case " >&! $testroot/$case/TestStatus
+
+echo "Successfully created test $case"
+echo " "
+
+exit 0

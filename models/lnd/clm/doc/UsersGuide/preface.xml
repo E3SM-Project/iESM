@@ -1,0 +1,705 @@
+<!-- Begin introduction preface -->
+<preface id="acknowledge">
+<prefaceinfo>
+<releaseinfo>$Id: preface.xml 48907 2013-07-11 07:31:43Z erik $</releaseinfo>
+</prefaceinfo>
+<title>Acknowledgments</title>
+<para>
+I want to acknowledge all of the people that helped review or edit the model 
+documentation: David Lawrence, Samuel Levis, Keith Oleson, and Sean Swenson.  
+Thank you for your help in catching errors, and making the document more 
+understandable and readable. Our readers thank you as well, as now it is much
+easier for them to digest. Any mistakes, or errors are all mine. If you run
+across one of those errors, please let us know, by following 
+<xref linkend="reporting_bugs"></xref>.
+We also want to
+thank the original authors of &ptclm;: Daniel M. Ricciuto, Dali Wang, Peter E. Thornton,
+Wilfred M. Post, and R. Quinn Thomas for providing a nice addition to the &cesm; 
+effort (included in previous versions of &cesm; including &cesm105; but NOT this 
+release unfortunately, but planned for the next release). We also want to thank 
+the folks at University of Michigan Biological Stations 
+(US-UMB) who allowed us to use their Fluxnet station data and import it into our 
+inputdata repository, especially Gil Bohrer the PI on record for this site
+<!--
+(see <xref linkend="AmeriFluxdata"></xref> for permission information on using this
+data).
+-->
+</para>
+</preface>
+
+<preface id="intro">
+<title>Introduction</title>
+
+<para>
+The Community Land Model (&clmrel;) is the latest in a series of
+global land models developed by the &cesm; Land Model Working Group
+(<acronym>LMWG</acronym>) and maintained at the National Center for
+Atmospheric Research (&ncar;). This guide is intended to instruct both
+the novice and experienced user on running &clm;. This guide pertains to the
+latest version &clmrel; available for download from the public release 
+subversion repository as a part of &cesmrel;. Documentation may be different if you are using an
+older version, you should either update to the latest version, or use the
+documentation inside your own source tree. There is information in the 
+<filename>ChangeLog</filename> file and in the <xref linkend="what_is_new"></xref>
+regarding the changes from previous versions of &cesm;.
+</para>
+
+<para>
+The novice user should read
+<xref linkend="customize"></xref> in detail before beginning work, while the
+expert user should read <xref linkend="what_is_new"></xref> and 
+<xref linkend="quickstart"></xref> chapters, and then use the more detailed
+chapters as reference. Before novice users go onto more technical problems covered
+in <xref linkend="tools"></xref>, <xref linkend="adding_files"></xref>, <xref
+linkend="special_cases"></xref>, or <xref linkend="single_point"></xref> they
+should know the material covered in <xref linkend="customize"></xref> and be able
+to replicate some of the examples given there. 
+</para>
+<para>
+All users should read the 
+<xref linkend="how_to"></xref>
+and <xref linkend="help"></xref> sections to understand the document conventions
+and the various ways of getting help on using &clm4;. Users should also read
+the <xref linkend="whats_validated"></xref> section to see if their planned use of the
+model is something that has been scientifically validated and well tested. Users
+that are NOT using &ncar; machines or our list of well tested machines should also
+read the <xref linkend="utilities_required"></xref> section to make sure they have
+all the required UNIX utilities on the system they want to do their work.
+</para>
+<para>
+Developers that are making changes to &clm; either for their own development or for 
+development that they hope will eventually become a part of the main &clm; should
+read the <xref linkend="testing"></xref> chapter. We have a suite of test scripts
+that automatically test many different model configurations and namelist options,
+as well as ensuring things like restarts are bit-for-bit and the like. It's helpful
+to use these scripts to ensure your changes are working correctly. And it's far
+easier to use the automated scripts rather than having to figure out, what to test,
+how to do it, and then finally do it by hand. If you are using non supported machines
+you may also want to use the test scripts to make sure your machine is working correctly.
+</para>
+</preface>
+
+<!-- ======================================================================= -->
+<preface id="doc_intro">
+<title>Introduction to the &clm4; User's Guide</title>
+<subtitle>What is in here anyway?</subtitle>
+
+<para>
+Here in the introduction we first give a simple guide to understand the document
+conventions in <xref linkend="how_to"></xref>. The next section <xref linkend="what_is_new"></xref>
+gives references to describe the differences between &clmrel; and previous &cesm; releases
+both from a scientific as well as a software engineering point of view. For information on previous releases of &clm4;
+before &clmcesm110; see the &cesm105; documentation.
+The next section <xref linkend="quickstart"></xref>
+is for users that are already experts in using &clm; and gives a quickstart guide to the 
+bare details on how to use &clm4;. The next <xref linkend="whats_validated"></xref> tells
+you about what has been extensively tested and scientifically validated (and maybe more
+importantly) what has NOT. <xref linkend="utilities_required"></xref> lists the UNIX utilities
+required to use &clm4; and is important if you are running on non-&ncar; machines, generic
+local machines, or machines NOT as well tested by us at &ncar;. Next we
+have <xref linkend="best_practice"></xref> to detail some of the best practices for using
+&clm4; for science. The last introductory section is <xref linkend="help"></xref> which lists
+different resources for getting help with &cesm1; and &clm4;.
+</para>
+
+<para>
+<xref linkend="customize"></xref> goes into detail on how to setup and run simulations with
+&clm4; and especially how to customize cases. Details of &setup;
+modes and &buildnml; options as well as namelist options are given in this chapter. 
+</para>
+
+<para>
+<xref linkend="tools"></xref> gives instructions on the &clm4; tools for creating input datasets
+for use by &clm;, for the expert user. There's an overview of what each tool does, and some general notes on how to build 
+the &FORTRAN; tools. Then each tool is described in detail along with different ways in
+which the tool might be used.
+A final section
+on how to customize datasets for observational sites for very savvy expert users is given as the last section of this chapter.
+</para>
+
+<para>
+As a followup to the tools chapter, <xref linkend="adding_files"></xref> tells how to add files to the
+XML database for &buildnml; to use. This is important if you want to use the XML database to automatically select
+user-created input files that you have created when you setup new cases with &clm;.
+</para>
+
+<para>
+In <xref linkend="special_cases"></xref>, again for the expert user, we give details on how to do some particularly
+difficult special cases. For example, we give the protocol for spinning up both the &clmcn; model and &clm; with dynamic
+vegetation active (<acronym>CNDV</acronym>). We give instructions to do a spinup case
+from a previous case with Coupler history output for atmospheric forcing. We also give 
+instructions on running both the prognostic crop and irrigation models.
+Lastly we tell the user how to use the DATM model to send historical &CO2; data to &clm;.
+</para>
+
+<para>
+<xref linkend="single_point"></xref> outlines how to do single-point or
+regional simulations using &clm4;.
+This is useful to either compare &clm; simulations with point observational stations, 
+such as tower sites (which might include your own atmospheric forcing), or
+to do quick simulations with &clm; for example to test a new parameterization. There are
+several different ways given on how to perform
+single-point simulations which range from simple &PTSMODE; to more complex where you create all your own datasets, tying into
+<xref linkend="tools"></xref> and also <xref linkend="adding_files"></xref> to add the
+files into the &buildnml; XML database. The &ptclm; python script to run single-point simulations
+was removed for this release (but is available in the previous &cesm105; release).
+</para>
+
+<para>
+The next chapter, <xref linkend="trouble"></xref> gives some guidance on trouble-shooting
+problems when using &clm4;. It doesn't cover all possible problems with &clm;, but gives
+you some guidelines for things that can be done for some common problems.
+</para>
+<para>
+In <xref linkend="testing"></xref> we go over the automated testing scripts for
+validating that the &clm; is working correctly. The test scripts run many different
+configurations and options with &clm; making sure that they work, as well as doing
+automated testing to verify restarts are working correctly, and testing at many
+different resolutions. In general this is an activity important only for a developer
+of &clm;, but could also be used by users who are doing extensive code modifications
+and want to ensure that the model continues to work correctly.
+</para>
+
+<para>
+In the appendices we talk about some issues that are useful for advanced users and 
+developers of &clm;.
+</para>
+<para>
+Finally in <xref linkend="doc_build"></xref> we give instructions on how to build
+the documentation associated with &clm; (i.e. how to build this document). This
+document is included in every &clm; distribution and can be built so that you can
+view a local copy rather than having to go to the &cesm; website. This also could
+be useful for developers who need to update the documentation due to changes they
+have made.
+</para>
+
+<!--
+<sect1 id="listsofthings">
+<title>List of Tables, Figures and Examples</title>
+
+<sect2 id="lot">
+<title>List of Tables</title>
+
+<para>
+List of tables in the document.
+</para>
+<lot id="listoftables">
+<lotentry>Empty</lotentry>
+<lotentry linkend="table_required_files">Required Files<xref linkend="required_files"></xref></lotentry>
+<lotentry pagenum="31">Page 31</lotentry>
+<lotentry pagenum="57">Page 57</lotentry>
+</lot>
+</sect2>
+
+<sect2 id="loe">
+<title>List of Examples</title>
+<para>
+List of formal examples in the document.
+</para>
+
+<lot id="listofexamples">
+<lotentry linkend="quickstart">Example of Running &clm4; on bluefire at 2-degree Resolution with Data Atmosphere Model</lotentry>
+<lotentry linkend="default_nml">Example of the Default Namelist</lotentry>
+<lotentry linkend="add_rm_primary_hist">Example of Namelist Adding and Removing Fields from the Primary History Files</lotentry>
+<lotentry linkend="add_aux_hist_chng_output_frq">Example of Namelist Add Auxiliary History Files and Change the Output History Frequency</lotentry>
+<lotentry linkend="rm_hist">Example of Namelist Removing All History Files</lotentry>
+<lotentry linkend="hist_averaging">Example of Namelist with Different Ways of Averaging on History Files</lotentry>
+<lotentry linkend="hist_vector">Example of Namelist Outputting History Fields as a 1D Vector</lotentry>
+<lotentry linkend="CN_SPINUP">Example of Doing a Spinup for CN</lotentry>
+<lotentry linkend="CNDV_SPINUP">Example of Doing a Spinup for CNDV</lotentry>
+<lotentry linkend="DATM_CO2_TSERIES">Example of Sending Historical &CO2; Data from the Data Atmosphere Model</lotentry>
+</lot>
+</sect2>
+
+</sect1>
+-->
+
+</preface>
+
+<!-- ======================================================================= -->
+
+<preface id="best_practice">
+<title>Important Notes and Best Practices for Usage of &clm4;</title>
+
+<para>
+<itemizedlist>
+<listitem><para>When running with CN, it is critical to begin with initial conditions 
+hat are provided with the release or to spin the model up following the CN spinup 
+procedure before conducting scientific runs (see <xref linkend="CN_SPINUP"></xref>.  
+Simulations without a proper spinup will effectively be starting from an unvegetated 
+world. See <xref linkend="setting_finidat"></xref> for information on how to 
+provide initial conditions for your simulation.
+</para>
+</listitem>
+<listitem><para>Initial condition files are provided for fully coupled BCN and offline 
+ICN cases for 1850 and 2000 at finite volume grids: 1deg (0.9x1.25), 2deg (1.9x2.5), and T31 resolutions.  
+We also have interpolated initial conditions for BCN for 1850 and 2000 for two finite volume
+grids: 10x15, 4x5 and two HOMME grids (ne30np4 and ne120np4). There's also an
+initial condition file for ICN with the prognostic crop model for 2000 at 2deg
+resolution, and one with &clmsp; for 2000 at 2deg resolution. We also have initial
+conditions for offline CNDV for 1850.
+The 1850 initial condition files are in 'reasonable' equilibrium.  The 2000 initial condition files represent 
+the model state for the year 2000, and have been taken from transient simulations.  
+Therefore, by design the year 2000 initial condition files do not represent an 
+equilibrium state.  Note also that spinning the 2000 initial conditions out to 
+equilibrium will not reflect the best estimate of the real carbon/nitrogen state 
+for the year 2000.  
+</para>
+</listitem>
+<listitem><para>Users can generate initial condition files at different resolutions by 
+using the &clm; tool <command>interpinic</command> to interpolate from one of the 
+provided resolutions to the resolution of interest.  Interpolated initial condition 
+files may no longer be in 'reasonable' equilibrium. 
+</para>
+</listitem>
+<listitem><para>Aerosol deposition is a required field to &clm4; sent from the
+atmosphere model.  Simulations without aerosol deposition will exhibit unreasonably 
+high snow albedos. The model sends aerosol deposition from the atmospheric model (either 
+&cam; or &datm;). When running with prescribed aerosol the atmosphere
+model will interpolate the aerosols from 2-degree resolution to the resolution the 
+atmosphere model is running at.
+</para>
+</listitem>
+</itemizedlist>
+</para>
+
+</preface>
+
+
+<!-- ======================================================================= -->
+<preface id="how_to">
+<prefaceinfo>
+<itermset>
+   <indexterm zone="how_to" id="EDITOR"><primary>$EDITOR</primary></indexterm>
+</itermset>
+</prefaceinfo>
+
+<title>How to Use This Document</title>
+<subtitle>Conventions used in the document for code and commands</subtitle>
+
+<para>
+This section provides the details in using &clm; with the &cesm; modeling
+system. Links to descriptions and definitions have been provided in the code below.
+We use the same conventions used in the &cesm; documentation as outlined below.
+</para>
+
+<screen width="99">
+Throughout the document this style is used to indicate shell
+commands and options, fragments of code, namelist variables, etc.
+Where examples from an interactive shell session are presented, lines
+starting with > indicate the shell prompt.  A backslash "\" at the end
+of a line means the line continues onto the next one (as it does in
+standard UNIX shell).  Note that $EDITOR" is used to refer to the 
+text editor of your choice. $EDITOR is a standard UNIX environment 
+variable and should be set on most UNIX systems. Comment lines are 
+signaled with a "#" sign, which is the standard UNIX comment sign as well.
+$CSMDATA is used to denote the path to the inputdata directory for
+your &cesm; data. 
+
+> This is a shell prompt with commands \
+that continues to the following line.
+> $EDITOR filename # means you are using a text editor to edit "filename"
+# This is a comment line
+
+</screen>
+
+</preface>
+
+
+<!-- ======================================================================= -->
+<preface id="what_is_new">
+<title>What is new with &clmrel; since previous public releases?</title>
+<para>
+In this section we list the updates that have occurred to &clm4; since previous
+public releases of &cesm;. 
+The &cesm112; 
+<ulink url="http://www.cesm.ucar.edu/models/cesm1.1/notable_improvements.html">Notable Improvements</ulink>
+page gives a synopsis of the changes to all &cesm; components since the &cesm1; release. See
+<ulink url="http://www.cesm.ucar.edu/models/cesm1.1/notable_improvements.html#CLM">the &clm; section</ulink>
+for changes particular for &clm;. More details are given in the 
+<ulink url="http://www.cesm.ucar.edu/models/cesm1.1/clm/models/lnd/clm/doc/ChangeLog">&clm; ChangeLog file</ulink>.
+</para>
+<para>
+Previous release pages give similar list of changes for previous
+versions of the model. The 
+<ulink url="http://www.cesm.ucar.edu/models/cesm1.0/clm/models/lnd/clm/doc/UsersGuide/book1.html">&clmcesm105; User's Guide </ulink>
+gives information on the updates for versions up to &clmcesm105;.
+</para>
+
+</preface>
+
+<!-- ======================================================================= -->
+<preface id="quickstart">
+<title>Quickstart to using &clm4;</title>
+<para>
+Before working with &clm4; read the QuickStart Guide in the
+<ulink url="&cesmwebmodelrel;cesm">&cesmrel;
+Scripts User's Guide</ulink>. Once you are familiar with how to setup cases for 
+any type of simulation with &cesm; you will want to direct your attention to the specifics
+of using &clm;.
+</para>
+<para>
+For some of the details of setting up cases for &clm4; read the README and text files available
+from the "models/lnd/clm/doc" directory (see the "&clm; Web pages" section for a link to the list
+of these files). Here are the important ones that you should be familiar with.
+<orderedlist>
+<listitem><para><ulink url="../README">README</ulink> file describing the directory structure.</para></listitem>
+<listitem><para><ulink url="../Quickstart.userdatasets">Quickstart.userdatasets</ulink> file describing how to
+use your own datasets in the model (also see <xref linkend="own_single_point_datasets"></xref>).</para></listitem>
+<listitem><para>&KnownBugs; file describing known
+problems in &clm4; (that we expect to eventually fix).</para></listitem>
+<listitem><para>&KnownLims; file 
+describing known limitations in &clm4; and workarounds that we do NOT expect to
+fix.</para></listitem>
+</orderedlist>
+</para>
+<para>The <emphasis>IMPORTANT_NOTES</emphasis> file talks about important things
+for users to know about using the model scientifically. It content is given in 
+the next chapter on "<xref linkend="whats_validated"></xref>".
+</para>
+<para>The <emphasis>ChangeLog/ChangeSum</emphasis> talk about advances in different
+versions of &clm;. The content of these files is largely explained in the previous 
+chapter on "<xref linkend="what_is_new"></xref>".</para>
+<para>
+Note other directories have README files that explain different components and tools used
+when running &clm; and are useful in
+understanding how those parts of the model work and should be consulted when using tools in those directories.
+For more details on configuring and customizing a case with &clm; see <xref linkend="customize"></xref>.
+</para>
+<para>The <emphasis>Quickstart.GUIDE</emphasis> (which can be found in
+<filename>models/lnd/clm/doc)</filename> is repeated here.</para>
+<programlisting width="99">
+&quickstart_guide;
+</programlisting>
+</preface>
+<!-- ======================================================================= -->
+<preface id="whats_validated">
+<title>What is scientifically validated and functional in &clmrel;?</title>
+<para>
+In this section we go over what has been extensively tested and scientifically validated
+with &clm4;, and maybe more importantly what has NOT been tested and may NOT be
+scientifically validated. You can use all features of &clm;, but need to realize that
+some things haven't been tested extensively or validated scientifically. When you use
+these features you may run into trouble doing so, and will need to do your own work to
+make sure the science is reasonable.
+</para>
+
+<sect1 id="standard_validated">
+<title>Standard Configuration and Namelist Options that are Validated</title>
+<para>
+In this release "NO" standard configuration are scientifically validated. Changes to the science of the
+model are minimul since &cesm105; so we expect answers to be very similar to using it.
+</para>
+<para>
+In the sections below we go through configuration and/or namelist options or modes that the user should be especially wary of using. You
+are of course free to use these options, and you may find that they work functionally. Although in some cases you will find issues even
+with functionality of using them. If so you will need to test, debug and find solutions for these issues on your own. But in every case 
+you will need to go through more extensive work to validate these options from a scientific standpoint.
+</para>
+</sect1>
+
+<sect1 id="config_not_validated">
+<title>Configure Modes NOT scientifically validated, documented, supported or, in some
+cases,  even advised to be used:</title>
+<para>
+<orderedlist>
+<listitem>
+   <para>
+   <varname>C13</varname><screen>(-c13)</screen>
+The C13 mode for bgc=cn is NOT scientifically validated or documented and is NOT 
+recommended for use. It is also deprecated and will be removed in the next release 
+(although &clm45; will have namelist options for both C13 and C14).
+   </para>
+</listitem>
+
+<listitem>
+   <para>
+   <varname>SNICAR_FRC</varname><screen>(-snicar_frc)</screen>
+       This mode is tested and functional, but is NOT constantly scientifically validated, and should be 
+       considered experimental.
+   </para>
+</listitem>
+</orderedlist>
+</para>
+</sect1>
+
+<sect1 id="nml_not_validated">
+<title>Namelist options that should NOT be exercised:</title>
+<sect2 id="bld_nml_not_validated">
+<title>Build-Namelist options that should NOT be exercised:</title>
+<para>
+<orderedlist>
+<listitem><para><emphasis>-irrig with -bgc cn</emphasis>
+We have only run the irrigation model with &clmsp; (i.e. without the CN model). We
+recommend that if you want to run the irrigation model with CN, that you do a spinup.
+But, more than that you may need to make adjustments to
+<varname>irrig_factor</varname> in
+<filename>models/lnd/clm/src/biogeophys/CanopyFluxesMod.F90</filename>. See the
+notes on this in the description of the irrigation model in the
+<ulink url="&cesmwebmodelrel;/CLMcropANDirrigTechDescriptions.pdf">
+Technical Descriptions of the Interactive Crop Management and Interactive
+Irrigation Models</ulink>.
+   </para>
+</listitem>
+<listitem><para><emphasis>-irrig with -crop on</emphasis>
+Irrigation doesn't work with the prognostic crop model. Irrigation is only applied to 
+generic crop currently, which negates it's practical usage.  We also have a known 
+problem when both are on (see bug 1326 in the &KnownBugs; file).
+If you try to run in this mode, the &clm; &buildnml; will return with an error.
+   </para>
+</listitem>
+<listitem><para><emphasis>-lnd_res:</emphasis>  Fine-mesh mode, functional, but experimental</para>
+</listitem>
+<listitem><para><emphasis>-rcp:</emphasis>  Representative Concentration Pathway (RCP)
+for future scenarios, functional for limited resolutions, but experimental</para>
+</listitem>
+<listitem><para><emphasis>-datm_*:</emphasis>  All options that start with "datm_" they are
+only used for &clm; stand-alone testing.</para>
+</listitem>
+<listitem><para><emphasis>-drv_*:</emphasis>  All options that start with "drv_" they are
+only used for &clm; stand-alone testing.</para>
+</listitem>
+</orderedlist>
+</para>
+</sect2>
+
+<sect2 id="nml_items_not_validated">
+<title>Namelist items that should NOT be exercised:</title>
+<para>
+<orderedlist>
+<listitem>
+   <para>
+   <emphasis>suplnitro='ALL'</emphasis>
+       The suplnitro namelist option to the CN Biogeochemistry model supplies
+unlimited nitrogen and therefore vegetation is over-productive in this mode.
+   </para>
+
+</listitem>
+<listitem><para><emphasis>urban_traffic:</emphasis>         Not currently functional</para>
+</listitem>
+</orderedlist>
+</para>
+</sect2>
+</sect1>
+</preface>
+
+<!-- ======================================================================= -->
+<preface id="utilities_required">
+<title>What are the UNIX utilities required to use &clm;?</title>
+<para>
+Running the &clm; requires a suite of UNIX utilities and programs and you should
+make sure you have all of these available before trying to go forward with using
+it. If you are missing one of these you should contact the systems administrator
+for the machine you wish to run on and make sure they are installed.
+<simplelist>
+<member>List of utilities required for &cesm; in the "&cesmrel; Software/Operating System Prerequisites" section
+in <ulink url="&cesmwebmodelrel;/cesm/doc/usersguide/book1.html">&cesmwebmodelrel;/cesm/doc/usersguide/book1.html</ulink></member>
+<member>UNIX bash shell (for some of the &clm; tools scripts)</member>
+<member>&ncl; (for some of the offline tools for creating/modifying &clm; input
+datasets see <xref linkend="tools"></xref> for more information on &ncl;)</member>
+<member>Python (optional, needed for &ptclm;)</member>
+<member>xsltproc, docbook and docbook utilities (optional, needed to build the Users-Guide)</member>
+<member>protex and latex2html (optional, needed to build the Code-Reference Guide)</member>
+</simplelist>
+</para>
+</preface>
+
+<!-- ======================================================================= -->
+<preface id="help">
+<prefaceinfo>
+<itermset>
+  <indexterm zone="CESM_BB"><primary>&cesm; Online Bulletin Board</primary></indexterm>
+  <indexterm zone="CESM_UG"><primary>&cesmrel; Scripts User's Guide</primary></indexterm>
+</itermset>
+</prefaceinfo>
+<title>Other resources to get help from</title>
+
+<para>
+In addition to this users-guide there are several other resources that are available
+to help you use &clm4;. The first one is the &cesmrel; User's-Guide, which documents the entire
+process of creating cases with &cesmrel;. The next is the &cesm; bulletin board which is 
+a web-site for exchanging information between users of &cesm;. There are also &clm;
+web-pages specific for &clm;, and finally there is an email address to report bugs that
+you find in &cesmrel;.
+</para>
+
+<sect1 id="CESM_UG">
+<title>The &cesm; User's-Guide</title>
+<para>
+&clmrel; is always run from within the standard &cesmrel; build and run scripts. Therefore, the
+user of &clm4;
+should familiarize themselves with the &cesmrel; scripts and understand how to work with them.
+User's-Guide documentation on the &cesmrel; scripts are available from the following web-page. The purpose
+of this &clmrel; User's Guide is to give the &clm4; user more complete details on how to work
+with &clm; and the set of tools that support &clm;, as well as to give examples that are unique to the use
+of &clm;. However, the &cesmrel; Scripts User's-Guide remains the primary source to get detailed
+information on how to build and run the &cesm; system.
+<simplelist>
+<member><ulink url="&cesmwebmodelrel;/sm/doc/usersguide/book1.html">cesmrel; Scripts
+User's-Guide (&cesmwebmodelrel;/cesm/doc/usersguide/book1.html)</ulink></member>
+</simplelist>
+</para>
+</sect1>
+
+<sect1 id="CESM_BB">
+<title>The &cesm; Bulletin Board</title>
+<para>
+There is a rich and diverse set of people that use the &cesm;, and often it is useful to be in contact with
+others to get help in solving problems or trying something new. To facilitate this we have an online
+Bulletin Board for questions on the &cesm;. There are also different sections in the Bulletin Board for
+the different component models or for different topics.
+<simplelist>
+<member><ulink url="http://bb.cgd.ucar.edu/">&cesm; Online Bulletin Board</ulink></member>
+</simplelist>
+</para>
+</sect1>
+
+<sect1 id="CLM_web">
+<title>The &clm; web pages</title>
+<para>
+The main &clm; web page contains information on the &clm;, it's history, developers, as well as
+downloads for previous model versions. There are also documentation text files in the 
+models/lnd/clm/doc directory that give some quick information on using &clm;.
+<simplelist>
+<member><ulink url="http://www.cgd.ucar.edu/tss/clm/">&clm; web page</ulink></member>
+<member><ulink url="../">&clm; Documentation Text Files</ulink></member>
+</simplelist>
+Also note that several of the XML database files can be viewed in a web browser to get
+a nice table of namelist options, namelist defaults, or compsets. Simply view them
+as a local file and bring up one of the following files:
+<simplelist>
+<member><ulink
+url="../../bld/namelist_files/namelist_definition.xml">models/lnd/clm/bld/namelist_files/namelist_definition.xml</ulink>
+-- definition of &clm; namelist items.</member>
+<member><ulink
+url="../../bld/namelist_files/namelist_defaults_clm.xml">models/lnd/clm/bld/namelist_files/namelist_defaults_clm.xml</ulink>
+-- default values for &clm; namelist items.</member>
+<member><ulink
+url="../../../../../scripts/ccsm_utils/Case.template/config_definition.xml">scripts/ccsm_utils/Case.template/config_definition.xml</ulink>
+-- definition of all <filename>env_*.xml</filename> items.</member>
+<member><ulink
+url="../../../../../scripts/ccsm_utils/Case.template/config_compsets.xml">scripts/ccsm_utils/Case.template/config_compsets.xml</ulink>
+-- definition of all the compsets.</member>
+<member><ulink
+url="../../bld/namelist_files/history_fields.xml">models/lnd/clm/bld/namelist_files/history_fields.xml</ulink>
+-- definition of &clm; history fields.</member>
+</simplelist>
+</para>
+</sect1>
+
+<sect1 id="reporting_bugs">
+<title>Reporting bugs in &clm4;</title>
+<para>
+If you have any problems, additional questions, bug reports, or any other feedback, please send an email to
+<email>cesmhelp@cgd.ucar.edu</email>. If you find bad, wrong, or misleading information
+ in this users guide send an email to <email>erik@ucar.edu</email>. The current list of
+known issues for &clmrel; is in the &KnownBugs; file, and the list of issues for
+&cesmrel; is at... 
+<ulink url="&cesmwebmodelrel;/tags/cesm1_1_1/#PROBLEMS">
+&cesmwebmodelrel;/tags/cesm1_1_1/#PROBLEMS
+</ulink>.
+</para>
+</sect1>
+
+<sect1 id="acronymns">
+<title>Some Acronymn's We'll be Using</title>
+<para>
+
+<variablelist>
+<varlistentry>
+<term>&cam;</term><listitem> 
+<para>
+<anchor id="CAM"></anchor>
+Community Atmosphere Model (&cam;)
+</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>&cesm;</term><listitem> 
+<para>
+<anchor id="CESM"></anchor>
+Community Earth System Model (&cesm;)
+</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>&clm;</term><listitem> 
+<para>
+<anchor id="CLM"></anchor>
+Community Land Model (&clm;)
+</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>&clmcn;</term><listitem> 
+<para>
+<anchor id="CLMCN"></anchor>
+Community Land Model (&clm;) with Carbon Nitrogen (CN) Biogeochemistry
+</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>&clmsp;</term><listitem> 
+<para>
+<anchor id="CLMSP"></anchor>
+Community Land Model (&clm;) with Satellite Phenology (SP)
+</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>&clmu;</term><listitem> 
+<para>
+<anchor id="CLMU"></anchor>
+Community Land Model (&clm;) Urban Model
+</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>&datm;</term><listitem> 
+<para>
+<anchor id="DATM"></anchor>
+Data Atmosphere Model (&datm;)
+</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>&esmf;</term><listitem> 
+<para>
+<anchor id="ESMF"></anchor>
+Earth System Modelling Framework
+</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>&ncar;</term><listitem> 
+<para>
+<anchor id="NCAR"></anchor>
+National Center for Atmospheric Research
+</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>&ptclm;</term><listitem> 
+<para>
+<anchor id="PTCLM"></anchor>
+PoinT &clm;
+</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>&scrip;</term><listitem> 
+<para>
+<anchor id="SCRIP"></anchor>
+Spherical Coordinate Remapping and Interpolation Package (&scrip;)
+</para>
+</listitem>
+</varlistentry>
+</variablelist>
+</para>
+</sect1>
+
+</preface>
+
+
+
+<!-- End introduction preface -->

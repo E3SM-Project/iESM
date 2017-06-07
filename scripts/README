@@ -1,0 +1,13 @@
+-------------------------------------------------------------------------------
+          IMPORTANT INFORMATION ABOUT SCIENTIFIC VALIDATION - THERE
+        ARE ONLY LIMITED SCIENTIFICALLY VALIDATED COMPONENT SETS IN CESM1.1
+             (Currently, only WACCM-X under solar minimum conditions)
+
+     For both a quick start and details of creating and running a CESM model case
+        see the CESM1.1 User's Guide at http://www.cesm.ucar.edu/models/cesm1.1
+
+-------------------------------------------------------------------------------
+  For a list of potential issues in the current tag, please point your web browser to:
+http://www.cesm.ucar.edu/models/cesm1.1/tags/cesm1_1/knownproblems.html
+-------------------------------------------------------------------------------
+

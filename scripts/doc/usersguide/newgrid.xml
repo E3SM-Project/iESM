@@ -1,0 +1,346 @@
+<chapter id="newgrid">
+<title>Adding a new user-defined grid (EXPERTS ONLY)</title>
+
+<para> Support for numerous out-of-the box <ulink
+url="../modelnl/grid.html">model resolutions</ulink> accompany the CESM1.1
+release. (In addition to the link above, you can also view a listing of 
+supported "out-of-the-box" resolutions by running <command>create_newcase
+-l</command>.) In general, CESM grids are associated with a specific
+combination of atmosphere, land, land-ice, river-runoff and ocean/ice grids.
+The naming convention for these grids still only involves atmosphere, land,
+and ocean/ice grid specifications.  The particular naming convention looks like
+<emphasis>f19_g16</emphasis> for the f19 atmosphere / land grid combined with
+the g16 ocean / ice grid, where f19 is the shortname for the 1.9x2.5 finite
+volume dycore grid and g16 is the shortname for the gx1v6 one-degree displaced
+pole grid.  This will be generalized in CESM1.2.
+</para>
+
+<para>CESM1.1 provides completely <emphasis>new support</emphasis> for you to
+add your own specific component grid combinations. To achieve this, CESM1.1
+has a new top level directory <filename>$CCSMROOT/mapping/</filename>. A brief
+list of the steps needed to add a new component grid to the model system
+follows. In what follows we assume that the ocean and ice are on the same grid,
+though no such assumption is made about the atmosphere and land.
+</para>
+
+<orderedlist>
+
+<listitem>
+<para>
+<command>Start with SCRIP grid files for atm and ocn.</command>
+</para>
+<para>
+You must first create or obtain SCRIP format grid files for the atmosphere and
+ocean grids. At present there is no supported functionality for creating the
+SCRIP format file, although that is planned for CESM1.2.
+</para>
+</listitem>
+
+<listitem>
+<para>
+<command>Build the <filename>check_map</filename> utility.</command>
+</para>
+<para>
+When you add new user-defined grid files, you will also need to generate a set
+of mapping files so the coupler can send data from a component on one grid to
+a component on another grid. There is an ESMF tool that tests the mapping file
+by comparing a mapping of a smooth function to its true value on the destination
+grid. We have tweaked this utility to test a suite of of smooth functions, as
+well as ensure conservation (when the map is conservative). Before generating
+mapping functions it is <emphasis>highly recommended</emphasis> that you build
+this utility.
+</para>
+<para>
+To build this tool, follow the instructions in
+<filename>$CCSMROOT/mapping/check_maps/INSTALL</filename>. As with many of the
+steps in this document, you will need to have the 
+<ulink url="http://www.earthsystemmodeling.org">ESMF</ulink> toolkit installed.
+It is installed by default on most NCAR computers.
+</para>
+</listitem>
+
+<listitem>
+<para>
+<command>generate atm&lt;-&gt;ocn and lnd&lt;-&gt;rtm mapping files</command>
+</para>
+<para>
+Using the SCRIP grid files from step one, you must generate conservative and
+non-conservative (patch and bilinear) mapping files for ocn-&gt;atm and 
+atm-&gt;ocn grid mapping, as well as conservative maps for lnd&lt;-&gt;rtm. You
+can do this by calling <command>gen_cesm_maps.sh</command> in
+<filename>$CCSMROOT/mapping/gen_mapping_files/</filename>. This directory
+contains a shell script that generates all the necessary mapping files (except
+rtm-&gt;ocn, which is discussed below). This script uses the 
+<ulink url="http://www.earthsystemmodeling.org">ESMF offline weight generation
+utility</ulink>, which you must build <emphasis>prior</emphasis> to running
+<command>gen_cesm_maps.sh</command>. (See the README file in this directory for
+a full discussion.)
+</para>
+<para>
+<screen>
+$ cd $CCSMROOT/mapping/gen_mapping_files
+$ ./gen_cesm_maps.sh \
+    --fileocn  &lt;input SCRIP ocn_grid full pathname&gt;  \
+    --fileatm  &lt;input SCRIP atm grid full pathname&gt;  \
+    --filelnd  &lt;input SCRIP lnd grid full pathname&gt;  \
+    --filertm  &lt;input SCRIP rtm grid full pathname&gt;  \
+    --nameocn  &lt;ocnname in output mapping file&gt; \ 
+    --nameatm  &lt;atmname in output mapping file&gt; \ 
+    --namelnd  &lt;lndname in output mapping file&gt; \ 
+    --namertm  &lt;rtmname in output mapping file&gt; 
+</screen>
+</para>
+<para>
+will generate the following mapping files:
+</para>
+<para>
+<screen>
+map_atmname_TO_ocnname_aave.yymmdd.nc
+map_atmname_TO_ocnname_blin.yymmdd.nc
+map_atmname_TO_ocnname_patc.yymmdd.nc
+map_ocnname_TO_atmname_aave.yymmdd.nc
+map_ocnname_TO_atmname_blin.yymmdd.nc
+map_lndname_TO_rtmname_aave.yymmdd.nc
+map_rtmname_TO_lndname_aave.yymmdd.nc
+</screen>
+</para>
+<para>
+Notes: If you do not include a land grid, then the atmosphere grid will be used
+to generate lnd&lt;-&gt;rtm and rtm&lt;-&gt;lnd maps. (If you do not include a
+runoff grid, then only atm&lt;-&gt;ocn and ocn&lt;-&gt;atm maps will be
+generated.) Also, ESMF_RegridWeightGen runs in parallel, and the <filename>
+gen_cesm_maps.sh</filename> script has been written to run on bluefire, jaguar,
+and yellowstone. To run on any other machine, you may need to add some
+environment variables to <filename>$CCSMROOT/mapping/gen_mapping_files/
+gen_ESMF_mapping_file/create_ESMF_map.sh</filename> -- search for <emphasis>
+hostname</emphasis> to see where to edit the file.
+</para>
+<para>
+Example (run on Nov 5, 2012):
+</para>
+<para>
+<screen>
+$ ./gen_cesm_maps.sh \
+     -focn /CESM/cseg/mapping/grids/gx3v7_120309.nc -nocn g37 \
+     -fatm /CESM/cseg/mapping/grids/ne16np4_110512_pentagons.nc -natm ne16np4 \
+     -frtm /CESM/cseg/mapping/grids/r05_nomask_070925.nc -nrtm r05
+</screen>
+</para>
+<para>
+Results in the following files
+</para>
+<para>
+<screen>
+$ ls -1 map*
+map_g37_TO_ne16np4_aave.121105.nc
+map_g37_TO_ne16np4_blin.121105.nc
+map_ne16np4_TO_g37_aave.121105.nc
+map_ne16np4_TO_g37_blin.121105.nc
+map_ne16np4_TO_g37_patc.121105.nc
+map_ne16np4_TO_r05_aave.121105.nc
+map_r05_TO_ne16np4_aave.121105.nc
+</screen>
+</para>
+</listitem>
+
+<listitem>
+<para>
+<command>Generate (atm/lnd) and (ocn/ice) domain files.</command>
+</para>
+<para>
+Using the conservative ocean to atmosphere mapping file created in the previous
+step, you need to create domain files for the land and ocean which will have
+the correct masks and fractions.  You will utilize the above ocean -> atmosphere
+conservative mapping file as input to <command>gen_domain</command>, which is
+located in <filename>$CCSMROOT/mapping/gen_domain_files</filename>. Note that
+<command>gen_domain</command> is a binary exectuable that must first be built
+following the instructions in <filename>gen_domain_files/INSTALL</filename>.
+</para>
+<para>
+<command>gen_domain</command> adds "cell fraction" data to the output domain
+files.  The "cell fraction" indicates how much of each grid cell is active.
+Typically ocean models do not have fractional cells (the fraction is either 0
+or 1), where as land models do have fractional cells.  This code generates
+domain files where gridocn has fractions of either 0 or 1 (for grid cells that
+are masked or unmasked, respectively) and gridlnd has fractions that represent
+the complement of gridocn fraction data, as computed by the input mapping data.
+Thus gridocn is intended to be an ocean domain file and gridlnd is intended to
+be the complementary land domain file.  Related, the input mapping data, 
+filemap, should be a conservative mapping: ocean -&gt; atmosphere.
+</para>
+<para>
+The input atmosphere grid is assumed to be unmasked (global) and the land and
+atmosphere grids are assumed to be identical, except for cell fractions and
+masks.  Land cells whose fraction is zero will have land mask = 0.
+</para>
+<para>
+If the ocean and atmosphere grids <emphasis>are identical</emphasis>
+then the mapping file swill simply be unity and the land fraction will
+be one minus the ocean fraction.
+</para>
+<para>
+<screen>
+$ cd $CCSMROOT/mapping/gen_domain_files
+$ ./gen_domain -m ../gen_mapping_files/map_ocnname_TO_atmname_aave.yymmdd.nc \
+               -o ocnname -l atmname
+</screen>
+</para>
+<para>
+will generate the following output
+</para>
+<para>
+<screen>
+domain.lnd.atmname_ocnname.yymmdd.nc
+domain.ocn.atmname_ocnname.yymmdd.nc
+domain.ocn.ocnname.yymmdd.nc
+</screen>
+</para>
+</listitem>
+
+<listitem>
+<para>
+<command>If you are adding a new ocn or rtm grid, create a new rtm->ocn mapping
+file.</command> (Otherwise you can skip this step.)
+</para>
+<para>
+Discuss rof->ocn mapping file. Key point - if you do not change the ocean grid
+or the default runoff grid - you can skip this step.
+</para>
+</listitem>
+
+<listitem>
+<para> 
+<command>If you are adding a new new lnd grid, create a new CLM surface
+dataset.</command> (Otherwise you can skip this step.)
+</para>
+<para>
+<orderedlist>  
+
+<listitem>
+<para>
+Generate mapping files for CLM surface dataset (since this is a non-standard
+grid).
+<screen>
+$ cd $CCSMROOT/models/lnd/clm/tools/mkmapdata
+$ ./mkmapdata.sh --gridfile &lt;lnd SCRIP grid file&gt; \
+                 --res &lt;atm resolution name&gt; \
+                 --gridtype global
+</screen>
+</para>
+</listitem>
+<listitem>
+<para>
+Generate CLM surface dataset. Below is an example for a current day surface
+dataset (model year 2000).
+<screen>   
+$ cd  $CCSMROOT/models/lnd/clm/tools/mksurfdata_map
+$ ./mksurfdata.pl -res usrspec -usr_gname &lt;atm resolution name&gt; \
+                  -usr_gdate yymmdd -y 2000
+</screen>
+</para>
+</listitem>
+</orderedlist>  
+</para>
+</listitem>
+
+<listitem>
+<para>
+<command>Create grid file needed for create_newcase.</command>
+</para>
+<para>
+The next step is to create a file - call it mygrid.xml with the following contents
+</para>
+<para>
+<screen>
+TODO - fill in below
+&lt;?xml version="1.0"?&gt;
+&lt;config_horiz_grid&gt;
+&lt;horiz_grid GLOB_GRID="" nx=" ny="" /&gt;
+&lt;horiz_grid GRID="" SHORTNAME=""
+            ATM_GRID="" LND_GRID="" OCN_GRID="" ICE_GRID="" 
+            ATM_NCPL="" OCN_NCPL=""
+            ATM_DOMAIN_FILE=""
+            LND_DOMAIN_FILE=""
+            ICE_DOMAIN_FILE=""
+            OCN_DOMAIN_FILE=""
+            ATM_DOMAIN_PATH=""
+            LND_DOMAIN_PATH=""
+            ICE_DOMAIN_PATH=""
+            OCN_DOMAIN_PATH=""
+            DESC="wrf grid"
+/&gt;
+&lt;/config_horiz_grid&gt;
+</screen>
+</para>
+</listitem>
+
+<listitem>
+<para>
+<command>Create user_nl_cpl contents for new mapping files.</command>
+</para>
+<para>
+One of the many input files generated for the coupler is <filename>$RUNDIR/
+seq_maps.rc</filename>, which contains a list of mapping files. Using an
+f09_g16 run on bluefire as an example, the file will contain the following (for
+brevity, some lines have been cut)
+</para>
+<para>
+<screen>
+ atm2ocnFmapname: '/glade/proj3/cseg/inputdata/cpl/cpl6/map_fv0.9x1.25_to_gx1v6_aave_da_090309.nc'
+ atm2ocnSmapname: '/glade/proj3/cseg/inputdata/cpl/cpl6/map_fv0.9x1.25_to_gx1v6_bilin_da_090309.nc'
+ atm2ocnVmapname: '/glade/proj3/cseg/inputdata/cpl/cpl6/map_fv0.9x1.25_to_gx1v6_bilin_da_090309.nc'
+ lnd2atmFmapname: 'idmap'
+ lnd2atmSmapname: 'idmap'
+ lnd2rofFmapname: '/glade/proj3/cseg/inputdata/lnd/clm2/mappingdata/maps/0.9x1.25/map_0.9x1.25_nomask_to_0.5x0.5_nomask_aave_da_c120522.nc'
+ lnd2rofFmaptype: 'X'
+ ocn2atmFmapname: '/glade/proj3/cseg/inputdata/cpl/cpl6/map_gx1v6_to_fv0.9x1.25_aave_da_090309.nc'
+ ocn2atmSmapname: '/glade/proj3/cseg/inputdata/cpl/cpl6/map_gx1v6_to_fv0.9x1.25_aave_da_090309.nc'
+</screen>
+</para>
+<para>
+This file is created when you build the model namelists, and the default values
+are based on the grids specified when you created the case. The model only
+knows what default values to use for the out-of-the-box resolutions, so you
+must specify what maps you have created by appending them to <filename>
+$CASE/user_nl_cpl</filename>. If, for example, we've introduced a new
+atmosphere grid with a shortname newatm and created all the necessary mapping
+files in $MAPPING_FILE_LOC, then to create a newatm_g16 run we would need to
+add the following to <filename>$CASE/user_nl_cpl</filename>:
+</para>
+<para>
+<screen>
+atm2ocnFmapname='$MAPPING_FILE_LOC/map_newatm_TO_gx1v6_aave.121105.nc'
+atm2ocnSmapname='$MAPPING_FILE_LOC/map_newatm_TO_gx1v6_blin.121105.nc'
+atm2ocnVmapname='$MAPPING_FILE_LOC/map_newatm_TO_gx1v6_patc.121105.nc'
+ocn2atmFmapname='$MAPPING_FILE_LOC/map_gx1v6_TO_newatm_aave.121105.nc'
+ocn2atmSmapname='$MAPPING_FILE_LOC/map_gx1v6_TO_newatm_aave.121105.nc'
+lnd2rofFmapname='$MAPPING_FILE_LOC/map_newatm_TO_r05_aave.121105.nc'
+rof2lndFmapname='$MAPPING_FILE_LOC/map_r05_TO_newatm_aave.121105.nc'
+</screen>
+</para>
+<para>
+After running <filename>$CASE/preview_namelists</filename> these changes will
+be reflected in <filename>$RUNDIR/seq_maps.rc</filename>.
+</para>
+</listitem>
+
+<listitem>
+<para>
+<command>Test new grid.</command>
+</para>
+<para>
+Below assume that the new grid is an atmosphere grid. 
+</para>
+<para>
+<screen>
+Test the new grid with all data components.
+(write an example)
+Test the new grid with CAM(newgrid), CLM(newgrid), DOCN(gx1v6), DICE(gx1v6)
+(write an example)
+</screen>
+</para>
+</listitem>
+
+</orderedlist>
+
+</chapter>

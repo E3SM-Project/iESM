@@ -1,0 +1,22 @@
+#
+# Run with PGI, pathscale, and intel compilers
+# debug on/off, single-point, CN, differeing
+# restart types, threading, in general lower
+# resolutions.
+#
+ERS_D.T31_g37.I1850.lynx_pgi
+ERS_D.f10_f10.ICN.lynx_intel
+PET_PT.f19_g16.I.lynx_pgi
+ERS_Lm3.T31_g37.I4804CN.lynx_pgi
+ERI_D.ne30_g16.I1850CN.lynx_pgi
+ERS.f19_g16.IG1850.lynx_pgi
+SMS_D.T31_g37.IG4804CN.lynx_pgi
+# single point
+ERS.1x1_vancouverCAN.I1PT.lynx_pgi
+SMS_D.1x1_smallvilleIA.ICN.lynx_pgi
+# transient simulations
+ERS.f19_g16.IRCP26CN.lynx_gnu
+SMS.f10_f10.IRCP45CN.lynx_pgi
+ERS.f10_f10.IRCP60CN.lynx_pgi
+ERI.f10_f10.IRCP60CN.lynx_pathscale
+SMS_D.f10_f10.IRCP85CN.lynx_pgi

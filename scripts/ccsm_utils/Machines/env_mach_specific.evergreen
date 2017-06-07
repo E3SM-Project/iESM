@@ -1,0 +1,35 @@
+#! /bin/csh -f
+
+#--- set modules
+
+if ( ! $?CCSM_TWIG2_SET ) then
+  echo "set twig2"
+  eval `twig2 -q intel400`
+  eval `twig2 -q openmpi143-intel`
+  eval `twig2 -q netcdf411-intel`
+  eval `twig2 -q boost`
+  setenv CCSM_TWIG2_SET TRUE
+endif
+
+#--- set paths
+setenv LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:/homes/jet/install/lib:/${MPI_LIB}
+
+# These environment variables are needed for iac GCAM and GLM builds
+setenv IAC_PATH '/homes/jet/install'
+setenv IAC_LIBS  '-L/usr/local/gcc/lib64 -L/homes/jet/install/lib -ldb -ldbxml -ldb_cxx -lxqilla -lxerces-c -lstdc++ -lz'
+setenv INC_BOOST ${BOOST_INCLUDE}
+setenv FC_IAC ifort
+setenv CXX_IAC gcc
+setenv FCGBASEOPTS_IAC  '-fp-model precise -convert big_endian -assume byterecl -ftz -traceback'
+
+#--- set env variables for Macros if needed
+#setenv PNETCDF /share/apps/pnetcdf/mvapich-1.0.1/pgi
+setenv NETCDF_DIR ${NETCDFLIB}/..
+setenv LD_LIBRARY_PATH ${NETCDF_DIR}/lib:${LD_LIBRARY_PATH}
+
+#-------------------------------------------------------------------------------
+
+limit coredumpsize 1000000
+limit stacksize unlimited
+
+

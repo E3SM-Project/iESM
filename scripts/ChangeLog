@@ -1,0 +1,522 @@
+================================================================================
+SVN $Id: ChangeLog 49339 2013-07-19 20:58:33Z mlevy@ucar.edu $
+SVN $URL: https://svn-ccsm-models.cgd.ucar.edu/scripts/branch_tags/iesm11_tags/iesm11_14_cesm1_1_x_n04_scripts4_121105/ChangeLog $
+================================================================================
+This file describes what tags were created and why
+================================================================================
+================================================================================
+Originator: mlevy
+Date: July 19 2013
+Model: scripts
+Version: cesm1_1_x_n04_scripts4_121105
+One-line: Add two ERS tests for yellowstone.prebeta -- BRCP85BPRP and BRCP45BDRD
+          (both at f09_g16)
+
+M       ccsm_utils/Testlists/B43
+
+================================================================================
+Originator: mlevy, klindsay
+Date: July 19 2013
+Model: scripts
+Version: cesm1_1_x_n03_scripts4_121105
+One-line: Add RCP 4.5 and RCP 8.5 options to BGC runs.
+
+M       ccsm_utils/Case.template/config_compsets.xml
+M       ccsm_utils/Case.template/config_definition.xml
+
+================================================================================
+Originator: jedwards
+Date: July 18 2013
+Model: scripts
+Version: cesm1_1_x_n02_scripts4_121105
+One-line: fix issue in multiinstance tests and threading tests.  Remove incomplete BPALEOC5CN compset.
+
+M               ccsm_utils/Tools/cesm_setup
+M               ccsm_utils/Case.template/config_compsets.xml
+M               ccsm_utils/Testcases/PET_script
+
+===================================================================
+Originator: jedwards
+Date: July 16 2013
+Model: scripts
+Version: cesm1_1_x_n01_scripts4_121105
+One-line: fix a minor issue in perl (depreciated usage)
+
+M ccsm_utils/Case.template/ConfigCase.pm
+
+
+================================================================================
+Originator: jedwards
+Date: July 02 2013
+Model: scripts
+Version: cesm1_1_1_n04_scripts4_121105
+One-line: Add BPALEOC5CN compset, fix minor issue in lt_archive
+
+M ccsm_utils/Case.template/config_compsets.xml
+M ccsm_utils/Tools/lt_archive.sh
+
+================================================================================
+
+Originator: jedwards
+Date: June 11 2013
+Model: scripts
+Version: cesm1_1_1_n03_scripts4_121105
+One-line: Fix bug in create_clone - did not use -mach_dir flag
+
+M  create_clone
+
+================================================================================
+Originator: jedwards
+Date: Jan 03 2013
+Model: scripts
+Version: cesm1_1_1_n01_scripts4_121105
+One-line:  (OCEAN f25_f25 Grid Definition - 2012-11-18) The f25_f25 grid
+definition has a bug in the ocean grid value
+
+M  ccsm_utils/Case.template/config_grid.xml
+
+================================================================================
+
+Originator: jshollen
+Date: 19 Nov 2012
+Model: scripts
+Version: cesm1_1_0_n28_scripts4_121105
+One-line: preview_namelist bug fix for yellowstone. 
+
+M       ccsm_utils/Tools/preview_namelists
+
+================================================================================
+Originator: jshollen
+Date: 15 Nov 2012
+Model: scripts
+Version: cesm1_1_0_n27_scripts4_121105
+One-line: update README to match create_newcase banner  
+
+M       README
+
+================================================================================
+Originator: jedwards
+Date: 15 Nov 2012
+Model: scripts
+Version: cesm1_1_0_n26_scripts4_121105
+One-line: update banner 
+
+M     create_newcase
+
+================================================================================
+Originator: jshollen
+Date: 15 Nov 2012
+Model: scripts
+Version: cesm1_1_0_n25_scripts4_121105
+One-line: Remove CME_IOP.T31_g37.B1850CN
+
+M       ccsm_utils/Testlists/B01
+M       ccsm_utils/Testlists/B43
+
+================================================================================
+Originator: mlevy
+Date: 13 Nov 2012
+Model: scripts
+Version: cesm1_1_0_n24_scripts4_121105
+One-line: Fix mask in domain.ocn.ne*_gx1v6 files
+
+M       ccsm_utils/Case.template/config_grid.xml
+
+================================================================================
+Originator: jshollen
+Date: 13 Nov 2012
+Model: scripts
+Version: cesm1_1_0_n23_scripts4_121105
+One-line: Change ERI.ne30_g16.B55TRWCN to f19_g16
+
+M       ccsm_utils/Testlists/B42
+
+================================================================================
+Originator: erik
+Date: 13 Nov 2012
+Model: scripts
+Version: cesm1_1_0_n22_scripts4_121105
+One-line: Fix xmlquery
+
+M       ccsm_utils/Tools/xmlquery ------ Fix so will work, let filenames be env_*.xml
+M       ccsm_utils/Tools/SetupTools.pm - Allow variables to have {} as in ${VAR}.
+
+================================================================================
+Originator: fischer
+Date: 06 Nov 2012
+Model: scripts
+Version: cesm1_1_0_n21_scripts4_121105
+One-line: Add SCAM compset
+
+M       ccsm_utils/Case.template/config_compsets.xml
+
+================================================================================
+Originator: jshollen
+Date: 06 Nov 2012
+Model: scripts
+Version: cesm1_1_0_n20_scripts4_121105
+One-line: Change all FC5,FW tests to run 3 days. 
+
+M       ccsm_utils/Testlists/B01
+M       ccsm_utils/Testlists/B42
+M       ccsm_utils/Testlists/B43
+M       ccsm_utils/Testlists/C01
+M       ccsm_utils/Testlists/C02
+M       ccsm_utils/Testlists/E01
+M       ccsm_utils/Testlists/C03
+================================================================================
+Originator: erik
+Date: 06 Nov 2012
+Model: scripts
+Version: cesm1_1_0_n19_scripts4_121105
+One-line: Remove PTCLM
+
+SVN_EXTERNAL_DIRECTORIES
+
+================================================================================
+Originator: jshollen
+Date: 06 Nov 2012
+Model: scripts
+Version: cesm1_1_0_n18_scripts4_121105
+Two-line: Remove IOP tests from lynx prebeta, ne120 BC5 from bluefire.prebeta, 
+          change IOP FWX to 5 day test, intrepid ne30 tests -> f09
+
+A       ccsm_utils/Testlists/B44
+A       ccsm_utils/Testlists/C47
+M       ccsm_utils/Testlists/B01
+M       ccsm_utils/Testlists/B43
+M       ccsm_utils/Testlists/C05
+M       ccsm_utils/Testlists/bluefire.prebeta
+M       ccsm_utils/Testlists/lynx_intel.prebeta
+M       ccsm_utils/Testlists/lynx_pgi.prebeta
+================================================================================
+Originator: tcraig
+Date: 05 Nov 2012
+Model: scripts
+Version: cesm1_1_0_n17_scripts4_121105
+One-line: Fix NCK test
+
+	svn merge $SVNREPO/scripts/trunk_tags/scripts4_121101b $SVNREPO/scripts/trunk_tags/scripts4_121105
+	
+M       ccsm_utils/Testcases/NCK_script
+================================================================================
+Originator: tcraig
+Date: 01 Nov 2012
+Model: scripts
+Version: cesm1_1_0_n16_scripts4_121101b
+One-line: Merge latest trunk to branch
+
+  svn merge $SVNREPO/scripts/trunk_tags/scripts4_121101a $SVNREPO/scripts/trunk_tags/scripts4_121101b
+  - largely redundance with fix on 30 Oct 2012 on this branch but syncs them up
+
+M       ccsm_utils/Tools/testcase_env.csh
+		
+================================================================================
+Originator: jedwards
+Date: 01 Nov 2012
+Model: scripts
+Version: cesm1_1_0_n15_scripts4_121101a
+One-line: Fix issues found in last commit
+
+  svn merge $SVNREPO/scripts/trunk_tags/scripts4_121101 $SVNREPO/scripts/trunk_tags/scripts4_121101a
+M               create_clone
+M               create_production_test
+	
+================================================================================
+Originator: jedwards
+Date: 01 Nov 2012
+Model: scripts
+Version: cesm1_1_0_n14_scripts4_121101
+One-line: Create SetupTools.pm to avoid duplication of several resused perl functions
+
+  svn merge $SVNREPO/scripts/trunk_tags/scripts4_121030 $SVNREPO/scripts/trunk_tags/scripts4_121101
+	
+M               create_clone
+M               ccsm_utils/Tools/cesm_setup
+M               ccsm_utils/Tools/xmlquery
+A               ccsm_utils/Tools/SetupTools.pm
+M               create_newcase
+
+
+================================================================================
+Originator: tcraig
+Date: 31 Oct 2012
+Model: scripts
+Version: cesm1_1_0_n13_scripts4_121030
+One-line: ICP fix
+
+  svn merge $SVNREPO/scripts/trunk_tags/scripts4_121029 $SVNREPO/scripts/trunk_tags/scripts4_121030
+	
+M       ccsm_utils/Testcases/ICP_build.csh
+	
+================================================================================
+Originator: jshollen
+Date: 30 Oct 2012
+Model: scripts
+Version: cesm1_1_0_n12_scripts4_121029
+One-line: Updated README
+
+M       README
+
+================================================================================
+Originator: jshollen
+Date: 30 Oct 2012
+Model: scripts
+Version: cesm1_1_0_n11_scripts4_121029
+One-line: Fix testcase_env.csh, make sure TEST_TESTID is set when called from create_production_test
+
+M       ccsm_utils/Tools/testcase_env.csh
+
+================================================================================
+Originator: tcraig
+Date: 29 Oct 2012
+Model: scripts
+Version: cesm1_1_0_n10_scripts4_121029
+One-line: add test_build, rename to cesm_setup and env_mach_pes.xml, update userdefined, change F compset to ahve rof grid null
+
+svn merge $SVNREPO/scripts/trunk_tags/scripts4_121009b $SVNREPO/scripts/trunk_tags/scripts4_121029
+ - add test_build script to generate cesm executables up front for tests
+ - refactor tests for new test build, update/remove some tests
+ - rename setup to cesm_setup, rename env_pesetup.xml to env_mach_pes.xml
+ - change F compset rof grid default to null
+ - modify cs.submit for test build and other future extensions to it
+ - update userdefined setup
+ - modify how mpilib and mpi-serial defaults are set, add _M confopts
+	
+M       create_test
+M       create_clone
+M       ccsm_utils/Tools/testcase_begin
+M       ccsm_utils/Tools/ccsm_check_lockedfiles
+M       ccsm_utils/Tools/archive_metadata.sh
+A  +    ccsm_utils/Tools/cesm_setup
+M       ccsm_utils/Tools/cesm_prestage
+M       ccsm_utils/Tools/cesm_buildstart
+M       ccsm_utils/Tools/xml2env
+MM      ccsm_utils/Tools/taskmaker.pl
+MM      ccsm_utils/Tools/ccsm_getenv
+D       ccsm_utils/Tools/setup
+M       ccsm_utils/Tools/testcase_end
+M       ccsm_utils/Tools/xmlchange
+M       ccsm_utils/Tools/testcase_setup.csh
+X       ccsm_utils/Tools/lnd/clm/PTCLM
+M       ccsm_utils/Case.template/config_compsets.xml
+M       ccsm_utils/Case.template/ConfigCase.pm
+MM      ccsm_utils/Case.template/config_definition.xml
+D       ccsm_utils/Testcases/PMT_script
+D       ccsm_utils/Testcases/SEQ_auto_pes_file
+D       ccsm_utils/Testcases/PET_auto_pes_file
+M       ccsm_utils/Testcases/PEA_script
+D       ccsm_utils/Testcases/PST_script
+M       ccsm_utils/Testcases/ERB_script
+A  +    ccsm_utils/Testcases/tests_build.csh
+D       ccsm_utils/Testcases/PMT_auto_pes_file
+M       ccsm_utils/Testcases/ICP_script
+M       ccsm_utils/Testcases/NCK_script
+M       ccsm_utils/Testcases/ERH_script
+D       ccsm_utils/Testcases/PST_auto_pes_file
+M       ccsm_utils/Testcases/PEM_script
+M       ccsm_utils/Testcases/APT_script
+M       ccsm_utils/Testcases/config_tests.xml
+M       ccsm_utils/Testcases/CME_script
+A  +    ccsm_utils/Testcases/CME_build.csh
+A  +    ccsm_utils/Testcases/PEA_build.csh
+M       ccsm_utils/Testcases/ERI_script
+A  +    ccsm_utils/Testcases/NCK_build.csh
+A  +    ccsm_utils/Testcases/ICP_build.csh
+A  +    ccsm_utils/Testcases/PEM_build.csh
+M       ccsm_utils/Testcases/PET_script
+M       ccsm_utils/Testcases/SEQ_script
+M       ccsm_utils/Testlists/titan.clm.auxtest
+M       ccsm_utils/Testlists/eastwind.rasm.auxtest
+M       ccsm_utils/Testlists/B01
+M       ccsm_utils/Testlists/B41
+M       ccsm_utils/Testlists/B42
+M       ccsm_utils/Testlists/B43
+M       ccsm_utils/Testlists/lynx.clm.auxtest
+M       ccsm_utils/Testlists/olympus.rasm.auxtest
+M       ccsm_utils/Testlists/evergreen.rasm.auxtest
+M       ccsm_utils/Testlists/bluefire.glc.auxtest
+M       ccsm_utils/Testlists/bluefire.clm.auxtest
+M       ccsm_utils/Testlists/bluefire.cice2.auxtest
+M       ccsm_utils/Testlists/A01
+M       ccsm_utils/Testlists/C01
+M       ccsm_utils/Testlists/shortlist.clm.auxtest
+M       ccsm_utils/Testlists/S01
+M       create_newcase
+M       create_test_suite
+
+================================================================================
+Originator: jshollen
+Date: 26 Oct 2012
+Model: scripts
+Version: cesm1_1_0_n09_scripts4_121009b
+One-line: Removed all WRF compset tests in preparation for WRF removal
+M       ccsm_utils/Testlists/bluefire.prerelease
+M       ccsm_utils/Testlists/eastwind.rasm.auxtest
+M       ccsm_utils/Testlists/garnet.rasm.auxtest
+M       ccsm_utils/Testlists/olympus.rasm.auxtest
+M       ccsm_utils/Testlists/evergreen.rasm.auxtest
+M       ccsm_utils/Testlists/yellowstone.prebeta
+M       ccsm_utils/Testlists/bluefire.rasm.auxtest
+M       ccsm_utils/Testlists/chugach.rasm.auxtest
+M       ccsm_utils/Testlists/raptor.rasm.auxtest
+D       ccsm_utils/Testlists/W01
+M       ccsm_utils/Testlists/bluefire.prebeta
+M       ChangeLog
+
+================================================================================
+Originator: jshollen
+Date: 25 Oct 2012
+Model: scripts
+Version: cesm1_1_0_n08_scripts4_121009b
+One-line: Update README, change ne120 B test to ne120 B1850C5
+
+M       ccsm_utils/Testlists/C41
+M       README
+
+================================================================================
+Originator: jedwards
+Date: 25 Oct 2012
+Model: scripts
+Version: cesm1_1_0_n07_scripts4_121009b
+One-line: set ne120 ROF grids to r05, change intrepid tests from f19 to
+ne30
+	ccsm_ccsm_utils/Case.template/config_grid.xml
+	ccsm_utils/Testlists/C05
+
+================================================================================
+Originator: tcraig
+Date: 23 Oct 2012
+Model: scripts
+Version: cesm1_1_0_n06_scripts4_121009b
+One-line: update ICP test (same as scripts4_121023)
+
+ M      ccsm_utils/Tools/cesm_prerun_setup
+MM      ccsm_utils/Testcases/ICP_script
+	
+================================================================================
+Originator: jshollen
+Date: 15 Oct 2012
+Model: scripts
+Version: cesm1_1_0_n05_scripts4_121009b
+One-line: add ERS.ne30_g16.B1850C5CN to ys prebeta list, make yellowstone prealpha/prebeta lists
+
+A       ccsm_utils/Testlists/yellowstone.prealpha
+A       ccsm_utils/Testlists/B43
+A       ccsm_utils/Testlists/yellowstone.prebeta
+
+================================================================================
+Originator: tcraig
+Date: 15 Oct 2012
+Model: scripts
+Version: cesm1_1_0_n04_scripts4_121009b
+One-line: merge scripts4_121002 scripts4_121009b
+
+cesm1_1_0_rel branch was actually 121012, not 121009b
+
+M       SVN_EXTERNAL_DIRECTORIES
+M       ccsm_utils/Tools/check_input_data
+MM      ccsm_utils/Tools/taskmaker.pl
+ M      ccsm_utils/Tools/ccsm_getenv
+M       ccsm_utils/Case.template/ConfigCase.pm
+MM      ccsm_utils/Case.template/config_definition.xml
+A  +    ccsm_utils/Testlists/B42
+M       ccsm_utils/Testlists/hopper.prebeta
+M       ccsm_utils/Testlists/bluefire.glc.auxtest
+M       doc/usersguide/introduction.xml
+M       doc/usersguide/runcase.xml
+
+================================================================================
+Originator: tcraig
+Date: 15 Oct 2012
+Model: scripts
+Version: cesm1_1_0_n03_scripts4_121009b
+One-line: remove wrf/vic compsets, fix ICP test
+
+M       ccsm_utils/Tools/cesm_prerun_setup
+M       ccsm_utils/Case.template/config_compsets.xml
+M       ccsm_utils/Testcases/ICP_script
+	
+================================================================================
+Originator: jedwards
+Date: 15 Oct 2012
+Model: scripts
+Version: cesm1_1_0_n02_scripts4_121009b
+One-line: add hybrid compset for ne30_g16.B1850C5CN, add abilty to specify mpilib in create_test and create_test_suite
+
+        ccsm_utils/Case.template/config_compsets.xml
+        create_test
+        create_test_suite
+
+
+
+================================================================================
+Originator: erik
+Date: 9 Oct 2012
+Model: scripts
+Version: cesm1_1_0_n01_scripts4_121009b
+One-line: scripts version for cesm1_1_0 release
+
+Important changes since cesm1_0_4: 
+  change default GLC grid to gland5UM.
+  point to new forcing data locations for TG compsets
+  BG1850CN is broken at f09
+  runoff separate component
+  add _L confopts option for run length
+  new userdefined machine and Macros now called from setup 
+  Convert create_test_suite to perl and extend it's functionality, add I1PT compset
+  add new xmlquery function to query env_*.xml variables or list for all.
+  allow new format for xmlchange for lists of options without needing filename
+  add ability for create_test_suite to process tests with -user_nl_dir options
+  new streamlined case setup and updates to scripts infrastructure  
+    1) $case.build, $case.clean_build, $case.submit, $case.l_archive created by create_newcase
+    2) $case.run, user_nl_xxx create by setup (replacement to configure)
+    3) env_build.xml now has all grid information
+    4) ccsm script names changed to cesm script names	
+  add tests for TG compsets, generalize other tests to work with TG
+  update for new cice version
+  new auto-documentaton of namelists, executable now goes into 
+  $EXEROOT/bin/ccsm.exe, rather than $EXEROOT - so $RUNDIR and $EXEROOT
+  are now independent, removed DIN_LOC_ROOT_CSMDATA, prestaging now occurs
+  via linking to $DIN_LOC_ROOT/ccsm4_init rather than on copying, 
+  removed $SHAREROOT, added several new tests that need to be added to
+  auto-test suite and that are shorter
+  direct copy of xxx.buildnml.csh and xxx.buildexe.csh into Buildconf/
+  no longer need to invoke xxx.cpl7.template
+  add memory leak and throughput tests 
+  Added create_newcase option for pnetcdf (IOP*). Added pnetcdf tests to
+  tests lists.  Added check for memory leaks to exact restart (ERS) tests. 
+  Changes for new MEGAN VOC emission fluxes, new compsets added,
+    and turned on CLM/CN for FSTC
+  remove tabs from namelist generated by build-namelist and
+  add routine user_nl_add to add only namelist lines to cesm_namelist
+  Remove namelist name and ending to user_nl_cam/clm files, 
+  allow char config_def variables to have string length
+  creation of user_nl_comp and preview_namelists in caseroot 
+  Restructure Machines directory
+  updates for esmf, fix getTiming bug, extend create_test_suite
+       - add E01 testlist for esmf and update bluefire.esmf.auxtest
+       - modify csm_share build to include esmf dir whenever USE_ESMF_LIB is true
+       - modify create_test_suite to extend parsing of testlist to allow
+         both generic testlists (ie. A01) and custom lists (ie. ERS.*) mixed
+       - fix getTiming bug introduced in scripts4_111221 that cause test summaries
+	 to fail
+  Add RUN_REFTOD
+  removed machine name from .build,clean_build,.run,.l_archive, .submit and .test scripts  
+  remove use of DIN_LOC_ROOT_CLMQIAN add DIN_LOC_ROOT_CLMFORC
+  add NCPL_BASE_PERIOD env variable
+  add NINST_LAYOUT env vars
+  Introduced a new match variable SSTICE_COMPSET_MATCH
+  Major rewrite of compset specification in config_compsets.xml
+  New simple long-term archiver
+  Add HOMME grid support
+  Multi-ensemble capability
+  - add _N confopts for multi-ensemble setup
+  - add NCK test
+  - add NCK and _N* tests to testlists
+  - add CPL_DECOMP env var 
+  - fix st_archive script for multi-ensemble
+  Allow pio and mct to be configured and built outside
+
+================================================================================
+================================================================================        

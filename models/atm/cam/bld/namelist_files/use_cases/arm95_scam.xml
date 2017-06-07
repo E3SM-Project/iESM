@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<namelist_defaults>
+
+<ncdata             hgrid="64x128"    nlev="26"   scam="1"  >atm/cam/inic/gaus/cami_0000-09-01_64x128_L26_c030918.nc</ncdata>
+<iopfile dyn="eul"                                scam="1"  >atm/cam/scam/iop/arm0795v1.2.nc</iopfile>
+<scmlat                                           scam="1"  >   36.6     </scmlat>
+<scmlon                                           scam="1"  >   262.5    </scmlon>
+<start_ymd                                        scam="1"  >   19950718 </start_ymd>
+<start_tod                                        scam="1"  >   19800    </start_tod>
+<stop_n                                           scam="1"  >   1259     </stop_n>
+<mfilt                                            scam="1"  >   1500     </mfilt>
+<nhtfrq                                           scam="1"  >   1        </nhtfrq>
+<stop_option                                      scam="1"  >   nsteps    </stop_option>
+
+<!-- sim_year used for CLM datasets -->
+<sim_year>2000</sim_year>
+
+</namelist_defaults>
