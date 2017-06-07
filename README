@@ -1,35 +1,9 @@
+The Integrated Earth System Model
 
-       The Community Climate System Model version 4.0 (CCSM4.0)
+The Integrated Earth System Model (iESM) couples the Global Change Assessment Model (GCAM) to the Community Earth System Model (CESM). See Collins et al. (2015) for a complete technical documentation.
 
-                     http://www.ccsm.ucar.edu
+Please note further development on this model is not planned at this time. Future couplings between GCAM and ESMs will be via the ACME project on a separate repository. This code is provided with no support.
 
-       See the CCSM web site for documentation and information.
+References:
+Collins, W. D., A. P. Craig, J. E. Truesdale, A. V. Di Vittorio, A. D. Jones, B. Bond-Lamberty, K. V. Calvin, J. A. Edmonds, S. H. Kim, A. M. Thomson, P. Patel, Y. Zhou, J. Mao, X. Shi, P. E. Thornton, L. P. Chini and G. C. Hurtt (2015). "The integrated Earth system model version 1: formulation and functionality." Geosci. Model Dev. 8(7): 2203-2219.
 
-
-For commits to the ccsm svn repo
-
-1) check out the latest ccsm4 tag but do not populate external directories
-> svn co --ignore-externals $SVNREPO/ccsm4/tags/ccsm4_0_alpha## my_sandbox
-> svn co -N $SVNREPO/ccsm4/tags/ccsm4_0_alpha## my_sandbox
-
-2) modify the file SVN_EXTERNAL_DIRECTORIES with any changes to
-component tags
-> cd  my_sandbox
-> emacs SVN_EXTERNAL_DIRECTORIES
-
-3) set the property for the external definitions - don't forget the dot at the end
-> svn propset  svn:externals  -F SVN_EXTERNAL_DIRECTORIES .
-
-4) populate your sandbox with the external files
-> svn update
-
-5) test
-
-6) document your mods
-> cp  ChangeLog_template  ChangeLog.new
-> cat  ChangeLog  >>  ChangeLog.new
-> emacs  ChangeLog.new
-> mv ChangeLog.new  ChangeLog
-
-7) copy your sandbox to a new tag in the repository
-> svn copy . $SVNREPO/ccsm4/tags/ccsm4_0_alpha## -m "created tag ccsm4_0_alpha##"
