@@ -5,25 +5,34 @@ The Integrated Earth System Model (iESM) was designed to use the CESM infrastruc
 ## Running iESM
 
 Setting up and running iESM uses a set of four commands:
-``` 	./create_newcase
-     	./cesm_setup
+``` 	
+./create_newcase
+./cesm_setup
 ./CASE.build
-./CASE.submit ```
+./CASE.submit 
+```
 
 ### Create a case
 To create a case, you need to specify the name of the case, the machine, the component set, and the resolution. For example, the command below would create an emissions-forced RCP4.5 called “CASE” on Titan with a resolution of roughly 1 degree.
 
-``` ./create_newcase -case CASE -mach titan -compset BRCP45BPRP -res f09_g16 ```
+``` 
+./create_newcase -case CASE -mach titan -compset BRCP45BPRP -res f09_g16 
+```
 
 iESM has been run using RCP4.5 and RCP8.5 component sets, including both concentration- and emissions-driven runs. 
 
 ### Configuring GCAM
 To use GCAM within iESM, you will need to “turn it on”. The following command will do this:
-``` ./xmlchange -file env_run.xml -id CLM_IAC_MODE -val 'giac' ```
+
+``` 
+./xmlchange -file env_run.xml -id CLM_IAC_MODE -val 'giac' 
+```
 
 Out of the box, GCAM is configured to run an RCP4.5. If you want to try a different GCAM pathway, you will need to adjust the GCAM configuration file (configuration.xml). The default is to use the `configuration_exp1_clmcarbon.xml` as the configuration. To change this, you will need to either overwrite that file, or use a `sed` command to change the configuration file used. For example, the following command will use `my_configuration.xml` as the GCAM configuration.
 
-``` sed -i 's/configuration_exp1_clmcarbon.xml/my_configuration.xml/g' Buildconf/clm.buildnml.csh``` 
+``` 
+sed -i 's/configuration_exp1_clmcarbon.xml/my_configuration.xml/g' Buildconf/clm.buildnml.csh
+``` 
 
 For information on how to adjust GCAM’s configuration, please see the GCAM repository (www.github.com/JGCRI/gcam-core). 
 
@@ -59,23 +68,27 @@ cat > user_nl_clm << EOF
   hist_nhtfrq = 0,0                                                                                                                              
 EOF  
 ```           
+
 You will need to update the path to the `fsurdat` file depending on the machine you use.
 
 ### Land Productivity Exchange
 To use changes in the productivity of land from CESM in GCAM, the following command is needed: 
-```sed -i 's/clm_iac_carbon_scaling = .false./clm_iac_carbon_scaling = .true./g' Buildconf/clm.buildnml.csh```
+```
+sed -i 's/clm_iac_carbon_scaling = .false./clm_iac_carbon_scaling = .true./g' Buildconf/clm.buildnml.csh
+```
 
 #### CO<sub>2</sub> Emissions exchange
 To pass CO<sub>2</sub> emissions from GCAM to CESM, the following two changes are needed. 
 
-``` sed -i 's/co2flux_coupling = .false./co2flux_coupling = .true./g' Buildconf/clm.buildnml.csh```
+``` 
+sed -i 's/co2flux_coupling = .false./co2flux_coupling = .true./g' Buildconf/clm.buildnml.csh
+```
 
-```                                                                                                                                 
-cat > user_nl_cam <<EOF                                                                                                                          
+```                                                                                                             cat > user_nl_cam <<EOF                                                                                                                          
 ! Users should add all user specific namelist changes below in the form of                                                                       
 ! namelist_var = new_namelist_value                                                                                                              
   co2flux_fuel_file = './co2flux_iESM_dyn.nc'                                                                                                    
-EOF                                                                                                                                              
+EOF                                                                           
 ```
 
 ### Machines
